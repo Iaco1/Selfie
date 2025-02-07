@@ -1,0 +1,133 @@
+@startuml
+
+class User{
+  --attributes--
+  List<Calendar> calendars
+  Calendar defaultCalendar
+  string name
+  string password
+  --methods--
+  setNotificationPreferences()
+}
+class Event{
+  List<User> attendants
+  User Coordinator
+  Recurrency r
+  string title
+  Tree<Event> subevents
+  List<key> belongsToCalendar
+  List<Note> associatedNotes
+  string milestone
+  Location location
+  --
+  groupOrIndividual()
+  complexOrSimple()
+  setNotificationPreferences(int timebeforeevent, Recurrency r)
+  sendNotification(Urgency u)
+}
+
+class Recurrency{
+  - int times
+  - int timeframe
+  ---
+  isUnique()
+  isRecurring()
+  setIntraDaily()
+  setIntraWeekly()
+  setIntraMonthly()
+  setIntraYearly()
+  setFreely()
+  repeatUntil(Datetime dt)
+}
+
+class Timemachine{
+  Datetime current
+  ---
+  jumpTo(Datetime dt)
+}
+
+
+class Calendar{
+  string name
+  List<Event> events
+  List<Note> associatedNotes
+  ---
+  add(Event e)
+  remove(Event e)
+  update(Event e)
+  view(ViewTimeframe t)
+  setNotificationPreferences()
+}
+
+class Note{
+  string title
+  verylongstring body
+  string category
+  Datetime creationDate
+  Datetime lastedit
+  User author
+  List<User> accessList
+  ---
+  shareWith(List<User> acl)
+  setShareWith(GlobalAccessModifiers gacl)
+}
+
+enum GlobalAccessModifiers{
+  PUBLIC, PRIVATE
+}
+
+enum ViewTimeframe{
+  DAY
+  WEEK
+  BIWEEKLY
+  THREEWEEKS
+  MONTH
+  TRIMESTESRAL
+  QUADRIMESTRAL
+  PENTAMESTRAL
+  SEMESTRAL
+  YEAR
+}
+
+enum Urgency{
+  SILENT, DEFAULT, HIGH, URGENT
+}
+
+class Project{
+  Event e
+  List<Constraint> constraints
+  ---
+  setActivityAsAutonomous(Event e))
+  setActivitiesyAsSynched(Event e1, e2)
+  ?setMonitoringAndVerificationActivities()
+}
+
+class Constraint{
+  Event e1, e2
+  bool c
+}
+
+class Activity{
+  Project* referencedProject
+  Tree<Activity> subactivities
+  Datetime deadline
+  TimingStatus ts
+  CompletionStatus cs
+  List<User> responsibles
+}
+
+enum TimingStatus{
+  INTIME, LATE
+}
+enum CompletionStatus{
+  INPROGRESS, COMPLETED, HALTED, ABORTED
+}
+
+class PomodoroGenerator{
+  int work
+  int rest
+ ---
+  generateSessionsFromMinutes(int m)
+  convertHoursToMinutes(int h, int m)
+}
+@enduml

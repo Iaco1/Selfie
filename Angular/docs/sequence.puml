@@ -1,0 +1,32 @@
+@startuml
+!pragma teoz true
+
+Organizer --> invitees: send invitation
+invitees --> Organizer: "will/won't attend"
+
+newpage
+
+CalendarApp --> User: send notification
+
+group Snooze Loop [until it's event time]
+  {snooze} User--> CalendarApp: snooze for n minutes or until certain datetime
+  {postSnoozeReminder} CalendarApp -->User: \n\n\n\n send notification
+  {snooze} <-> {postSnoozeReminder} : n minutes
+
+  end
+
+newpage
+
+
+
+newpage
+
+group Deadline reminder Loop [until Activity is completed]
+  ActivitiesApp -->User: \n\n\n\n send notification of increasing urgency about deadline being close or being past
+  end
+
+newpage
+title "start, switching to next or end of, cycle "
+PomodoroApp --> User: send notification
+
+@enduml

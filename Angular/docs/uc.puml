@@ -1,3 +1,25 @@
 @startuml
 
+:User:
+
+usecase eventCruds as "eventCruds
+--
+operations to create, read (view), update and delete events"
+
+(uses time-machine) as (timemachine)
+(view calendar) as (calendarView)
+(CRUDs on standalone notes) as (notesCruds)
+(define or switch between multiple calendars) as (calendarSwitch)
+(CRUDs projects) as (projectsCruds)
+("integrate with external calendards e.g: Google, Apple") as (externalIntegration)
+(pomodoro view) as (pomodoroView)
+(file sharing) as (fs)
+
+(receiving notifications) as (nr)
+
+
+:u1: --> fs
+:u2: --> fs
+
+
 @enduml

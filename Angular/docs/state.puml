@@ -1,0 +1,41 @@
+@startuml
+[*] ---> Login
+Login--->Homepage
+Login: user + password
+Login ------> Signup
+Homepage: homepage view of the Selfie web app
+Homepage --> Timemachine
+Timemachine --> Homepage
+Timemachine: view that allows you to reset the current clock to an arbitrary time
+Homepage --> CalendarView
+CalendarView: view one of the user's calendars \n i.e. navigate between user events that belong to this calendar \n there is a (public) resources calendar \n has a deadlines view \n has a list of Activities vi
+CalendarView-->CalendarSwitch
+CalendarSwitch: allows you to switch to another calendar \n i.e. to filter viewed events by another calendar \n or also to view multiple calendars at once \n and also to define the timeframe to view (daily, weekly, etc.) \n and to set default notifications for events belonging to that calendar
+CalendarSwitch-->CalendarView
+CalendarView --> EventView
+EventView: View that allows you to read a single event's information
+EventView --> EventCUDs
+EventCUDs: view that allows you to create/edit/delete an event \n and to set reminders for it (and to specify for which attendants they're for) \n can also reserve a room or equipment (reject event if not available)
+Homepage-->ResourceNav
+ResourceNav: allows you to navigate resources updated to the server \n (or maybe a local folder predefined by the user) \n and also to share them with another user \n and to create and assign categories to notes \n shows first n-characters of the note (n>=200) \n can be sorted alphabetically (title), length, date, etc. \n markdown supportedGlo \n support checkbox lists \n autocreation of calendar activity by adding a deadline to a checkbox list item
+ResourceNav--->NotesView
+NotesView: allows you to view text notes resources
+NotesView --> NotesEditor
+NotesEditor: allows you to edit notes, duplicate them, copy text from them
+Homepage--->Settings
+Settings--->SyncWithOtherCalendars
+Settings--->Account
+Account: change your person's name, username, password, selfie, birthday, other personal info
+SyncWithOtherCalendars: allows you to sync these calendars events to your apple or google calendar
+Homepage--> PomodoroView
+PomodoroView: allows you to see stats about your pomodoros, especially about the last done pomodoro
+Homepage-->ProjectNav
+ProjectNav: allows you to navigate between your projects \n and especially shows you imminent deadlines
+ProjectNav-->ProjectCRUD
+ProjectCRUD: allows you to inspect and edit a single project's information \n and who to share it with /n and to see a Gantt diagram for it
+Settings---> NotificationManager
+NotificationManager: allows you to set overarching notifications preferences \n and also where you'd like to get them (in app, mail, whatsapp, sms) \n and also who should get them (which attendants)
+PomodoroView --> PomodoroTimer
+PomodoroTimer: Allows you to start a single or multiple pomodoro focus sessions. \n (30+5 minutes is standard, which can be modified) \n buttons for start pomodoro, pause, force next cycle, restart cycle, stop cycle, \n during the studying session there must be a CSS animation running, same for the pause session \n study sessions can be scheduled into the calendar, and upon clicking on them in the calendar you'r redirected here \n non completed cycles are pushed forward to the next day. Not forgotten.
+
+@enduml
