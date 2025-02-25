@@ -1,16 +1,38 @@
 <!DOCTYPE html>
-<html>
+
 <head>
-  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hello Bulma!</title>
+  <meta charset="utf-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
-  <main>
-    <section>
-      <button class="button is-primary is-outlined"> Login </button>
-    </section>
-  </main>
+
+  <div class="column is-full-desktop">
+    <div #emailfield class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left has-icons-right">
+        <input class="input" type="email" placeholder="Email input" value="hello@">
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div #passwordfield class="field">
+    <p class="control has-icons-left has-icons-right">
+      <input #passwordInput class="input" type="password" placeholder="Password">
+      <span class="icon is-small is-left">
+        <i class="fas fa-lock"></i>
+      </span>
+      <span class="icon is-small is-right">
+        <i #eyeicon class="fas fa-eye"></i>
+      </span>
+    </p>
+  </div>
+
+  <button class="button is-primary is-outlined"> Login </button>
+
 </body>
-</html>
