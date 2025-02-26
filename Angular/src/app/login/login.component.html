@@ -8,31 +8,27 @@
 
 </head>
 <body>
-
-  <div class="column is-full-desktop">
-    <div #emailfield class="field">
-      <label class="label">Email</label>
-      <div class="control has-icons-left has-icons-right">
-        <input class="input" type="email" placeholder="Email input" value="hello@">
-        <span class="icon is-small is-left">
+  <div class="column">
+      <div #emailfield class="field column is-two-thirds">
+        <label class="label">Email</label>
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" type="email" placeholder="Email input" value="hello@">
+          <span class="icon is-small is-left">
           <i class="fas fa-envelope"></i>
         </span>
+        </div>
       </div>
+      <div #passwordfield class="field column is-two-thirds">
+        <p class="control has-icons-left has-icons-right">
+          <input #passwordInput class="input" type="password" placeholder="Password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+          <span class="icon is-small is-right">
+            <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></i>
+          </span>
+        </p>
+      </div>
+      <button class="button is-primary is-outlined"> Login </button>
     </div>
-  </div>
-
-  <div #passwordfield class="field">
-    <p class="control has-icons-left has-icons-right">
-      <input #passwordInput class="input" type="password" placeholder="Password">
-      <span class="icon is-small is-left">
-        <i class="fas fa-lock"></i>
-      </span>
-      <span class="icon is-small is-right">
-        <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></i>
-      </span>
-    </p>
-  </div>
-
-  <button class="button is-primary is-outlined"> Login </button>
-
 </body>
