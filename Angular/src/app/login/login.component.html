@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <head>
+  <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
@@ -19,15 +20,15 @@
         </div>
       </div>
       <div #passwordfield class="field column is-two-thirds">
-        <p class="control has-icons-left has-icons-right">
-          <input #passwordInput class="input" type="password" placeholder="Password">
-          <span class="icon is-small is-left">
-            <i class="fas fa-lock"></i>
-          </span>
-          <span class="icon is-small is-right">
-            <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></i>
-          </span>
-        </p>
+        <div class="level">
+          <p class="control has-icons-left has-icons-right level-item">
+            <input #passwordInput class="input" type="password" placeholder="Password">
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </p>
+          <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></i>
+        </div>
       </div>
       <button class="button is-primary is-outlined"> Login </button>
     </div>
