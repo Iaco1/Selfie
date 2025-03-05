@@ -6,21 +6,20 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
 </head>
 <body>
   <div class="column">
-      <div #emailfield class="field column is-two-thirds">
+    <div #emailfield class="field column is-two-thirds">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">
-          <input class="input" type="email" placeholder="Email input" value="hello@">
+          <input class="input" type="email" placeholder="Email input" value="hello@" [formControl]="emailInput">
           <span class="icon is-small is-left">
           <i class="fas fa-envelope"></i>
         </span>
         </div>
       </div>
-      <div #passwordfield class="field column is-two-thirds">
-        <div class="level">
+    <div #passwordfield class="field column is-two-thirds">
+      <div class="level">
           <p class="control has-icons-left has-icons-right level-item">
             <input #passwordInput class="input" type="password" placeholder="Password">
             <span class="icon is-small is-left">
@@ -29,7 +28,11 @@
           </p>
           <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></i>
         </div>
-      </div>
-      <button class="button is-primary is-outlined"> Login </button>
     </div>
+    <div class="column is-two-thirds">
+      <button class="button is-primary is-outlined" routerLink="/HomepageComponent" routerLinkActive="active" ariaCurrentWhenActive="page" > Login </button>
+    </div>
+  </div>
 </body>
+
+<router-outlet></router-outlet>

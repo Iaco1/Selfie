@@ -7,7 +7,8 @@ import {LoginComponent} from './login/login.component';
   imports: [RouterOutlet, RouterLink, RouterLinkActive, LoginComponent],
   template: `
     <p> Hello World from the app component</p>
-    <app-login></app-login>
+    <a routerLink="/LoginComponent">Login</a>
+    <router-outlet></router-outlet>
   `
 })
 export class AppComponent {

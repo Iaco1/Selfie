@@ -1,11 +1,21 @@
 import { Component } from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 
 @Component({
   selector: 'app-login',
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet
+  ],
   templateUrl: 'login.component.html'
 })
 export class LoginComponent {
+  emailInput= new FormControl('');
   togglePasswordVisibility(passwordInput: HTMLInputElement, eyeIcon: HTMLElement){
     if(passwordInput.type === 'password'){
       passwordInput.type = 'text'; //this will show the password
