@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 
@@ -12,20 +12,35 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
     RouterLinkActive,
     RouterOutlet
   ],
-  templateUrl: 'login.component.html'
+  templateUrl: 'login.component.html',
+  styleUrl: 'login.component.scss'
 })
 export class LoginComponent {
-  emailInput= new FormControl('');
-  togglePasswordVisibility(passwordInput: HTMLInputElement, eyeIcon: HTMLElement){
-    if(passwordInput.type === 'password'){
-      passwordInput.type = 'text'; //this will show the password
+  emailInput =  new FormControl('', [Validators.required, Validators.email]);
+  passwordInputControl = new FormControl('');
+  loginGroup = new FormGroup({
+    emailInput: this.emailInput, passwordInputControl: this.passwordInputControl
+  })
+
+  togglePasswordVisibility(passwordInputTag: HTMLInputElement, eyeIcon: HTMLElement){
+    if(passwordInputTag.type === 'password'){
+      passwordInputTag.type = 'text'; //this will show the password
       //changing icoon
       eyeIcon.classList.remove('fa-eye');
       eyeIcon.classList.add('fa-eye-slash');
     }else{ //it's either gonna be password or text, only this method modifies it so far
-      passwordInput.type = 'password';
+      passwordInputTag.type = 'password';
       eyeIcon.classList.remove('fa-eye-slash');
       eyeIcon.classList.add('fa-eye');
     }
+  }
+
+  onSubmit(){
+    if(this.emailInput.invalid){
+      console.log("invalid form");
+    }else{
+      console.log("form valid")
+    }
+    return
   }
 }

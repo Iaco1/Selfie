@@ -1,0 +1,13 @@
+@use "../../../node_modules/bulma/sass/utilities/mixins";
+
+.bulma-overlay-mixin {
+  @include mixins.overlay(1.5rem);
+  border-radius: 0.25em;
+  color: white;
+  opacity: 0.9;
+  padding: 1em;
+}
+
+button[type="submit"].button:disabled {
+  background-color: lightyellow;
+}

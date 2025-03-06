@@ -8,7 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="column">
+  <div [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column">
     <div #emailfield class="field column is-two-thirds">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">
@@ -21,16 +21,16 @@
     <div #passwordfield class="field column is-two-thirds">
       <div class="level">
           <p class="control has-icons-left has-icons-right level-item">
-            <input #passwordInput class="input" type="password" placeholder="Password">
+            <input #passwordInputTag class="input" type="password" placeholder="Password" [formControl]="passwordInputControl">
             <span class="icon is-small is-left">
               <i class="fas fa-lock"></i>
             </span>
           </p>
-          <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></i>
+          <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInputTag, eyeIcon)"></i>
         </div>
     </div>
     <div class="column is-two-thirds">
-      <button class="button is-primary is-outlined" routerLink="/HomepageComponent" routerLinkActive="active" ariaCurrentWhenActive="page" > Login </button>
+      <button type="submit" [disabled]="emailInput.invalid" class="button is-primary is-outlined" routerLink="/HomepageComponent" routerLinkActive="active" ariaCurrentWhenActive="page" > Login </button>
     </div>
   </div>
 </body>
