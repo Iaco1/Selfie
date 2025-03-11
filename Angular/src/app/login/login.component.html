@@ -8,7 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <div [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column">
+  <form [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column">
     <div #emailfield class="field column is-two-thirds">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">
@@ -30,9 +30,9 @@
         </div>
     </div>
     <div class="column is-two-thirds">
-      <button type="submit" [disabled]="emailInput.invalid" class="button is-primary is-outlined" routerLink="/HomepageComponent" routerLinkActive="active" ariaCurrentWhenActive="page" > Login </button>
+      <button type="submit" [disabled]="emailInput.invalid" class="button is-primary is-outlined" > Login </button>
     </div>
-  </div>
+  </form>
 </body>
 
 <router-outlet></router-outlet>

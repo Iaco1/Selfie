@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-
+import {RouterLink, RouterLinkActive, RouterOutlet, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +21,9 @@ export class LoginComponent {
     emailInput: this.emailInput, passwordInputControl: this.passwordInputControl
   })
 
+  constructor(private router: Router) {
+  }
+
   togglePasswordVisibility(passwordInputTag: HTMLInputElement, eyeIcon: HTMLElement){
     if(passwordInputTag.type === 'password'){
       passwordInputTag.type = 'text'; //this will show the password
@@ -41,6 +43,7 @@ export class LoginComponent {
     }else{
       console.log("form valid")
     }
+    this.router.navigate(["/HomepageComponent"]);
     return
   }
 }
