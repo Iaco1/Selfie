@@ -3,11 +3,13 @@ import { provideRouter } from '@angular/router';
 import { Routes } from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {HomepageComponent} from './homepage/homepage.component';
+import {SignupComponent} from './signup/signup.component';
 
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent},
-  {path: 'LoginComponent', component: LoginComponent}
+  {path: 'LoginComponent', component: LoginComponent},
+  {path: 'SignupComponent', component: SignupComponent},
 ];
 
 export const appConfig: ApplicationConfig = {

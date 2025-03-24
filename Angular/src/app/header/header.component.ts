@@ -18,4 +18,7 @@ export class HeaderComponent {
   navigateToLoginComponent(){
     this.router.navigate(['/LoginComponent']);
   }
+  navigateToSignupComponent(){
+    this.router.navigate(['/SignupComponent']);
+  }
 }

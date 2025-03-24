@@ -1,10 +1,8 @@
-<p>header works!</p>
-
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="#" (click)="navigateToHomePage()">
-      <figure class="image ">
-        <img src="/selfie-brand2.png" >
+      <figure class="image" style="height: 52px; width: auto">
+        <img src="/selfie-brand3.png" >
       </figure>
     </a>
 
@@ -20,7 +18,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
+          <a class="button is-primary" (click)="navigateToSignupComponent()">
             <strong>Sign up</strong>
           </a>
           <a class="button is-light" (click)="navigateToLoginComponent()">
