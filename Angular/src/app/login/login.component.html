@@ -8,31 +8,34 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <form [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column">
-    <div #emailfield class="field column is-two-thirds">
+  <div class="columns is-centered">
+    <form [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column is-two-fifths">
+      <div #emailfield class="field">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">
           <input class="input" type="email" placeholder="Email input" value="hello@" [formControl]="emailInput">
           <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
+            <i class="fas fa-envelope"></i>
+          </span>
         </div>
       </div>
-    <div #passwordfield class="field column is-two-thirds">
-      <div class="level">
+      <div #passwordfield class="field">
+        <div class="level">
           <p class="control has-icons-left has-icons-right level-item">
-            <input #passwordInputTag class="input" type="password" placeholder="Password" [formControl]="passwordInputControl">
+            <input #passwordInputTag class="input" type="password" placeholder="Password"
+                   [formControl]="passwordInputControl">
             <span class="icon is-small is-left">
-              <i class="fas fa-lock"></i>
-            </span>
+                <i class="fas fa-lock"></i>
+              </span>
           </p>
           <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInputTag, eyeIcon)"></i>
         </div>
-    </div>
-    <div class="column is-two-thirds">
-      <button type="submit" [disabled]="emailInput.invalid" class="button is-primary is-outlined" > Login </button>
-    </div>
-  </form>
+      </div>
+      <div class="field is-grouped is-grouped-centered">
+        <button type="submit" [disabled]="emailInput.invalid" class="button is-primary is-outlined"> Login</button>
+      </div>
+    </form>
+  </div>
 </body>
 
 <router-outlet></router-outlet>

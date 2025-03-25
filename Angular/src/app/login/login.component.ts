@@ -42,8 +42,11 @@ export class LoginComponent {
       console.log("invalid form");
     }else{
       console.log("form valid")
+      setTimeout(()=>{
+        this.router.navigate(["/HomepageComponent"]);
+      }, 5000);
+      this.router.navigate(['/SuccessComponent']);
     }
-    this.router.navigate(["/HomepageComponent"]);
     return
   }
 }
