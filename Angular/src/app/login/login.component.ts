@@ -38,6 +38,8 @@ export class LoginComponent {
   }
 
   onSubmit(){
+    let message: string = "<p>log in successful</p>\n";
+
     if(this.emailInput.invalid){
       console.log("invalid form");
     }else{
@@ -45,7 +47,7 @@ export class LoginComponent {
       setTimeout(()=>{
         this.router.navigate(["/HomepageComponent"]);
       }, 5000);
-      this.router.navigate(['/SuccessComponent']);
+      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message}});
     }
     return
   }

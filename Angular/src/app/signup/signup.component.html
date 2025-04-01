@@ -3,42 +3,45 @@
 </head>
 
 <p>signup works!</p>
-<div class="columns is-centered">
-  <div class="column is-two-fifths">
-    <div class="field">
-      <label class="label">Name</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="username">
-      </div>
-    </div>
 
-    <div class="field">
-      <label class="label">Email</label>
-      <div class="control has-icons-left has-icons-right">
-        <input class="input" type="email" placeholder="Email input" value="hello@">
-        <span class="icon is-small is-left">
+<form [formGroup]="signupGroup" (ngSubmit)="onSubmit()">
+  <div class="columns is-centered">
+    <div class="column is-two-fifths">
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="username" [formControl]="usernameInputControl">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" type="email" placeholder="Email input" value="hello@" [formControl]="emailInputControl">
+          <span class="icon is-small is-left">
           <i class="fas fa-envelope"></i>
         </span>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="label">password</label>
-      <div class="control has-icons-left has-icons-right">
-        <input class="input" type="text" placeholder="Text input" value="pwd">
-        <span class="icon is-small is-left">
+      <div class="field">
+        <label class="label">password</label>
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" type="text" placeholder="Text input" value="pwd" [formControl]="passwordInputControl">
+          <span class="icon is-small is-left">
           <i class="fas fa-user"></i>
         </span>
+        </div>
       </div>
-    </div>
 
-    <div class="field is-grouped is-grouped-centered">
-      <div class="control">
-        <button class="button is-link">Submit</button>
-      </div>
-      <div class="control">
-        <button class="button is-link is-light">Cancel</button>
+      <div class="field is-grouped is-grouped-centered">
+        <div class="control">
+          <button class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+          <button class="button is-link is-light">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>

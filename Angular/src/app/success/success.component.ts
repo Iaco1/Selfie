@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-success',
@@ -7,5 +8,16 @@ import { Component } from '@angular/core';
   styleUrl: './success.component.css'
 })
 export class SuccessComponent {
+  constructor(private route: ActivatedRoute) {
+  }
+
+  successMessage: string = "<br>\n" +
+    "<p>you'll be automatically redirected in 5s</p>";
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.successMessage = params['sm'] + "\n" + this.successMessage;
+    })
+  }
 
 }
