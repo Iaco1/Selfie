@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet, Router} from '@angular/router';
-import {LoginComponent} from './login/login.component';
-import {HeaderComponent} from './header/header.component';
+import {RouterOutlet, Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LoginComponent, HeaderComponent],
+  imports: [RouterOutlet],
   template: `
     <router-outlet name="header"></router-outlet>
     <p> Hello World from the app component</p>
