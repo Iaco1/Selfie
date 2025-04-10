@@ -45,7 +45,7 @@ export class LoginComponent {
     }else{
       console.log("form valid")
       setTimeout(()=>{
-        this.router.navigate(["/HomepageComponent"]);
+        this.router.navigate([{outlets: { header: 'HomeheaderComponent', primary: "HomepageComponent"}}]);
       }, 5000);
       this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message}});
     }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet, Router} from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {HeaderComponent} from './header/header.component';
 
@@ -7,11 +7,15 @@ import {HeaderComponent} from './header/header.component';
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, LoginComponent, HeaderComponent],
   template: `
-    <app-header></app-header>
+    <router-outlet name="header"></router-outlet>
     <p> Hello World from the app component</p>
-    <router-outlet></router-outlet>
+    <router-outlet name="primary"></router-outlet>
   `
 })
 export class AppComponent {
+  constructor(private router: Router) {
+    this.router.navigate([{outlets: { header: 'HeaderComponent'}}]);
+  }
+
   title = 'Angular';
 }
