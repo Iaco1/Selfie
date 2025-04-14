@@ -8,6 +8,7 @@ import {RouterOutlet, Router} from '@angular/router';
     <router-outlet name="header"></router-outlet>
     <p> Hello World from the app component</p>
     <router-outlet name="primary"></router-outlet>
+    <router-outlet name="aside"></router-outlet>
   `
 })
 export class AppComponent {
