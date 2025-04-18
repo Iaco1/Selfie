@@ -8,15 +8,18 @@ import {ActivatedRoute} from '@angular/router';
   styleUrl: './success.component.css'
 })
 export class SuccessComponent {
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private timeout: number) {
   }
 
-  successMessage: string = "<br>\n" +
-    "<p>you'll be automatically redirected in 5s</p>";
+  successMessage: string = "";
 
   ngOnInit() {
+    this.successMessage = "<br>\n" +
+    "<p>you'll be automatically redirected in " + this.timeout +  "</p>";
+
     this.route.queryParams.subscribe((params) => {
       this.successMessage = params['sm'] + "\n" + this.successMessage;
+      this.timeout = params['timeout'];
     })
   }
 

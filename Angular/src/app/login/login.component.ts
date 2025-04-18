@@ -18,6 +18,7 @@ export class LoginComponent {
   loginGroup = new FormGroup({
     emailInput: this.emailInput, passwordInputControl: this.passwordInputControl
   })
+  protected timeout: number = 2000;
 
   constructor(private router: Router) {
   }
@@ -44,8 +45,8 @@ export class LoginComponent {
       console.log("form valid")
       setTimeout(()=>{
         this.router.navigate([{outlets: { header: 'HomeheaderComponent', primary: "HomepageComponent"}}]);
-      }, 5000);
-      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message}});
+      }, this.timeout);
+      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
     }
     return
   }

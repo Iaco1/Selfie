@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 export class SignupComponent {
   constructor(private router: Router) {
   }
+  protected timeout: number = 2000;
   emailInputControl = new FormControl('', [Validators.required, Validators.email]);
   passwordInputControl = new FormControl('');
   usernameInputControl = new FormControl('');
@@ -27,8 +28,8 @@ export class SignupComponent {
       console.log("valid form");
       setTimeout(()=>{
         this.router.navigate(["/HomepageComponent"]);
-      }, 5000);
-      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message}});
+      }, this.timeout);
+      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
     }
     return
   }
