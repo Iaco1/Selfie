@@ -7,7 +7,7 @@ import {SignupComponent} from './signup/signup.component';
 import {SuccessComponent} from './success/success.component';
 import {HeaderComponent} from './header/header.component';
 import {HomeheaderComponent} from './homeheader/homeheader.component';
-
+import {TimemachineComponent} from './timemachine/timemachine.component';
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -16,6 +16,7 @@ export const routes: Routes = [
   {path: 'SuccessComponent', component: SuccessComponent, outlet: 'primary'},
   {path: 'HeaderComponent', component: HeaderComponent, outlet: 'header'},
   {path: 'HomeheaderComponent', component: HomeheaderComponent, outlet: 'header'},
+  {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'header'},
 ];
 
 export const appConfig: ApplicationConfig = {
