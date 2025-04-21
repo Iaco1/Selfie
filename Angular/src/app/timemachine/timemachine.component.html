@@ -1,5 +1,14 @@
-<p>timemachine works!</p>
-<button> PREV month </button>
-<button> default </button>
-<button> NEXT month </button>
+<!DOCTYPE html>
 
+<p>timemachine works! it is {{this.today}}</p>
+<div>
+    <button class="button" (click)="default()"> default </button>
+</div>
+<div>
+    <button class="button" (click)="prevDay()" > PREV day </button>
+    <button class="button" (click)="nextDay()"> NEXT day </button>
+</div>
+<div>
+    <button class="button" (click)="prevMonth()" > PREV month </button>
+    <button class="button" (click)="nextMonth()"> NEXT month </button>
+</div>

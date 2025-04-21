@@ -16,7 +16,7 @@ export const routes: Routes = [
   {path: 'SuccessComponent', component: SuccessComponent, outlet: 'primary'},
   {path: 'HeaderComponent', component: HeaderComponent, outlet: 'header'},
   {path: 'HomeheaderComponent', component: HomeheaderComponent, outlet: 'header'},
-  {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'header'},
+  {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'primary'},
 ];
 
 export const appConfig: ApplicationConfig = {
