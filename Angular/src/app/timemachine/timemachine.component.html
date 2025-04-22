@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<p>timemachine works! it is {{this.today}}</p>
+<p>timemachine works! it is {{ this.today | date: 'fullDate' }}</p>
 <div>
     <button class="button" (click)="default()"> default </button>
 </div>
