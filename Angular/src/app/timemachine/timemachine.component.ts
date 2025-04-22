@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-timemachine',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './timemachine.component.html',
   styleUrl: './timemachine.component.css'
 })
 export class TimemachineComponent {
+
   default_time = new Date();
   today = new Date(this.default_time);
+
+  dwmy: ' ' | 'd' | 'w' | 'm' | 'y' = " ";
+
   //fai in modo che angular cambi il template...
   cambiaRiferimento(str : string) {
     this.today = new Date(this.today);
@@ -20,22 +25,19 @@ export class TimemachineComponent {
     this.today = new Date(this.default_time);
     this.cambiaRiferimento("default button pressed");
   }
-  //day
-  prevDay(): void {
-    this.today.setDate(this.today.getDate() - 1);
-    this.cambiaRiferimento("PREV DAY pressed");
-  }
-  nextDay(): void {
-    this.today.setDate(this.today.getDate() + 1);
-    this.cambiaRiferimento("NEXT DAY pressed");
-  }
-  //month
-  prevMonth(): void {
-    this.today.setMonth(this.today.getMonth() - 1);
-    this.cambiaRiferimento("PREV MONTH pressed")
-  }
-  nextMonth(): void {
-    this.today.setMonth(this.today.getMonth() + 1);
-    this.cambiaRiferimento("NEXT MONTH pressed")
+  aggiornaData(
+    direz: 'prev' | 'next',
+    dwmy: ' ' | 'd' | 'w' | 'm' | 'y',
+    today: Date
+  ): void {
+    const operazioni: Record<' ' | 'd' | 'w' | 'm' | 'y', () => void> = {
+      d: () => today.setDate(today.getDate() + (direz === 'next' ? 1 : -1)),
+      w: () => today.setDate(today.getDate() + (direz === 'next' ? 7 : -7)),
+      m: () => today.setMonth(today.getMonth() + (direz === 'next' ? 1 : -1)),
+      y: () => today.setFullYear(today.getFullYear() + (direz === 'next' ? 1 : -1)),
+      ' ': () => {console.log("error")},
+    };
+    operazioni[dwmy]();
+    this.cambiaRiferimento(direz + this.dwmy);
   }
 }
