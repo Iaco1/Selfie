@@ -13,7 +13,7 @@ export class TimemachineComponent {
   default_time = new Date();
   today = new Date(this.default_time);
 
-  dwmy: ' ' | 'd' | 'w' | 'm' | 'y' = " ";
+  dwmy: ' ' | 'd' | 'w' | 'm' | 'y' = "m";
 
   //fai in modo che angular cambi il template...
   cambiaRiferimento(str : string) {
