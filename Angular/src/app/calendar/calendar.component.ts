@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MonthComponent } from '../month/month.component';
 
 @Component({
   selector: 'calendar',
-    imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MonthComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
@@ -17,7 +18,7 @@ export class CalendarComponent {
   //fai in modo che angular cambi il template...
   cambiaRiferimento(str : string) {
     this.day = new Date(this.day);
-    console.log(str, this.day);
+    //console.log(str, this.day);
   }
   //funzioni normali
   default(): void {

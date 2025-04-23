@@ -14,5 +14,6 @@
         <option value="m" selected>month M</option>
         <option value="y">year  Y</option>
     </select>
-    {{ this.day | date: 'fullDate' }}
 </div>
+
+<month [today]="this.day"></month>
