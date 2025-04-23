@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-timemachine',
+  selector: 'timemachine',
   imports: [CommonModule, FormsModule],
   templateUrl: './timemachine.component.html',
   styleUrl: './timemachine.component.css'

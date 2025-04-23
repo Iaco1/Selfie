@@ -8,6 +8,7 @@ import {SuccessComponent} from './success/success.component';
 import {HeaderComponent} from './header/header.component';
 import {HomeheaderComponent} from './homeheader/homeheader.component';
 import {TimemachineComponent} from './timemachine/timemachine.component';
+import {CalendarComponent} from './calendar/calendar.component';
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path: 'HeaderComponent', component: HeaderComponent, outlet: 'header'},
   {path: 'HomeheaderComponent', component: HomeheaderComponent, outlet: 'header'},
   {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'primary'},
+  {path: 'CalendarComponent', component: CalendarComponent, outlet: 'primary'},
 ];
 
 export const appConfig: ApplicationConfig = {
