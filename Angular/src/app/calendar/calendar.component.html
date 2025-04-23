@@ -1,1 +1,18 @@
-<p>calendar works!</p>
+<!DOCTYPE html>
+
+<div>
+    calendar
+    <button class="button" (click)="default()"> Today </button>
+    <button class="button" (click)="aggiornaData('prev', this.dwmy, this.day)" >
+        &lt; </button>
+    {{ this.day | date: 'yyyy/MM/dd' }}    
+    <button class="button" (click)="aggiornaData('next', this.dwmy, this.day)" >
+        &gt; </button>    
+    <select [(ngModel)]="dwmy" name="dwmy">
+        <option value="d">day   D</option>
+        <option value="w">week  W</option>
+        <option value="m" selected>month M</option>
+        <option value="y">year  Y</option>
+    </select>
+    {{ this.day | date: 'fullDate' }}
+</div>
