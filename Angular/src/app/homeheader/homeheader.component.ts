@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-homeheader',
@@ -7,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './homeheader.component.css'
 })
 export class HomeheaderComponent {
-
+  constructor(private router: Router ) {}
+  navigateToTimemachine(){
+    this.router.navigate(['/TimemachineComponent']);
+  }
 }

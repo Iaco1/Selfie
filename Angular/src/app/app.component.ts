@@ -9,8 +9,6 @@ import {TimemachineComponent} from './timemachine/timemachine.component';
     <router-outlet name="header"></router-outlet>
     <p> Hello World from the app component</p>
     <router-outlet name="primary"></router-outlet>
-    <app-timemachine/>
-    <app-timemachine/>
   `
 })
 export class AppComponent {
