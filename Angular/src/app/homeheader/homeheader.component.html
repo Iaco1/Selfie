@@ -1,7 +1,7 @@
 <p>homeheader works!</p>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" (click)="openSidebar()">
+    <a class="navbar-item" [(ngModel)]="sidebarIsToggled" (click)="onToggleSidebar()">
       <figure class="image" style="height: 52px; width: auto">
         <img src="/left-sidebar.png" >
       </figure>

@@ -8,7 +8,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrl: './success.component.css'
 })
 export class SuccessComponent {
-  constructor(private route: ActivatedRoute, private timeout: number) {
+  constructor(private route: ActivatedRoute, private timeout: number = 2000) {
   }
 
   successMessage: string = "";
