@@ -12,4 +12,7 @@ export class HomeheaderComponent {
   navigateToTimemachine(){
     this.router.navigate(['/TimemachineComponent']);
   }
+  navigateToCalendar(){
+    this.router.navigate(['/CalendarComponent']);
+  }
 }

@@ -1,13 +1,10 @@
-<p>month works!</p>
-
 <div class="container">
-    {{ this.day | date: 'fullDate' }}
+    {{ this.day | date: 'MMMM y' }}
     <div class="date-grid">
     @for (d of week_days; track d.id) {
         <div>{{d.name}}</div>
     }
     @for (i of createRange(this.prev_days); track i) {
-        
         <div>{{i + this.min}}</div>
     }
     @for (i of createRange(this.month_days); track i) {
