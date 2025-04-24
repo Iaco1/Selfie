@@ -16,14 +16,15 @@ export class MonthComponent {
   min: number = 0;
   month_days: number = 0;
   next_days: number = 0;
+  private _day! : Date;
 
-  @Input() today! : Date;
+  @Input() 
   set day(value: Date) {
-    this.today = value;
+    this._day = value;
     this.recalculate();
   }
   get day(): Date {
-    return this.today;
+    return this._day;
   }
 
   createRange(n: number): number[] {
@@ -50,8 +51,8 @@ export class MonthComponent {
     {id:6, name:"Sunday"}];
   
   recalculate() {
-    this.year = this.today.getFullYear();
-    this.month = this.today.getMonth();
+    this.year = this._day.getFullYear();
+    this.month = this._day.getMonth();
     this.prev_days = ((new Date(this.year, this.month, 1)).getDay() + 6) % 7;
     this.min = this.getLastDayOfMonth(this.year, ( this.month +11 ) % 12) - this.prev_days ;
     this.month_days = this.getLastDayOfMonth(this.year, this.month);
