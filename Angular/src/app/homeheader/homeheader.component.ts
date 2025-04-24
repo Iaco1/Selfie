@@ -20,11 +20,16 @@ export class HomeheaderComponent {
     console.log("openSideBar ran");
   }
 
+  closeSidebar(){
+    this.router.navigate([{outlets: { header: "HomeheaderComponent", primary: "HomepageComponent", aside: null}}]);
+    console.log("closeSideBar ran");
+  }
+
   onToggleSidebar(){
     console.log("onToggleSidebar");
     this.sidebarIsToggled = !this.sidebarIsToggled;
-    if(this.sidebarIsToggled){
-      this.router.navigate(['/HomepageComponent']);
+    if(!this.sidebarIsToggled){
+      this.closeSidebar();
     }else{
       this.openSidebar();
     }
