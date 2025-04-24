@@ -34,4 +34,12 @@ export class HomeheaderComponent {
       this.openSidebar();
     }
   }
+
+  navigateToTimemachine(){
+    this.router.navigate(['/TimemachineComponent']);
+  }
+
+  navigateToCalendar(){
+    this.router.navigate(['/CalendarComponent']);
+  }
 }
