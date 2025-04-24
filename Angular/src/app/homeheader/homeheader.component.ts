@@ -16,12 +16,12 @@ export class HomeheaderComponent {
   constructor(private router: Router ) {}
 
   openSidebar(){
-    this.router.navigate([{outlets: { header: "HomeheaderComponent", primary: "HomepageComponent", aside: 'SidebarComponent'}}]);
+    this.router.navigate([{outlets: { header: "HomeheaderComponent", aside: 'SidebarComponent'}}]);
     console.log("openSideBar ran");
   }
 
   closeSidebar(){
-    this.router.navigate([{outlets: { header: "HomeheaderComponent", primary: "HomepageComponent", aside: null}}]);
+    this.router.navigate([{outlets: {aside: null}}]);
     console.log("closeSideBar ran");
   }
 
@@ -35,11 +35,8 @@ export class HomeheaderComponent {
     }
   }
 
-  navigateToTimemachine(){
-    this.router.navigate(['/TimemachineComponent']);
-  }
-
-  navigateToCalendar(){
-    this.router.navigate(['/CalendarComponent']);
+  navigateToHomepage(){
+    console.log("navigateToHomepage ran");
+    this.router.navigate([{outlets: {header: "HomeheaderComponent", primary: "HomepageComponent"}}]);
   }
 }
