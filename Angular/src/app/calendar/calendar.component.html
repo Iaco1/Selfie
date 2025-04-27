@@ -13,10 +13,17 @@
         <p>WEEK is selected but not implemented</p>
     }
     @case('m') {
-        <month [day]="this.day"></month>
+        <month [day]="this.day" [is_long]="true"></month>
     }
     @case('y') {
-        <p>YEAR is selected but not implemented</p>
-        
+        <div class="fixed-grid has-4-cols">
+            <div class="grid">
+            @for(i of createRange(12); track i) {
+                <div class="cell">
+                    <month [month]="i - 1" [year]="this.day.getFullYear()"></month>
+                </div>
+            }
+            </div>
+        </div>
     }
 }

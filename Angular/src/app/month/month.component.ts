@@ -10,35 +10,48 @@ import {DayComponent} from '../day/day.component';
 })
 export class MonthComponent {
 
-  year: number = 0;
-  month: number = 0;
   prev_days: number = 0;
   min: number = 0;
   month_days: number = 0;
   next_days: number = 0;
+  
+  private _year! : number;
+  private _month! : number;
   private _day! : Date;
+
+  @Input() is_long = false;
+  @Input() 
+  set year(value: number) { this._year = value; this.recalculate(); }
+  get year() {return this._year}
+    
+  @Input()
+  set month(value: number) { this._month = value; this.recalculate(); }
+  get month() { return this._month; }
 
   @Input() 
   set day(value: Date) {
     this._day = value;
+    this._year = this._day.getFullYear();
+    this._month = this._day.getMonth();
     this.recalculate();
   }
   get day(): Date {
     return this._day;
   }
-
   createRange(n: number): number[] {
     return Array.from({ length: n }, (_, i) => i + 1);
   }
-  constructor() {
-    // Optionally initialize with today
-    this.day = new Date();
-  }
+  constructor() {}
 
   //30 giorni a Novembre con April, Giugno e Settembre, di 28 ce ne` 1 tutti gli altri fan 31/
-  getLastDayOfMonth(year : number, month : number) {
-    let date = new Date(year, month + 1, 0);
+  getLastDayOfMonth(_year : number, month : number) {
+    let date = new Date(_year, month + 1, 0);
     return date.getDate();
+  }
+  getName(i: number) {
+    let date = new Date(2023, i);
+    let a = date.toLocaleString('en-US', { month: 'long' });
+    return a;
   }
 
   week_days = [
@@ -46,17 +59,15 @@ export class MonthComponent {
     {id:1, name:"Tuesday"},
     {id:2, name:"Wednesday"},
     {id:3, name:"Thurstday"},
-    {id:4, name: "Friday"},
+    {id:4, name:"Friday"},
     {id:5, name:"Saturday"},
     {id:6, name:"Sunday"}];
   
   recalculate() {
-    this.year = this._day.getFullYear();
-    this.month = this._day.getMonth();
-    this.prev_days = ((new Date(this.year, this.month, 1)).getDay() + 6) % 7;
-    this.min = this.getLastDayOfMonth(this.year, ( this.month +11 ) % 12) - this.prev_days ;
-    this.month_days = this.getLastDayOfMonth(this.year, this.month);
+    this.prev_days = ((new Date(this._year, this._month, 1)).getDay() + 6) % 7;
+    this.min = this.getLastDayOfMonth(this._year, ( this._month +11 ) % 12) - this.prev_days ;
+    this.month_days = this.getLastDayOfMonth(this._year, this._month);
     this.next_days = (7 - ((this.prev_days + this.month_days) % 7)) %7;
-    console.log(this.year, this.month, this.prev_days, this.min, this.month_days, this.next_days)
+    console.log(this._year, this._month, this.prev_days, this.min, this.month_days, this.next_days)
   }
 }

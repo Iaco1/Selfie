@@ -17,4 +17,7 @@ export class CalendarComponent {
   changedDwmy(item: string) {
     this.dwmy = item;
   }
+  createRange(n: number): number[] {
+    return Array.from({ length: n }, (_, i) => i + 1);
+  }
 }
