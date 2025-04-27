@@ -13,4 +13,8 @@ export class CalendarComponent {
   changedDay(item: Date) {
     this.day = item;
   }
+  dwmy : string = "m"
+  changedDwmy(item: string) {
+    this.dwmy = item;
+  }
 }

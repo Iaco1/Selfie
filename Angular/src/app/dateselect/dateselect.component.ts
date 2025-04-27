@@ -11,17 +11,21 @@ import { FormsModule } from '@angular/forms';
 export class DateselectComponent {
 
   @Output() changedDayEvent = new EventEmitter<Date>();
-
+  
   default_time = new Date();
   today = new Date(this.default_time);
 
+  @Output() changeDWMY = new EventEmitter<string>();
   dwmy: ' ' | 'd' | 'w' | 'm' | 'y' = "m";
+  onDwmyChange(newValue: string) {
+    this.changeDWMY.emit(newValue);
+  }
 
   //fai in modo che angular cambi il template...
   cambiaRiferimento(str : string) {
     this.today = new Date(this.today);
     this.changedDayEvent.emit(this.today);
-    console.log(str, this.today);
+//  console.log(str, this.today);
   }
   //funzioni normali
   default(): void {

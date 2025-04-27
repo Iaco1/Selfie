@@ -1,5 +1,22 @@
 <!DOCTYPE html>
 
-<dateselect (changedDayEvent)="changedDay($event)"></dateselect>
+<dateselect
+    (changedDayEvent)="changedDay($event)"
+    (changeDWMY)="changedDwmy($event)">
+</dateselect>
 
-<month [day]="this.day"></month>
+@switch(this.dwmy) {
+    @case('d') {
+        <p>DAY is selected but not implemented</p>
+    }
+    @case('w') {
+        <p>WEEK is selected but not implemented</p>
+    }
+    @case('m') {
+        <month [day]="this.day"></month>
+    }
+    @case('y') {
+        <p>YEAR is selected but not implemented</p>
+        
+    }
+}
