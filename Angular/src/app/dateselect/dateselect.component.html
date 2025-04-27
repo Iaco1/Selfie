@@ -4,14 +4,16 @@
     <button class="button" (click)="default()"> Today </button>
     <button class="button" (click)="aggiornaData('prev', this.dwmy, this.today)" >
         &lt; </button>
-    {{ this.today | date: 'yyyy/MM/dd' }}    
+    <span class="is-size-4"> {{ this.today | date: 'yyyy/MM/dd' }} </span>
     <button class="button" (click)="aggiornaData('next', this.dwmy, this.today)" >
         &gt; </button>
-    <select [(ngModel)]="dwmy" (ngModelChange)="onDwmyChange($event)" name="dwmy">
-        <option value="d">day   D</option>
-        <option value="w">week  W</option>
-        <option value="m" selected>month M</option>
-        <option value="y">year  Y</option>
-    </select>
-    {{ this.today | date: 'fullDate' }}
+    <span class="select is-normal">
+        <select [(ngModel)]="dwmy" (ngModelChange)="onDwmyChange($event)" name="dwmy">
+            <option value="d">day   D</option>
+            <option value="w">week  W</option>
+            <option value="m" selected>month M</option>
+            <option value="y">year  Y</option>
+        </select>
+    </span>
+    <span class="is-size-4"> {{ this.today | date: 'fullDate' }} </span>
 </div>
