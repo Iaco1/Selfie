@@ -7,22 +7,20 @@
 
 @switch(this.dwmy) {
     @case('d') {
-        <day
-            [year]="this.day.getFullYear()"
-            [month]="this.day.getMonth()"
-            [day]="this.day.getDate()">
-        </day>
+        <app-day
+            [day]="day"
+            [is_long]="true">
+        </app-day>
     }
     @case('w') {
         <div class="fixed-grid has-7-cols">
             <div class="grid">
-            @for(i of createRange(7); track i) {
+            @for(i of createWeek(); track i.id) {
                 <div class="cell">
-                    <day
-                        [year]="this.day.getFullYear()"
-                        [month]="this.day.getMonth()"
-                        [day]="this.getStartOfWeek() + i - 1">
-                    </day>
+                    <app-day
+                        [day]="i.date"
+                        [is_long]="true">
+                    </app-day>
                 </div>
             }
             </div>
@@ -36,7 +34,7 @@
             <div class="grid">
             @for(i of createRange(12); track i) {
                 <div class="cell">
-                    <month [month]="i - 1" [year]="this.day.getFullYear()"></month>
+                    <month [month]="i - 1" [year]="day.getFullYear()"></month>
                 </div>
             }
             </div>

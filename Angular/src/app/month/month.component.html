@@ -11,8 +11,8 @@
     @for (i of createRange(this.prev_days); track i) {
         <div>{{i + this.min}}</div>
     }
-    @for (i of createRange(this.month_days); track i) {
-        <day [year]="this.year" [month]="this.month" [day]="i"></day>
+    @for (day of days; track day.id) {
+        <app-day [day]="day.date"></app-day>
     }
     @for (i of createRange(this.next_days); track i) {
         <div>{{i}}</div>

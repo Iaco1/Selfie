@@ -38,10 +38,19 @@ export class MonthComponent {
   get day(): Date {
     return this._day;
   }
+
+  constructor() {}
   createRange(n: number): number[] {
     return Array.from({ length: n }, (_, i) => i + 1);
   }
-  constructor() {}
+  days: { id: number; date: Date }[] = [];
+
+  ngOnInit() {
+    this.days = Array.from({ length: this.month_days }, (_, i) => ({
+      id: i + 1,                        // id: day number (1-30)
+      date: new Date(this.year, this.month, i + 1)  // real Date object
+    }));
+  }
 
   //30 giorni a Novembre con April, Giugno e Settembre, di 28 ce ne` 1 tutti gli altri fan 31/
   getLastDayOfMonth(_year : number, month : number) {
@@ -64,10 +73,12 @@ export class MonthComponent {
     {id:6, name:"Sunday"}];
   
   recalculate() {
-    this.prev_days = ((new Date(this._year, this._month, 1)).getDay() + 6) % 7;
-    this.min = this.getLastDayOfMonth(this._year, ( this._month +11 ) % 12) - this.prev_days ;
-    this.month_days = this.getLastDayOfMonth(this._year, this._month);
-    this.next_days = (7 - ((this.prev_days + this.month_days) % 7)) %7;
-    console.log(this._year, this._month, this.prev_days, this.min, this.month_days, this.next_days)
+    if(this.month != undefined && this.year != undefined ) {
+      this.prev_days = ((new Date(this._year, this._month, 1)).getDay() + 6) % 7;
+      this.min = this.getLastDayOfMonth(this._year, ( this._month +11 ) % 12) - this.prev_days ;
+      this.month_days = this.getLastDayOfMonth(this._year, this._month);
+      this.next_days = (7 - ((this.prev_days + this.month_days) % 7)) %7;
+      console.log(this._year, this._month, this.prev_days, this.min, this.month_days, this.next_days)
+    }
   }
 }

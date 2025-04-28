@@ -1,3 +1,10 @@
 <div>
-    {{this.day}}
+    @if(this.is_long) {
+        <div class="yellow">
+            {{this.getName()}}
+        </div>
+    }
+    <div class="blue">
+        {{this.day.getDate()}}
+    </div>
 </div>
