@@ -17,4 +17,8 @@ export class SidebarComponent {
   navigateToCalendar(){
     this.router.navigate(['/CalendarComponent']);
   }
+
+  navigateToAccountsettings(){
+    this.router.navigate(['/AccountsettingsComponent']);
+  }
 }

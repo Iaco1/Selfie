@@ -1,0 +1,54 @@
+<hr>
+<p>accountsettings works!</p>
+<div class="container">
+  <div class="columns is-centered">
+    <div class="column is-half">
+      <div class="content">
+        <h1> My Profile</h1>
+        <hr>
+        <p>current photo</p>
+        <p>
+          <figure class="image is-128x128">
+            <img class="is-rounded" src="/default-user-profile-pic.png"/>
+          </figure>
+        </p>
+        <hr>
+        <div class="level">
+          <div class="level-left">Name: </div>
+          <span class="level-item" [class.is-hidden]="nameEditorHidden">
+            <input #newName class="input" type="text" placeholder="First Name Last Name"/>
+            <button class="button primary" (click)="editName(newName)">Edit</button>
+          </span>
+          <div class="level-right">
+            <span> {{name}} </span>
+            <span class="icon" title="Edit">
+              <i class="fas fa-pencil-alt" (click)="toggleNameEdit()"></i>
+            </span>
+          </div>
+
+
+        </div>
+        <hr>
+        <div class="level">
+          <span class="level-left">Birthday: </span>
+          <span class="level-item" [class.is-hidden]="birthdayEditorHidden">
+            <input #newDateInput class="input" type="date"/>
+            <button class="button primary" (click)="editBirthday(newDateInput)">Edit</button>
+          </span>
+          <div class="level-right">
+            <span> {{birthday.toLocaleDateString('en-ca', {year:'numeric', month:'2-digit', day:'2-digit', weekday: 'long'})}} </span>
+            <span class="icon" title="Edit">
+              <i class="fas fa-pencil-alt" (click)="toggleBirthdayEdit()"></i>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <h1>My Account</h1>
+        <p> email </p>
+        <p> password </p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+

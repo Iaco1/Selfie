@@ -6,8 +6,10 @@ import {RouterOutlet, Router} from '@angular/router';
   imports: [RouterOutlet],
   template: `
     <router-outlet name="header"></router-outlet>
-    <p> Hello World from the app component</p>
-    <router-outlet name="primary"></router-outlet>
+    <div class="container">
+      <p> Hello World from the app component</p>
+      <router-outlet name="primary"></router-outlet>
+    </div>
     <router-outlet name="aside"></router-outlet>
   `
 })
