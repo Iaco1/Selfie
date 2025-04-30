@@ -1,85 +1,95 @@
 <p>event works!</p>
-<div class="card" style="max-width: 500px; margin: auto;">
+<div class="card p-4" style="max-width: 400px; margin: auto;">
 	<div class="content">
-	  <!-- NOTE -->
-	  <div #note class="mb-3">
-		<p class="has-text-weight-semibold">Evento:</p>
-		<span class="mr-2">{{ event.note }}</span>
-		<span class="icon is-small" title="Edit">
-		  <i class="fas fa-pencil-alt" (click)="editDescription()"></i>
-		</span>
-	  </div>
-  
-	  <!-- DESCRIPTION -->
-	  <div #description class="is-flex is-align-items-center mb-3">
-		<i class="fas fa-clipboard mr-2"></i>
-		<span class="mr-2"> {{ event.description }} </span>
-		<span class="icon is-small" title="Edit">
-		  <i class="fas fa-pencil-alt" (click)="editDescription()"></i>
-		</span>
-	  </div>
-  
-	  <!-- DATE RANGE -->
-	  <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
-		<div #dateFrom class="has-text-centered">
-		  <p class="heading">{{ event.dateFrom | date: 'dd MMMM' }}</p>
-		  <p class="title is-6">{{ event.dateFrom | date: 'h:m' }}</p>
-		  <span class="icon is-small" title="Edit">
-			<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
-		  </span>
+		<!-- NOTE -->
+		<div #note class="mb-3">
+			<p class="has-text-weight-semibold">Evento:</p>
+			<span class="mr-2">{{ event.note }}</span>
+			<span class="icon is-small" title="Edit">
+				<i class="fas fa-pencil-alt" (click)="editDescription()"></i>
+			</span>
 		</div>
-  
-		<i class="fas fa-arrow-right mx-2"></i>
-  
-		<div #dateTo class="has-text-centered">
-		  <p class="heading">{{ event.dateTo | date: 'dd MMMM' }}</p>
-		  <p class="title is-6">{{ event.dateTo | date: 'h:m' }}</p>
-		  <span class="icon is-small" title="Edit">
-			<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
-		  </span>
+
+		<!-- DESCRIPTION -->
+		<div #description class="is-flex is-align-items-center mb-3">
+			<i class="fas fa-clipboard mr-2"></i>
+			<span class="mr-2"> {{ event.description }} </span>
+			<span class="icon is-small" title="Edit">
+				<i class="fas fa-pencil-alt" (click)="editDescription()"></i>
+			</span>
 		</div>
-	  </div>
-  
-	  <!-- LOCATION -->
-	  <div #location class="is-flex is-align-items-center mb-3">
-		<i class="fas fa-location-dot mr-2"></i>
-		<span class="mr-2">{{ event.location }}</span>
-		<span class="icon is-small" title="Edit">
-		  <i class="fas fa-pencil-alt" (click)="editLocation()"></i>
-		</span>
-	  </div>
-  
-	  <!-- WHO -->
-	  <div #who class="mb-3">
-		<div class="is-flex is-align-items-center">
-		  <i class="far fa-user mr-2"></i>
-		  <p class="mb-1 has-text-weight-medium">Partecipanti:</p>
+
+		<!-- DATE RANGE -->
+		<div class="is-flex is-align-items-center is-justify-content-center is-flex-wrap-wrap" style="gap: 1.5rem;">
+		
+			<!-- DATE FROM -->
+			<div class="is-flex is-flex-direction-column is-align-items-center" style="min-width: 90px; position: relative;">
+				<p class="is-size-7 mb-1">{{ event.dateFrom | date: 'dd MMM' }}</p>
+				<p class="title is-6 mb-0">{{ event.dateFrom | date: 'H:mm' }}</p>
+				<span class="icon is-small"
+						style="position: absolute; left: -1.5rem; top: 50%; transform: translateY(-50%);"
+						title="Modifica inizio">
+					<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
+				</span>
+			</div>
+		
+			<!-- ARROW -->
+			<div class="is-flex is-align-items-center" style="height: 100%;">
+				<i class="fas fa-arrow-right"></i>
+			</div>
+		
+			<!-- DATE TO -->
+			<div class="is-flex is-flex-direction-column is-align-items-center" style="min-width: 90px; position: relative;">
+				<p class="is-size-7 mb-1">{{ event.dateTo | date: 'dd MMM' }}</p>
+				<p class="title is-6 mb-0">{{ event.dateTo | date: 'H:mm' }}</p>
+				<span class="icon is-small"
+						style="position: absolute; right: -1.5rem; top: 50%; transform: translateY(-50%);"
+						title="Modifica fine">
+					<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
+				</span>
+			</div>
 		</div>
-		<ul class="ml-4">
-		  @for (person of event.who; track person.id) {
-			<li>{{ person.name }}</li>
-		  }
-		</ul>
-	  </div>
-  
-	  <!-- REPEAT -->
-	  <div #repeat class="is-flex is-align-items-center mb-3">
-		<i class="fas fa-alarm-clock mr-2"></i>
-		<span class="mr-2">Ripetizione:</span>
-		<div>
-		  @for (r of event.repeat; track r.id) {
-			<span class="tag is-light mr-1">{{ r.time }}</span>
-		  }
+
+		<!-- LOCATION -->
+		<div #location class="is-flex is-align-items-center mb-3">
+			<i class="fas fa-location-dot mr-2"></i>
+			<span class="mr-2">{{ event.location }}</span>
+			<span class="icon is-small" title="Edit">
+				<i class="fas fa-pencil-alt" (click)="editLocation()"></i>
+			</span>
 		</div>
-	  </div>
-  
-	  <!-- EMOJI -->
-	  <div #emoji class="is-flex is-align-items-center">
-		<i class="far fa-face-smile mr-2"></i>
-		<span class="mr-2">{{ event.emoji }}</span>
-		<span class="icon is-small" title="Edit">
-		  <i class="fas fa-pencil-alt" (click)="editEmoji()"></i>
-		</span>
-	  </div>
+
+		<!-- WHO -->
+		<div #who class="mb-3">
+			<div class="is-flex is-align-items-center">
+				<i class="far fa-user mr-2"></i>
+				<p class="mb-1 has-text-weight-medium">Partecipanti:</p>
+			</div>
+			<ul class="ml-4">
+				@for (person of event.who; track person.id) {
+					<li>{{ person.name }}</li>
+				}
+			</ul>
+		</div>
+
+		<!-- REPEAT -->
+		<div #repeat class="is-flex is-align-items-center mb-3">
+			<i class="fas fa-alarm-clock mr-2"></i>
+			<span class="mr-2">Ripetizione:</span>
+			<div>
+				@for (r of event.repeat; track r.id) {
+					<span class="tag is-light mr-1">{{ r.time }}</span>
+				}
+			</div>
+		</div>
+
+		<!-- EMOJI -->
+		<div #emoji class="is-flex is-align-items-center">
+			<i class="far fa-face-smile mr-2"></i>
+			<span class="mr-2">{{ event.emoji }}</span>
+			<span class="icon is-small" title="Edit">
+				<i class="fas fa-pencil-alt" (click)="editEmoji()"></i>
+			</span>
+		</div>
 	</div>
-  </div>
+</div>
