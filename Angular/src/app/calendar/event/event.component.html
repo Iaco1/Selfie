@@ -1,0 +1,56 @@
+<p>event works!</p>
+<div #colour>
+	<div #note>
+		{{event.note}}
+	</div>
+	<div #description>
+		<i class="fas fa-regular fa-clipboard"></i>
+		<span> {{event.description}} </span>
+		<span class="icon" title="Edit">
+			<i class="fas fa-pencil-alt" (click)="editDescription()"></i>
+		</span>
+	</div>
+	<div>
+		<span #dateFrom>
+			<span> {{event.dateFrom | date: 'dd MMMM h:m'}} </span>
+			<span class="icon" title="Edit">
+				<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
+			</span>
+		</span>
+		<i class="fas fa-regular fa-arrow-right"></i>
+		<span #dateTo>
+			<span> {{event.dateTo | date: 'dd MMMM h:m'}} </span>
+			<span class="icon" title="Edit">
+				<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
+			</span>
+		</span>
+	</div>
+	<div #location>
+		<i class="fas fa-sharp fa-solid fa-location-dot"></i>
+		<span> {{event.location}} </span>
+		<span class="icon" title="Edit">
+			<i class="fas fa-pencil-alt" (click)="editLocation()"></i>
+		</span>
+	</div>
+	<div #who>
+		<i class="fa-regular fa-user"></i>
+		<ul> <!-- this un-ordered list don't seem work -->
+			@for (person of event.who; track person.id) {
+				<li>{{person.name}}</li>
+			}
+		</ul>
+	</div>
+	<div #repeat>
+		<i class="fas fa-regular fa-alarm-clock"></i>
+		@for (r of event.repeat; track r.id) {
+			<span>{{r.time}}</span>
+		}
+	</div>
+	<div #emoji>
+		<i class="fa-regular fa-face-smile"></i>
+		<span> {{event.emoji}} </span>
+		<span class="icon" title="Edit">
+			<i class="fas fa-pencil-alt" (click)="editEmoji()"></i>
+		</span>
+	</div>
+</div>

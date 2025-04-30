@@ -1,0 +1,21 @@
+<div class="container">
+	{{ this.getName(this.month) }} {{this.year}}
+	<div class="date-grid">
+	@for (d of week_days; track d.id) {
+		@if(this.is_long) {
+			<div>{{d.name}}</div>
+		} @else {
+			<div>{{d.name[0]}}</div>
+		}
+	}
+	@for (i of createRange(this.prev_days); track i) {
+		<div>{{i + this.min}}</div>
+	}
+	@for (day of days; track day.id) {
+		<app-day [day]="day.date"></app-day>
+	}
+	@for (i of createRange(this.next_days); track i) {
+		<div>{{i}}</div>
+	}
+	</div>
+</div>
