@@ -1,5 +1,15 @@
 .date-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.level {
+	margin-bottom: 0 !important;
+}
+
+.level label,
+.level input,
+.level .button {
+	margin-bottom: 0;
+	line-height: 1;
+}
