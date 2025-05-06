@@ -16,9 +16,11 @@ export class AccountsettingsComponent {
   constructor() {
     this.name = localStorage.getItem('name') || 'John Smith';
     this.birthday = new Date(localStorage.getItem('date') || Date.now());
+    this.email = localStorage.getItem('email') || 'something@domain.com';
   }
   nameEditorHidden = true;
   birthdayEditorHidden = true;
+  emailEditorHidden = true;
 
 
   toggleNameEdit(){
@@ -37,5 +39,14 @@ export class AccountsettingsComponent {
     localStorage.setItem('date', newDateInput.value);
     this.birthday = new Date(newDateInput.value);
     this.toggleBirthdayEdit();
+  }
+
+  toggleEmailEdit(){
+    this.emailEditorHidden = !this.emailEditorHidden;
+  }
+  editEmail(newEmailInput: HTMLInputElement){
+    localStorage.setItem('email', newEmailInput.value);
+    this.email = newEmailInput.value;
+    this.toggleEmailEdit();
   }
 }

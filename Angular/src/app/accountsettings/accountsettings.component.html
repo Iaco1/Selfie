@@ -44,7 +44,22 @@
         </div>
         <hr>
         <h1>My Account</h1>
-        <p> email </p>
+        <div class="level">
+          <div class="level-left">Email: </div>
+          <span class="level-item" [class.is-hidden]="emailEditorHidden">
+            <input #newEmail class="input" type="email" placeholder="something@domain"/>
+            <button class="button primary" (click)="editEmail(newEmail)">Edit</button>
+          </span>
+          <div class="level-right">
+            <span> {{email}} </span>
+            <span class="icon" title="Edit">
+              <i class="fas fa-pencil-alt" (click)="toggleEmailEdit()"></i>
+            </span>
+          </div>
+
+
+        </div>
+        <hr>
         <p> password </p>
       </div>
     </div>
