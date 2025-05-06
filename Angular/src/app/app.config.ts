@@ -9,7 +9,7 @@ import {HeaderComponent} from './header/header.component';
 import {HomeheaderComponent} from './homeheader/homeheader.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 
-import {TimemachineComponent} from './timemachine/timemachine.component';
+import {TimemachineComponent} from './calendar/timemachine/timemachine.component';
 import {CalendarComponent} from './calendar/calendar.component';
 
 export const routes: Routes = [

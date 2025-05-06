@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { DateselectComponent } from '../dateselect/dateselect.component';
-import { MonthComponent } from '../month/month.component';
-import { DayComponent } from '../day/day.component';
+import { DateselectComponent } from './dateselect/dateselect.component';
+import { MonthComponent } from './month/month.component';
+import { DayComponent } from './day/day.component';
 import { EventComponent } from './event/event.component';
 
 @Component({
@@ -29,7 +29,7 @@ export class CalendarComponent {
       id: i + 1,                        // id: (1-7)
       date: new Date(year, month, start + i + 1)  // real Date object
     }));
-    console.log(this.days);
+    //console.log(this.days);
   }
   private getStartOfWeek(): Date {
     const today = new Date(this.day);
@@ -43,7 +43,7 @@ export class CalendarComponent {
       // Otherwise, subtract the days to get the current week's Monday
       startOfWeek.setDate(today.getDate() - dayOfWeek);
     }
-    console.log('Today:', today.getDate(), 'Start of Week:', startOfWeek.getDate());
+    //console.log('Today:', today.getDate(), 'Start of Week:', startOfWeek.getDate());
     return startOfWeek;
   }
   createWeek() {

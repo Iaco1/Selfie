@@ -42,8 +42,15 @@ export class EventComponent {
 				id: index,
 				name: key,
 				value: value,
-				hidden: true
+				hidden: true,
+				icon: ""
 			}));
+		//add icons to the description
+		let i: any;
+		if (i = this.infos.find(info => info.name === "description")) {	i.icon = "clipboard"; }
+		if (i = this.infos.find(info => info.name === "location")) { i.icon = "location-dot"; }
+		if (i = this.infos.find(info => info.name === "emoji")) { i.icon = "face-smile"; }
+		//console.log(this.infos);
 	}
 
 	toggle(info: any) {

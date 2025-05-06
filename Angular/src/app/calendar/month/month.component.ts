@@ -78,7 +78,7 @@ export class MonthComponent {
       this.min = this.getLastDayOfMonth(this._year, ( this._month +11 ) % 12) - this.prev_days ;
       this.month_days = this.getLastDayOfMonth(this._year, this._month);
       this.next_days = (7 - ((this.prev_days + this.month_days) % 7)) %7;
-      console.log(this._year, this._month, this.prev_days, this.min, this.month_days, this.next_days)
+      //console.log(this._year, this._month, this.prev_days, this.min, this.month_days, this.next_days)
     }
   }
 }

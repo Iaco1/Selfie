@@ -1,6 +1,7 @@
 .yellow {
-    color: yellow;
+    color: green;
+    background-color: blueviolet !important;
 }
 .blue {
-    color: blue;
+    color: rebeccapurple;
 }

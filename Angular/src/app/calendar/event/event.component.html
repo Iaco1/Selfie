@@ -1,16 +1,19 @@
 <p>event works!</p>
 
-<div class="card content" style="max-width: 400px;">
+<div class="content" style="max-width: 400px;">
 	<!-- INFOS -->
 	<div *ngFor="let i of infos; trackBy: trackById" class="level">
-		<label>{{ i.name }}</label>
+		@if( i.icon ) {
+			<i class="fas fa-{{i.icon}}"></i>
+		} @else {
+			<label> {{ i.name }}	</label>
+		}
 		<span class="level-item" [class.is-hidden]="i.hidden">
 			<input class="input" type="text" [placeholder]="i.name" [(ngModel)]="i.value" />
 			<button class="button" (click)="edit(i)">Edit</button>
 		</span>
-		<span class="level-item">
+		<span class="level-item" (click)="toggle(i)" [class.is-hidden]="!i.hidden">
 			{{ i.value }}
-			<i class="fas fa-pencil-alt" (click)="toggle(i)"></i>
 		</span>
 	</div>
 	<!-- DATE RANGE -->
