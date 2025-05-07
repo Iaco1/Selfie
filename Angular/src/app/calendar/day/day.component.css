@@ -1,7 +1,6 @@
-.yellow {
-    color: green;
-    background-color: blueviolet !important;
+.day_of_week {
+    color: yellow;
 }
-.blue {
-    color: rebeccapurple;
+.number_of_month {
+    color: green ;
 }

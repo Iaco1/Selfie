@@ -9,6 +9,7 @@ import { EventComponent } from '../event/event.component';
 })
 export class DayComponent {
   constructor() {}
+
   private _day! : Date;
   @Input()
   set day(item: Date) {
@@ -17,7 +18,9 @@ export class DayComponent {
   get day() {
     return this._day;
   }
-  @Input() is_long = false;
+
+  @Input() visualize: string = "";
+
   getName() {
     return this.day.toLocaleString('en-US', { weekday: 'long' });
   }

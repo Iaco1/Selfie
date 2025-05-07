@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 
 <dateselect
-    (changedDayEvent)="changedDay($event)"
-    (changeDWMY)="changedDwmy($event)">
+	(changedDayEvent)="changedDay($event)"
+	(changeDWMY)="changedDwmy($event)">
 </dateselect>
 
-@switch(this.dwmy) {
-    @case('d') {
-        <app-day
-            [day]="day"
-            [is_long]="true">
-        </app-day>
-    }
-    @case('w') {
-        <div class="fixed-grid has-7-cols">
-            <div class="grid">
-            @for(i of createWeek(); track i.id) {
-                <div class="cell">
-                    <app-day
-                        [day]="i.date"
-                        [is_long]="true">
-                    </app-day>
-                </div>
-            }
-            </div>
-        </div>
-    }
-    @case('m') {
-        <month [day]="this.day" [is_long]="true"></month>
-    }
-    @case('y') {
-        <div class="fixed-grid has-4-cols">
-            <div class="grid">
-            @for(i of createRange(12); track i) {
-                <div class="cell">
-                    <month [month]="i - 1" [year]="day.getFullYear()"></month>
-                </div>
-            }
-            </div>
-        </div>
-    }
+@switch( dwmy ) {
+	@case('d') {
+		<app-day
+			[day]="day"
+			[visualize]="'day'">
+		</app-day>
+	}
+	@case('w') {
+		<div class="fixed-grid has-7-cols">
+			<div class="grid">
+			@for(i of createWeek(); track i.id) {
+				<div class="cell">
+					<app-day
+						[day]="i.date"
+						[visualize]="'week'">
+					</app-day>
+				</div>
+			}
+			</div>
+		</div>
+	}
+	@case('m') {
+		<month [day]="day" [visualize]="'month'"></month>
+	}
+	@case('y') {
+		<div class="fixed-grid has-4-cols">
+			<div class="grid">
+			@for(i of createRange(12); track i) {
+				<div class="cell">
+					<month [month]="i - 1" [year]="day.getFullYear()" [visualize]="'year'"></month>
+				</div>
+			}
+			</div>
+		</div>
+	}
 }
 
-<app-event></app-event>
+<!-- <app-event></app-event> -->

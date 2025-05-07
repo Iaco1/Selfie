@@ -1,11 +1,11 @@
 <div>
-	@if(this.is_long) {
-		<div class="yellow">
-			{{ this.getName() }}
+	@if( visualize == "day" || visualize == "week" ) {
+		<div class="day_of_week">
+			{{ getName() }}
 		</div>
 	}
-	<div class="blue">
-		{{this.day.getDate()}}
+	<div class="number_of_month">
+		{{ day.getDate() }}
 	</div>
-	<app-event></app-event>
+	<app-event [visualize]="visualize"></app-event>
 </div>

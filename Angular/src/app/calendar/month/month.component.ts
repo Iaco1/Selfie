@@ -19,7 +19,7 @@ export class MonthComponent {
   private _month! : number;
   private _day! : Date;
 
-  @Input() is_long = false;
+  @Input() visualize: string = "";
   @Input() 
   set year(value: number) { this._year = value; this.recalculate(); }
   get year() {return this._year}

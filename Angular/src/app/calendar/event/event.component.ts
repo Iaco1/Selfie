@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -9,28 +9,30 @@ import { FormsModule } from '@angular/forms';
 	styleUrl: './event.component.css'
 })
 export class EventComponent {
+	@Input() visualize: string = "";
+
 	event = {
-	id: 'mongoDB choose me :P',
-	info: {
-		note: 'go to luigi',
-		description: "go to luigi's house at 10",
-		location: "luigi's house",
-		colour: 'green',
-		emoji: ':3'
-	},
-	dateFrom: new Date(),
-	dateTo: new Date(),
-	who: [
-		{ id: 0, name: 'its me Mario!' },
-		{ id: 1, name: 'Toad' }
-	],
-	repeat: [
-		{ id: 0, time: '5 min' },
-		{ id: 1, time: '1 hour' },
-		{ id: 2, time: '1 day' },
-		{ id: 3, time: '2 day' },
-		{ id: 4, time: '1 week' }
-	]
+		id: 'mongoDB choose me :P',
+		info: {
+			note: 'go to luigi',
+			description: "go to luigi's house at 10",
+			location: "luigi's house",
+			colour: 'green',
+			emoji: ':3'
+		},
+		dateFrom: new Date(),
+		dateTo: new Date(),
+		who: [
+			{ id: 0, name: 'its me Mario!' },
+			{ id: 1, name: 'Toad' }
+		],
+		repeat: [
+			{ id: 0, time: '5 min' },
+			{ id: 1, time: '1 hour' },
+			{ id: 2, time: '1 day' },
+			{ id: 3, time: '2 day' },
+			{ id: 4, time: '1 week' }
+		],
 	};
 
 	infos: any[] = [];

@@ -2,11 +2,16 @@ import { Component } from '@angular/core';
 import { DateselectComponent } from './dateselect/dateselect.component';
 import { MonthComponent } from './month/month.component';
 import { DayComponent } from './day/day.component';
-import { EventComponent } from './event/event.component';
+// import { EventComponent } from './event/event.component';
 
 @Component({
   selector: 'calendar',
-  imports: [DateselectComponent, MonthComponent, DayComponent, EventComponent],
+  imports: [
+    DateselectComponent,
+    MonthComponent,
+    DayComponent,
+  //EventComponent
+  ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
