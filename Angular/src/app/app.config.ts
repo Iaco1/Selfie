@@ -11,6 +11,7 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 
 import {TimemachineComponent} from './calendar/timemachine/timemachine.component';
 import {CalendarComponent} from './calendar/calendar.component';
+import {AccountsettingsComponent} from './accountsettings/accountsettings.component';
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -22,6 +23,7 @@ export const routes: Routes = [
   {path: 'SidebarComponent', component: SidebarComponent, outlet: 'aside'},
   {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'primary'},
   {path: 'CalendarComponent', component: CalendarComponent, outlet: 'primary'},
+  {path: 'AccountsettingsComponent', component: AccountsettingsComponent, outlet: 'primary'},
 ];
 
 export const appConfig: ApplicationConfig = {
