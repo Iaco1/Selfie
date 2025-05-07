@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {NgIf} from '@angular/common';
+import {DatumupdaterComponent} from '../datumupdater/datumupdater.component';
 
 @Component({
   selector: 'app-accountsettings',
   imports: [
-    NgIf
+    DatumupdaterComponent
   ],
   templateUrl: './accountsettings.component.html',
   styleUrl: './accountsettings.component.css'
@@ -12,6 +12,11 @@ import {NgIf} from '@angular/common';
 export class AccountsettingsComponent {
   name: string;
   birthday: Date;
+  email: string;
+
+  datumStorageKey: string = 'password';
+  datum: string = localStorage.getItem(this.datumStorageKey) || "password1234";
+  datumName: string = "Password:";
 
   constructor() {
     this.name = localStorage.getItem('name') || 'John Smith';

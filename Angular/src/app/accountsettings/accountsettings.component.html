@@ -9,7 +9,7 @@
         <p>current photo</p>
         <p>
           <figure class="image is-128x128">
-            <img class="is-rounded" src="/default-user-profile-pic.png"/>
+            <img alt="default-user-profile-pic" class="is-rounded" src="/default-user-profile-pic.png"/>
           </figure>
         </p>
         <hr>
@@ -61,6 +61,7 @@
         </div>
         <hr>
         <p> password </p>
+        <app-datumupdater [datum]="datum" [datumStorageKey]="datumStorageKey" [datumName]="datumName" ></app-datumupdater>
       </div>
     </div>
   </div>
