@@ -1,11 +1,24 @@
 <div>
 	@if( visualize == "day" || visualize == "week" ) {
-		<div class="day_of_week">
+		<div class="day_of_week" class="has-text-centered has-background-info has-text-white">
 			{{ getName() }}
 		</div>
 	}
 	<div class="number_of_month">
 		{{ day.getDate() }}
 	</div>
-	<app-event [visualize]="visualize"></app-event>
+		@if (visualize == "day" || visualize == "week") {
+		<div class="column no-space-between">
+			@for (hour of hours; track hour) {
+				<div
+						class="cell day-cell"
+						(click)="toggleEvent(hour)"
+						[class.has-background-primary-light]="events[hour]"
+						style="cursor: pointer;">
+					{{ events[hour] || hour + ':00' }}
+				</div>
+			}
+		</div>
+	}
+	<!--<app-event [visualize]="visualize"></app-event>-->
 </div>

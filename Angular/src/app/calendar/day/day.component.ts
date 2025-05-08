@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { EventComponent } from '../event/event.component';
 
 @Component({
-  selector: 'app-day',
+  selector: 'day',
   imports: [EventComponent],
   templateUrl: './day.component.html',
   styleUrl: './day.component.css'
@@ -10,18 +10,28 @@ import { EventComponent } from '../event/event.component';
 export class DayComponent {
   constructor() {}
 
-  private _day! : Date;
-  @Input()
-  set day(item: Date) {
-    this._day = item;
-  }
-  get day() {
-    return this._day;
-  }
+  @Input() day! : Date;
 
   @Input() visualize: string = "";
 
   getName() {
     return this.day.toLocaleString('en-US', { weekday: 'long' });
+  }
+
+  @Input() startHour: number = 8;
+  @Input() endHour: number = 18;
+
+  events: { [hour: number]: string } = {};
+
+  toggleEvent(hour: number): void {
+    this.events[hour] = this.events[hour] ? '' : 'Evento';
+  }
+
+  get hours(): number[] {
+    const range: number[] = [];
+    for (let h = this.startHour; h <= this.endHour; h++) {
+      range.push(h);
+    }
+    return range;
   }
 }
