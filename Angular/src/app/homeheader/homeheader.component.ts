@@ -26,7 +26,7 @@ export class HomeheaderComponent {
   }
 
   onToggleSidebar(){
-    console.log("onToggleSidebar");
+    //console.log("onToggleSidebar");
     this.sidebarIsToggled = !this.sidebarIsToggled;
     if(!this.sidebarIsToggled){
       this.closeSidebar();

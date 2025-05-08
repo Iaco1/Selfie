@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import {DatumupdaterComponent} from '../datumupdater/datumupdater.component';
+import {NgOptimizedImage} from "@angular/common";
+import {DatumType} from "../datumupdater/datumtype.enum";
 
 @Component({
   selector: 'app-accountsettings',
   imports: [
-    DatumupdaterComponent
+    DatumupdaterComponent,
+    NgOptimizedImage
   ],
   templateUrl: './accountsettings.component.html',
   styleUrl: './accountsettings.component.css'
@@ -14,11 +17,17 @@ export class AccountsettingsComponent {
   birthday: Date;
   email: string;
 
-  datumStorageKey: string = 'password';
-  datum: string = localStorage.getItem(this.datumStorageKey) || "password1234";
-  datumName: string = "Password:";
+  passwordStorageKey: string = 'password';
+  userPassword: string = localStorage.getItem(this.passwordStorageKey) || "password1234";
+  passwordFieldName: string = "Password:";
+
+  userProfilePicStorageKey: string = "userProfilePic";
+  userProfilePicUrl: string =  localStorage.getItem(this.userProfilePicStorageKey) || "/default-user-profile-pic.png";
+  userProfilePicFieldName: string = "Profile Picture";
+
 
   constructor() {
+    //value initialization for name, birthday, email fields
     this.name = localStorage.getItem('name') || 'John Smith';
     this.birthday = new Date(localStorage.getItem('date') || Date.now());
     this.email = localStorage.getItem('email') || 'something@domain.com';
@@ -54,4 +63,6 @@ export class AccountsettingsComponent {
     this.email = newEmailInput.value;
     this.toggleEmailEdit();
   }
+
+  protected readonly DatumType = DatumType;
 }

@@ -1,12 +1,17 @@
-<p>datumupdater works!</p>
 <div class="level">
-  <div class="level-left">{{ datumName }}: </div>
+  <div class="level-left">{{ datumName }} </div>
   <span class="level-item" [class.is-hidden]="datumEditorHidden">
-    <input #newDatum class="input" type="text" placeholder="First Name Last Name"/>
+    <input #newDatum class="input" type="text" placeholder="{{placeholderText}}"/>
     <button class="button primary" (click)="editDatum(newDatum)">Edit</button>
   </span>
   <div class="level-right">
-    <span> {{datum}} </span>
+    @if (datumType == DatumType.IMAGE) {
+      <figure class="image is-128x128">
+        <img alt="default-user-profile-pic-alt" class="is-rounded" ngSrc="{{datum}}" height="250" width="250"/>
+      </figure>
+    }@else{
+      <span> {{datum}} </span>
+    }
     <span class="icon" title="Edit">
       <i class="fas fa-pencil-alt" (click)="toggleDatumEdit()"></i>
     </span>
