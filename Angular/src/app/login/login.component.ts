@@ -10,7 +10,7 @@ import {RouterOutlet, Router} from '@angular/router';
     RouterOutlet
   ],
   templateUrl: 'login.component.html',
-  styleUrl: 'login.component.scss'
+  styleUrl: 'login.component.css'
 })
 export class LoginComponent {
   emailInput =  new FormControl('', [Validators.required, Validators.email]);
