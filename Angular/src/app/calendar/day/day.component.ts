@@ -24,6 +24,11 @@ export class DayComponent {
 			end: new Date('2025-05-07T12:00:00'),
 			color: 'blue'
 		}
+		/* i think i should fetch calendar events in calendar not in day,
+		event should be a div in a position absolute with
+		element = getElement...
+		rect = element.getBoundingClientRect()
+		then use rect.top, rect.left, rect.right, rect.bottom*/
 	];
 
 	getName() {
