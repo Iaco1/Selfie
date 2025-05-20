@@ -1,0 +1,6 @@
+.cell {
+	flex: 1 1 0;
+	min-width: 0;		/* allows shrink below content */
+	overflow: hidden;
+	text-align: center;
+}

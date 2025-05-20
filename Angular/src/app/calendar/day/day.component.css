@@ -1,6 +1,26 @@
 .day_of_week {
-    color: yellow;
+	color: yellow;
 }
 .number_of_month {
-    color: green ;
+	color: green ;
+}
+.day-cell {
+	border: 1px solid #ddd;
+	flex: 1 1 0;
+}
+.column {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.grid {
+	display: flex;
+	width: 100%;
+	flex-wrap: nowrap;
+}
+
+.cell {
+	flex: 1 1 0;
+	min-width: 0;		/* allows shrink below content */
+	overflow: hidden;
+	text-align: center;
 }

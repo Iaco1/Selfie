@@ -12,7 +12,10 @@
 		<div>{{ i + min }}</div>
 	}
 	@for (day of days; track day.id) {
-		<app-day [day]="day.date" [visualize]="visualize"></app-day>
+		<day
+			[day]="day.date"
+			[visualize]="visualize">
+		</day>
 	}
 	@for (i of createRange(next_days); track i) {
 		<div>{{ i }}</div>

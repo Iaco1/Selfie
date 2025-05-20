@@ -7,27 +7,21 @@
 
 @switch( dwmy ) {
 	@case('d') {
-		<app-day
+		<day
 			[day]="day"
 			[visualize]="'day'">
-		</app-day>
+		</day>
 	}
 	@case('w') {
-		<div class="fixed-grid has-7-cols">
-			<div class="grid">
-			@for(i of createWeek(); track i.id) {
-				<div class="cell">
-					<app-day
-						[day]="i.date"
-						[visualize]="'week'">
-					</app-day>
-				</div>
-			}
-			</div>
-		</div>
+		<week
+			[day]="day">
+		</week>
 	}
 	@case('m') {
-		<month [day]="day" [visualize]="'month'"></month>
+		<month
+			[day]="day"
+			[visualize]="'month'">
+		</month>
 	}
 	@case('y') {
 		<div class="fixed-grid has-4-cols">
