@@ -9,21 +9,22 @@
       </figure>
     </a>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+    <a #navbarBurger role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" (click)="toggleNavbarBurger(navbarBurger)">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
   </div>
-  <div class="navbar-menu">
-    <div class="navbar-end">
-      <a class="navbar-item">
-        <figure class="image" >
-          <i class="fas fa-user fa-2x"></i>
-        </figure>
-      </a>
-    </div>
-  </div>
+<!--  <div class="navbar-menu" [class.is-active]="navbarMenuOpen">-->
+<!--    <div class="navbar-end">-->
+<!--      <a class="navbar-item">-->
+<!--        <figure class="image" >-->
+<!--          <i class="fas fa-user fa-2x"></i>-->
+<!--        </figure>-->
+<!--      </a>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  i should probably just remove this icon-->
 </nav>
 
