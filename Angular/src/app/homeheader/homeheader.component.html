@@ -1,13 +1,10 @@
-<p>homeheader works!</p>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" (click)="onToggleSidebar()">
-      <figure class="image" style="height: 52px; width: auto">
-        <img src="/left-sidebar.png" >
-      </figure>
+      <i class="far fa-window-maximize fa-2x"></i>
     </a>
     <a class="navbar-item">
-      <figure class="image" style="height: 52px; width: auto" (click)="navigateToHomepage()">
+      <figure class="image"(click)="navigateToHomepage()">
         <img src="/selfie-brand3.png" >
       </figure>
     </a>
@@ -20,11 +17,10 @@
     </a>
   </div>
   <div class="navbar-menu">
-    navbarMenu
     <div class="navbar-end">
       <a class="navbar-item">
-        <figure class="image" style="height: 52px; width: auto">
-          <img src="/default-user-profile-pic.png" >
+        <figure class="image" >
+          <i class="fas fa-user fa-2x"></i>
         </figure>
       </a>
     </div>
