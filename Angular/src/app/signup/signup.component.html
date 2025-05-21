@@ -6,7 +6,7 @@
 
 <form [formGroup]="signupGroup" (ngSubmit)="onSubmit()">
   <div class="columns is-centered">
-    <div class="column is-two-fifths">
+    <div class="column is-two-fifths-desktop is-two-thirds-tablet">
       <div class="field">
         <label class="label">Name</label>
         <div class="control">
@@ -25,12 +25,15 @@
       </div>
 
       <div class="field">
-        <label class="label">password</label>
+        <label class="label">Password</label>
         <div class="control has-icons-left has-icons-right">
-          <input class="input" type="text" placeholder="Text input" value="pwd" [formControl]="passwordInputControl">
+          <input #passwordInputTag class="input" type="text" placeholder="some password" value="pwd" [formControl]="passwordInputControl">
           <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
-        </span>
+            <i class="fas fa-lock"></i>
+          </span>
+          <span class="icon is-small is-right">
+            <i #eyeIcon class="fas fa-eye" (click)="loginComponentHelper.togglePasswordVisibility(passwordInputTag, eyeIcon)" style="pointer-events: auto; cursor: pointer; z-index: 1;"></i>
+          </span>
         </div>
       </div>
 

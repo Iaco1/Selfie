@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-signup',
@@ -9,6 +10,8 @@ import {Router} from '@angular/router';
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
+  loginComponentHelper = new LoginComponent(new Router());
+
   constructor(private router: Router) {
   }
   protected timeout: number = 2000;
