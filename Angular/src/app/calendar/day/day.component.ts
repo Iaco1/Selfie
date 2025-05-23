@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { EventComponent } from '../event/event.component';
 
 @Component({
 	selector: 'day',
-	imports: [EventComponent],
+	imports: [CommonModule, EventComponent],
 	templateUrl: './day.component.html',
 	styleUrl: './day.component.css',
 	standalone: true
@@ -43,44 +44,30 @@ export class DayComponent {
 		}
 		return range;
 	}
+
+	displayed_events: { event: CalendarEvent; rect: DOMRect }[] = [];
 	toggleEvent(hour: number) {
 		console.log("day: ", this.day, "hour: ", hour);
-	}
 
-	/* hasEventAtHour(hour: number): boolean {
-		const dateHour = new Date(this.day);
-		dateHour.setHours(hour, 0, 0, 0);
-		return this.calendar_events.some(event =>
-			event.start <= dateHour && event.end > dateHour
-		);
-	}
-
-	getEventTitle(hour: number): string | null {
-		const dateHour = new Date(this.day);
-		dateHour.setHours(hour, 0, 0, 0);
-		const event = this.calendar_events.find(e =>
-			e.start <= dateHour && e.end > dateHour
-		);
-		return event ? event.title : null;
-	}
-
-	toggleEvent(hour: number): void {
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
 
-		const index = this.calendar_events.findIndex(event =>
-			event.start.getTime() === dateHour.getTime()
-		);
+		const cellId = `cell-${this.day.toISOString()}-${hour}`;
+		const cellElement = document.getElementById(cellId);
 
-		if (index >= 0) {
-			this.calendar_events.splice(index, 1); // Remove event at that hour
-		} else {
-			this.calendar_events.push({
-				title: 'New Event',
-				start: new Date(dateHour),
-				end: new Date(dateHour.getTime() + 60 * 60 * 1000), // 1 hour event
-				color: 'blue'
-			});
-		}
-	}*/
+		if (!cellElement) return;
+
+		const rect = cellElement.getBoundingClientRect();
+
+		const newEvent: CalendarEvent = {
+			id: Date.now(), // id temporaneo
+			title: 'Nuovo Evento',
+			description: '',
+			start: new Date(dateHour),
+			end: new Date(dateHour.getTime() + 60 * 60 * 1000),
+			color: 'blue'
+		};
+
+		this.displayed_events.push({ event: newEvent, rect });
+	}
 }

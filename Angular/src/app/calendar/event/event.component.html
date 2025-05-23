@@ -1,5 +1,13 @@
 <!-- Evento cliccabile class="box is-clickable"-->
-<div  (click)="openModal()">
+<div  (click)="openModal()"
+	*ngIf="rect"
+	[ngStyle]="{
+		position: 'absolute',
+		top: rect.top + 'px',
+		left: rect.left + 'px',
+		width: rect.width + 'px',
+		height: rect.height + 'px'
+		}">
   <p>{{ evento.title }}</p>
   <p>{{ evento.description }}</p>
 </div>

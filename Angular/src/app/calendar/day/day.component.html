@@ -13,13 +13,16 @@
 				<div
 					class="cell day-cell"
 					(click)="toggleEvent(hour)"
+					[attr.id]="'cell-' + day.toISOString() + '-' + hour"
 					>
 					{{ hour + ':00' }}
 				</div>
 			}
 		</div>
 	}
-	@for (event of calendar_events; track event.id) {
-		<event [evento]="event"></event>
-	}
+	<event
+		*ngFor="let e of displayed_events"
+		[evento]="e.event"
+		[rect]="e.rect">
+	</event>
 </div>
