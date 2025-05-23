@@ -1,14 +1,28 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'app-event',
+	selector: 'event',
 	imports: [CommonModule, FormsModule],
 	templateUrl: './event.component.html',
 	styleUrl: './event.component.css'
 })
 export class EventComponent {
+	@Input() visible = false;
+	@Input() event: any = { title: '', description: '' };
+	@Output() onSave = new EventEmitter<any>();
+	@Output() onClose = new EventEmitter<void>();
+
+	close() {
+	this.onClose.emit();
+	}
+
+	save() {
+	this.onSave.emit(this.event);
+	this.close();
+	} 
+	/*
 	@Input() visualize: string = "";
 
 	event = {
@@ -75,5 +89,5 @@ export class EventComponent {
 
 	editDateTo() {
 		console.log('edit date to   not implemented yet');
-	}
+	}*/
 }

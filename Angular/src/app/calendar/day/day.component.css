@@ -3,6 +3,8 @@
 }
 .number_of_month {
 	color: green ;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .day-cell {
 	border: 1px solid #ddd;

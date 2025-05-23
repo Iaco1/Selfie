@@ -1,5 +1,36 @@
+<p>event works!</p>
+
+<div class="modal" [ngClass]="{ 'is-active': visible }">
+	<div class="modal-background" (click)="close()"></div>
+	<div class="modal-card" (click)="$event.stopPropagation()">
+		<header class="modal-card-head">
+			<p class="modal-card-title">Modifica Evento</p>
+			<button class="delete" aria-label="close" (click)="close()"></button>
+		</header>
+		<section class="modal-card-body">
+			<div class="field">
+				<label class="label">Titolo</label>
+				<div class="control">
+					<input class="input" [(ngModel)]="event.title" placeholder="Titolo evento">
+				</div>
+			</div>
+
+			<div class="field">
+				<label class="label">Descrizione</label>
+				<div class="control">
+					<textarea class="textarea" [(ngModel)]="event.description" placeholder="Descrizione evento"></textarea>
+				</div>
+			</div>
+		</section>
+		<footer class="modal-card-foot">
+			<button class="button is-success" (click)="save()">Salva</button>
+			<button class="button" (click)="close()">Annulla</button>
+		</footer>
+	</div>
+</div>
+
+<!--
 <div class="card content">
-	<!-- INFOS -->
 	@if ( visualize == "day" || visualize == "week") {
 		<div *ngFor="let i of infos; trackBy: trackById" class="level">
 			@if( i.icon ) {
@@ -15,42 +46,21 @@
 				{{ i.value }}
 			</span>
 		</div>
-		<!-- DATE RANGE -->
 		<div class="is-flex is-align-items-center is-justify-content-center is-flex-wrap-wrap" style="gap: 1.5rem;">
-		
-			<!-- DATE FROM -->
 			<div class="is-flex is-flex-direction-column is-align-items-center"
 					style="min-width: 90px; position: relative;" (click)="editDateFrom()">
 				<p class="is-size-7 mb-1">{{ event.dateFrom | date: 'dd MMM' }}</p>
 				<p class="title is-6 mb-0">{{ event.dateFrom | date: 'H:mm' }}</p>
-				<!-- non mi piace la pencil
-				<span class="icon is-small"
-						style="position: absolute; left: -1.5rem; top: 50%; transform: translateY(-50%);"
-						title="Modifica inizio">
-					<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
-				</span>	-->
 			</div>
-		
-			<!-- ARROW -->
 			<div class="is-flex is-align-items-center" style="height: 100%;">
 				<i class="fas fa-arrow-right"></i>
 			</div>
-		
-			<!-- DATE TO -->
 			<div class="is-flex is-flex-direction-column is-align-items-center"
 					style="min-width: 90px; position: relative;" (click)="editDateTo()">
 				<p class="is-size-7 mb-1">{{ event.dateTo | date: 'dd MMM' }}</p>
 				<p class="title is-6 mb-0">{{ event.dateTo | date: 'H:mm' }}</p>
-				<!-- non mi piace la pencil
-				<span class="icon is-small"
-						style="position: absolute; right: -1.5rem; top: 50%; transform: translateY(-50%);"
-						title="Modifica fine">
-					<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
-				</span> -->
 			</div>
 		</div>
-
-		<!-- WHO -->
 		<div #who class="mb-3">
 			<div class="is-flex is-align-items-center">
 				<i class="far fa-user mr-2"></i>
@@ -62,8 +72,6 @@
 				}
 			</ul>
 		</div>
-
-		<!-- REPEAT -->
 		<div #repeat class="is-flex is-align-items-center mb-3">
 			<i class="fas fa-alarm-clock mr-2"></i>
 			<span class="mr-2">Ripetizione:</span>
@@ -75,3 +83,17 @@
 		</div>
 	}
 </div>
+-->
+
+<!-- non mi piace la pencil LEFT
+<span class="icon is-small"
+		style="position: absolute; left: -1.5rem; top: 50%; transform: translateY(-50%);"
+		title="Modifica inizio">
+	<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
+</span>	-->
+<!-- non mi piace la pencil RIGHT
+<span class="icon is-small"
+		style="position: absolute; right: -1.5rem; top: 50%; transform: translateY(-50%);"
+		title="Modifica fine">
+	<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
+</span> -->

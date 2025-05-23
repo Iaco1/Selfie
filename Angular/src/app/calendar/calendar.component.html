@@ -35,5 +35,14 @@
 		</div>
 	}
 }
+<!-- Ogni evento cliccabile -->
+<div *ngFor="let event of events" class="box" (click)="openModal(event)">
+	{{ event.title }}
+</div>
 
-<!-- <app-event></app-event> -->
+<event
+	[visible]="modalVisible" 
+	[event]="selectedEvent" 
+	(onSave)="handleSave($event)" 
+	(onClose)="modalVisible = false">
+</event>
