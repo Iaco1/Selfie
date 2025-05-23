@@ -19,6 +19,7 @@ export class DayComponent {
 
 	calendar_events: CalendarEvent[] = [
 		{
+			id: 0,
 			title: 'Sample Event',
 			start: new Date('2025-05-07T09:00:00'),
 			end: new Date('2025-05-07T12:00:00'),
@@ -42,8 +43,11 @@ export class DayComponent {
 		}
 		return range;
 	}
+	toggleEvent(hour: number) {
+		console.log("day: ", this.day, "hour: ", hour);
+	}
 
-	hasEventAtHour(hour: number): boolean {
+	/* hasEventAtHour(hour: number): boolean {
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
 		return this.calendar_events.some(event =>
@@ -78,5 +82,5 @@ export class DayComponent {
 				color: 'blue'
 			});
 		}
-	}
+	}*/
 }

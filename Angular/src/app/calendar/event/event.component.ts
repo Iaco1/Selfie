@@ -9,19 +9,20 @@ import { FormsModule } from '@angular/forms';
 	styleUrl: './event.component.css'
 })
 export class EventComponent {
-	@Input() visible = false;
-	@Input() event: any = { title: '', description: '' };
-	@Output() onSave = new EventEmitter<any>();
-	@Output() onClose = new EventEmitter<void>();
+	@Input() evento: any;
 
-	close() {
-	this.onClose.emit();
+	showModal = false;
+	openModal() {
+		this.showModal = true;
+	}
+	closeModal() {
+		this.showModal = false;
 	}
 
 	save() {
-	this.onSave.emit(this.event);
-	this.close();
-	} 
+		// salva direttamente o emetti evento, se necessario
+		this.closeModal();
+	}
 	/*
 	@Input() visualize: string = "";
 

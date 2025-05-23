@@ -13,11 +13,13 @@
 				<div
 					class="cell day-cell"
 					(click)="toggleEvent(hour)"
-					[class.has-background-primary-light]="hasEventAtHour(hour)"
-					style="cursor: pointer;">
-					{{ getEventTitle(hour) || (hour + ':00') }}
+					>
+					{{ hour + ':00' }}
 				</div>
 			}
 		</div>
+	}
+	@for (event of calendar_events; track event.id) {
+		<event [evento]="event"></event>
 	}
 </div>

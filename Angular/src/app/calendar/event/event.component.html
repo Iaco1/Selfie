@@ -1,30 +1,35 @@
-<p>event works!</p>
+<!-- Evento cliccabile class="box is-clickable"-->
+<div  (click)="openModal()">
+  <p>{{ evento.title }}</p>
+  <p>{{ evento.description }}</p>
+</div>
 
-<div class="modal" [ngClass]="{ 'is-active': visible }">
-	<div class="modal-background" (click)="close()"></div>
+<!-- Modale con Bulma -->
+<div class="modal" [ngClass]="{ 'is-active': showModal }">
+	<div class="modal-background" (click)="closeModal()"></div>
 	<div class="modal-card" (click)="$event.stopPropagation()">
 		<header class="modal-card-head">
 			<p class="modal-card-title">Modifica Evento</p>
-			<button class="delete" aria-label="close" (click)="close()"></button>
+			<button class="delete" aria-label="close" (click)="closeModal()"></button>
 		</header>
 		<section class="modal-card-body">
 			<div class="field">
 				<label class="label">Titolo</label>
 				<div class="control">
-					<input class="input" [(ngModel)]="event.title" placeholder="Titolo evento">
+					<input class="input" [(ngModel)]="evento.title" placeholder="Titolo evento">
 				</div>
 			</div>
 
 			<div class="field">
 				<label class="label">Descrizione</label>
 				<div class="control">
-					<textarea class="textarea" [(ngModel)]="event.description" placeholder="Descrizione evento"></textarea>
+					<textarea class="textarea" [(ngModel)]="evento.description" placeholder="Descrizione evento"></textarea>
 				</div>
 			</div>
 		</section>
 		<footer class="modal-card-foot">
 			<button class="button is-success" (click)="save()">Salva</button>
-			<button class="button" (click)="close()">Annulla</button>
+			<button class="button" (click)="closeModal()">Annulla</button>
 		</footer>
 	</div>
 </div>
