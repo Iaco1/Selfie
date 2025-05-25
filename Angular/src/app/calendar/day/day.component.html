@@ -21,8 +21,7 @@
 		</div>
 	}
 	<event
-		*ngFor="let e of displayed_events"
-		[evento]="e.event"
-		[rect]="e.rect">
+		*ngFor="let event of calendar_events"
+		[evento]="event">
 	</event>
 </div>

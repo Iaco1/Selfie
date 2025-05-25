@@ -1,14 +1,14 @@
 <!-- Evento cliccabile class="box is-clickable"-->
-<div  (click)="openModal()"
-	*ngIf="rect"
+<!-- *ngIf="rect"
 	[ngStyle]="{
 		position: 'absolute',
 		top: rect.top + 'px',
 		left: rect.left + 'px',
 		width: rect.width + 'px',
 		height: rect.height + 'px'
-		}">
-  <p>{{ evento.title }}</p>
+		}"-->
+<div  (click)="openModal()">
+  <p>{{ evento.start | date:"HH:mm" }} - {{ evento.title }}</p>
   <p>{{ evento.description }}</p>
 </div>
 
