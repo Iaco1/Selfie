@@ -15,4 +15,25 @@ export class CalendarEvent {
 		this.colour = colour;
 		this.description = description;
 	}
+
+	get startString(): string {
+		return this.toDatetimeLocal(this.start);
+	}
+	
+	set startString(value: string) {
+		this.start = new Date(value);
+	}
+	
+	get endString(): string {
+		return this.toDatetimeLocal(this.end);
+	}
+	
+	set endString(value: string) {
+		this.end = new Date(value);
+	}
+	
+	private toDatetimeLocal(date: Date): string {
+		const pad = (n: number) => n.toString().padStart(2, '0');
+		return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+	}
 }
