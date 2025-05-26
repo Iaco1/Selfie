@@ -34,7 +34,7 @@ export class DayComponent {
 
 //	displayed_events: { event: CalendarEvent; rect: DOMRect }[] = [];
 
-	toggleEvent(hour: number) {
+	toggleEvent(hour: number = 0) {
 		console.log("day: ", this.day, "hour: ", hour);
 /*
 		const cellId = `cell-${this.day.toISOString()}-${hour}`;
@@ -45,9 +45,28 @@ export class DayComponent {
 */
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
+		console.log(dateHour);
 		const newEvent = new CalendarEvent(dateHour);
 
 //		this.displayed_events.push({ event: newEvent, rect });
 		this.calendar_events.push(newEvent);
+	}
+
+	hasEventsAtHour(hour: number): CalendarEvent[] {
+		const dateHourStart = new Date(this.day);
+		dateHourStart.setHours(hour, 0, 0, 0);
+
+		const dateHourEnd = new Date(this.day);
+		dateHourEnd.setHours(hour + 1, 0, 0, 0);
+
+		return this.calendar_events.filter(event =>
+			event.start < dateHourEnd && event.end > dateHourStart
+		);
+	}
+	
+	onDeleteEvent(eventToDelete: CalendarEvent) {
+		this.calendar_events = this.calendar_events.filter(
+			event => event !== eventToDelete
+		);
 	}
 }

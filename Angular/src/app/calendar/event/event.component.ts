@@ -11,7 +11,8 @@ import { CalendarEvent } from '../models/calendar-event.model';
 })
 export class EventComponent {
 	@Input() evento!: CalendarEvent;
-	@Input() rect!: DOMRect | undefined;
+//	@Input() rect!: DOMRect | undefined;
+	@Output() delete = new EventEmitter<CalendarEvent>();
 
 	showModal = false;
 	openModal() {
@@ -23,6 +24,10 @@ export class EventComponent {
 
 	save() {
 		// salva direttamente o emetti evento, se necessario
+		this.closeModal();
+	}
+	deleteEvent() {
+		this.delete.emit(this.evento);
 		this.closeModal();
 	}
 }

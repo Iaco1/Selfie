@@ -11,12 +11,11 @@
 	@for (i of createRange(prev_days); track i) {
 		<div>{{ i + min }}</div>
 	}
-	@for (day of days; track day.id) {
-		<day
-			[day]="day.date"
-			[visualize]="visualize">
-		</day>
-	}
+	<day
+		*ngFor="let day of days"
+		[day]="day.date"
+		[visualize]="visualize">
+	</day>
 	@for (i of createRange(next_days); track i) {
 		<div>{{ i }}</div>
 	}

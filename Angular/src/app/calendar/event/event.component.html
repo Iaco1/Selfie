@@ -7,7 +7,7 @@
 		width: rect.width + 'px',
 		height: rect.height + 'px'
 		}"-->
-<div  (click)="openModal()">
+<div  (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
   <p>{{ evento.start | date:"HH:mm" }} - {{ evento.title }}</p>
   <p>{{ evento.description }}</p>
 </div>
@@ -35,9 +35,14 @@
 				</div>
 			</div>
 		</section>
-		<footer class="modal-card-foot">
-			<button class="button is-success" (click)="save()">Salva</button>
-			<button class="button" (click)="closeModal()">Annulla</button>
+		<footer class="modal-card-foot level">
+			<div class="level-left">
+				<button class="level-item button is-success" (click)="save()">Salva</button>
+				<button class="level-item button" (click)="closeModal()">Annulla</button>
+			</div>
+			<div class="level-right">
+				<button class="level-item button is-danger" (click)="deleteEvent()">Elimina</button>
+			</div>
 		</footer>
 	</div>
 </div>
