@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { EventComponent } from '../event/event.component';
@@ -18,7 +18,17 @@ export class DayComponent {
 	@Input() startHour: number = 9;
 	@Input() endHour: number = 18;
 
-	calendar_events: CalendarEvent[] = [];
+	@Input() events: CalendarEvent[] = [];
+	get dayEvents(): CalendarEvent[] {
+		const startOfDay = new Date(this.day);
+		startOfDay.setHours(0, 0, 0, 0);
+		const endOfDay = new Date(startOfDay);
+		endOfDay.setHours(23, 59, 59, 999);
+
+		return this.events.filter(event =>
+			event.start >= startOfDay && event.start <= endOfDay
+		);
+	}
 
 	getName() {
 		return this.day.toLocaleString('en-US', { weekday: 'long' });
@@ -32,24 +42,13 @@ export class DayComponent {
 		return range;
 	}
 
-//	displayed_events: { event: CalendarEvent; rect: DOMRect }[] = [];
-
 	toggleEvent(hour: number = 0) {
-		console.log("day: ", this.day, "hour: ", hour);
-/*
-		const cellId = `cell-${this.day.toISOString()}-${hour}`;
-		const cellElement = document.getElementById(cellId);
-		if (!cellElement) return;
-
-		const rect = cellElement.getBoundingClientRect();
-*/
+		// console.log("day: ", this.day, "hour: ", hour);
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
-		console.log(dateHour);
 		const newEvent = new CalendarEvent(dateHour);
-
-//		this.displayed_events.push({ event: newEvent, rect });
-		this.calendar_events.push(newEvent);
+		// this.events.push(newEvent);
+		this.saveEvent.emit(newEvent);
 	}
 
 	hasEventsAtHour(hour: number): CalendarEvent[] {
@@ -59,14 +58,17 @@ export class DayComponent {
 		const dateHourEnd = new Date(this.day);
 		dateHourEnd.setHours(hour + 1, 0, 0, 0);
 
-		return this.calendar_events.filter(event =>
+		return this.events.filter(event =>
 			event.start < dateHourEnd && event.end > dateHourStart
 		);
 	}
-	
-	onDeleteEvent(eventToDelete: CalendarEvent) {
-		this.calendar_events = this.calendar_events.filter(
-			event => event !== eventToDelete
-		);
+
+	@Output() saveEvent = new EventEmitter<CalendarEvent>();
+	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
+	onSaveEvent(updatedEvent: CalendarEvent) {
+		this.saveEvent.emit(updatedEvent);
 	}
+	onDeleteEvent(eventToDelete: CalendarEvent) {
+		this.deleteEvent.emit(eventToDelete);
+}
 }

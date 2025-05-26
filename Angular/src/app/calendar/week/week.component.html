@@ -5,7 +5,10 @@
 		<div class="cell">
 			<day
 				[day]="i.date"
-				[visualize]="'week'">
+				[visualize]="'week'"
+				[events]="events"
+				(saveEvent)="onSaveEvent($event)"
+				(deleteEvent)="onDeleteEvent($event)">
 			</day>
 		</div>
 	}

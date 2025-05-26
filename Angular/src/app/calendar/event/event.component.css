@@ -1,15 +1,22 @@
-.date-block {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-.level {
-	margin-bottom: 0 !important;
+.modal-card-body {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
 }
 
-.level label,
-.level input,
-.level .button {
+.columns {
+	margin-top: 0;
 	margin-bottom: 0;
-	line-height: 1;
+}
+
+.field {
+	margin-bottom: 0;
+}
+
+textarea.textarea {
+	min-height: 100px; /* Optional: maintain height if you reduce spacing */
+}
+
+#content {
+	padding-left: 10px;
+	padding-right: 10px;
 }

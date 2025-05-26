@@ -8,8 +8,9 @@
 		height: rect.height + 'px'
 		}"-->
 <div  (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
-  <p>{{ evento.start | date:"HH:mm" }} - {{ evento.title }}</p>
-  <p>{{ evento.description }}</p>
+	<p #content>{{ evento.start | date:"HH" }}-{{ evento.end | date:"HH" }}
+		{{ evento.title }}</p>
+	<p>{{ evento.description }}</p>
 </div>
 
 <!-- Modale con Bulma -->
@@ -21,13 +22,34 @@
 			<button class="delete" aria-label="close" (click)="closeModal()"></button>
 		</header>
 		<section class="modal-card-body">
-			<div class="field">
-				<label class="label">Titolo</label>
-				<div class="control">
-					<input class="input" [(ngModel)]="evento.title" placeholder="Titolo evento">
+			<div class="columns">
+				<div class="field column is-10">
+					<label class="label">Titolo</label>
+					<div class="control">
+						<input class="input" [(ngModel)]="evento.title" placeholder="Titolo evento">
+					</div>
+				</div>
+				<div class="field column is-2">
+					<label class="label">Colore</label>
+					<div class="control">
+						<input class="input" type="color" [(ngModel)]="evento.colour">
+					</div>
 				</div>
 			</div>
-
+			<div class="columns">
+				<div class="field column">
+					<label class="label">Data Inizio</label>
+					<div class="control">
+						<input class="input" type="datetime-local" [(ngModel)]="evento.start">
+					</div>
+				</div>
+				<div class="field column">
+					<label class="label">Data Fine</label>
+					<div class="control">
+						<input class="input" type="datetime-local" [(ngModel)]="evento.end">
+					</div>
+				</div>
+			</div>
 			<div class="field">
 				<label class="label">Descrizione</label>
 				<div class="control">
@@ -37,7 +59,7 @@
 		</section>
 		<footer class="modal-card-foot level">
 			<div class="level-left">
-				<button class="level-item button is-success" (click)="save()">Salva</button>
+				<button class="level-item button is-success" (click)="saveEvent()">Salva</button>
 				<button class="level-item button" (click)="closeModal()">Annulla</button>
 			</div>
 			<div class="level-right">
@@ -46,72 +68,3 @@
 		</footer>
 	</div>
 </div>
-
-<!--
-<div class="card content">
-	@if ( visualize == "day" || visualize == "week") {
-		<div *ngFor="let i of infos; trackBy: trackById" class="level">
-			@if( i.icon ) {
-				<i class="fas fa-{{i.icon}}"></i>
-			} @else {
-				<label> {{ i.name }}	</label>
-			}
-			<span class="level-item" [class.is-hidden]="i.hidden">
-				<input class="input" type="text" [placeholder]="i.name" [(ngModel)]="i.value" />
-				<button class="button" (click)="edit(i)">Edit</button>
-			</span>
-			<span class="level-item" (click)="toggle(i)" [class.is-hidden]="!i.hidden">
-				{{ i.value }}
-			</span>
-		</div>
-		<div class="is-flex is-align-items-center is-justify-content-center is-flex-wrap-wrap" style="gap: 1.5rem;">
-			<div class="is-flex is-flex-direction-column is-align-items-center"
-					style="min-width: 90px; position: relative;" (click)="editDateFrom()">
-				<p class="is-size-7 mb-1">{{ event.dateFrom | date: 'dd MMM' }}</p>
-				<p class="title is-6 mb-0">{{ event.dateFrom | date: 'H:mm' }}</p>
-			</div>
-			<div class="is-flex is-align-items-center" style="height: 100%;">
-				<i class="fas fa-arrow-right"></i>
-			</div>
-			<div class="is-flex is-flex-direction-column is-align-items-center"
-					style="min-width: 90px; position: relative;" (click)="editDateTo()">
-				<p class="is-size-7 mb-1">{{ event.dateTo | date: 'dd MMM' }}</p>
-				<p class="title is-6 mb-0">{{ event.dateTo | date: 'H:mm' }}</p>
-			</div>
-		</div>
-		<div #who class="mb-3">
-			<div class="is-flex is-align-items-center">
-				<i class="far fa-user mr-2"></i>
-				<p class="mb-1 has-text-weight-medium">Partecipanti:</p>
-			</div>
-			<ul class="ml-4">
-				@for (person of event.who; track person.id) {
-					<li>{{ person.name }}</li>
-				}
-			</ul>
-		</div>
-		<div #repeat class="is-flex is-align-items-center mb-3">
-			<i class="fas fa-alarm-clock mr-2"></i>
-			<span class="mr-2">Ripetizione:</span>
-			<div>
-				@for (r of event.repeat; track r.id) {
-					<span class="tag is-light mr-1">{{ r.time }}</span>
-				}
-			</div>
-		</div>
-	}
-</div>
--->
-
-<!-- non mi piace la pencil LEFT
-<span class="icon is-small"
-		style="position: absolute; left: -1.5rem; top: 50%; transform: translateY(-50%);"
-		title="Modifica inizio">
-	<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
-</span>	-->
-<!-- non mi piace la pencil RIGHT
-<span class="icon is-small"
-		style="position: absolute; right: -1.5rem; top: 50%; transform: translateY(-50%);"
-		title="Modifica fine">
-	<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
-</span> -->

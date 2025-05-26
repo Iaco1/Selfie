@@ -18,6 +18,7 @@
 					<event
 						*ngFor="let event of hasEventsAtHour(hour)"
 						[evento]="event"
+						(save)="onSaveEvent($event)"
 						(delete)="onDeleteEvent($event)">
 					</event>
 				</div>
@@ -26,8 +27,9 @@
 	}
 	@if (visualize == "month") {
 		<event
-			*ngFor="let event of calendar_events"
+			*ngFor="let event of events"
 			[evento]="event"
+			(save)="onSaveEvent($event)"
 			(delete)="onDeleteEvent($event)">
 		</event>
 	}

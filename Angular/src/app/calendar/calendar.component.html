@@ -9,18 +9,27 @@
 	@case('d') {
 		<day
 			[day]="day"
-			[visualize]="'day'">
+			[visualize]="'day'"
+			[events]="events"
+			(saveEvent)="onSaveEvent($event)"
+			(deleteEvent)="onDeleteEvent($event)">
 		</day>
 	}
 	@case('w') {
 		<week
-			[day]="day">
+			[day]="day"
+			[events]="events"
+			(saveEvent)="onSaveEvent($event)"
+			(deleteEvent)="onDeleteEvent($event)">
 		</week>
 	}
 	@case('m') {
 		<month
 			[day]="day"
-			[visualize]="'month'">
+			[visualize]="'month'"
+			[events]="events"
+			(saveEvent)="onSaveEvent($event)"
+			(deleteEvent)="onDeleteEvent($event)">
 		</month>
 	}
 	@case('y') {
@@ -28,7 +37,14 @@
 			<div class="grid">
 			@for(i of createRange(12); track i) {
 				<div class="cell">
-					<month [month]="i - 1" [year]="day.getFullYear()" [visualize]="'year'"></month>
+					<month
+						[month]="i - 1"
+						[year]="day.getFullYear()"
+						[visualize]="'year'"
+						[events]="events"
+						(saveEvent)="onSaveEvent($event)"
+						(deleteEvent)="onDeleteEvent($event)">
+					</month>
 				</div>
 			}
 			</div>

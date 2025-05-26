@@ -1,6 +1,8 @@
-import { Component , Input} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DayComponent} from '../day/day.component';
+import { DayComponent } from '../day/day.component';
+import { CalendarEvent } from '../models/calendar-event.model';
+import { } from '@angular/core';
 
 @Component({
 	selector: 'month',
@@ -85,5 +87,38 @@ export class MonthComponent {
 			//console.log(this._year, this._month, this.prev_days, this.min, this.month_days, this.next_days);
 			this.populateDays();
 		}
+	}
+
+	//events
+	@Input() events: CalendarEvent[] = [];
+	get monthEvents(): CalendarEvent[] {
+		const startOfMonth = new Date(this.year, this.month, 1);
+		startOfMonth.setHours(0, 0, 0, 0);
+	
+		const endOfMonth = new Date(this.year, this.month + 1, 0);
+		endOfMonth.setHours(23, 59, 59, 999);
+	
+		return this.events.filter(event =>
+			event.start >= startOfMonth && event.start <= endOfMonth
+		);
+	}
+	@Output() saveEvent = new EventEmitter<CalendarEvent>();
+	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
+	getEventsForDay(date: Date): CalendarEvent[] {
+		const start = new Date(date);
+		start.setHours(0, 0, 0, 0);
+	
+		const end = new Date(date);
+		end.setHours(23, 59, 59, 999);
+	
+		return this.events.filter(event =>
+			event.start >= start && event.start <= end
+		);
+	}
+	onSaveEvent(updatedEvent: CalendarEvent) {
+		this.saveEvent.emit(updatedEvent);
+	}
+	onDeleteEvent(eventToDelete: CalendarEvent) {
+		this.deleteEvent.emit(eventToDelete);
 	}
 }
