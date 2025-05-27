@@ -49,8 +49,8 @@ export class MonthComponent {
 	days: { id: number; date: Date }[] = [];
 	private populateDays() {
 		this.days = Array.from({ length: this.month_days }, (_, i) => ({
-			id: i + 1,                        // id: day number (1-30)
-			date: new Date(this.year, this.month, i + 1)  // real Date object
+			id: i + 1,										// id: day number (1-30)
+			date: new Date(this.year, this.month, i + 1)	// real Date object
 		}));
 	}
 
@@ -99,7 +99,7 @@ export class MonthComponent {
 		endOfMonth.setHours(23, 59, 59, 999);
 	
 		return this.events.filter(event =>
-			event.start >= startOfMonth && event.start <= endOfMonth
+			event.startDate >= startOfMonth && event.startDate <= endOfMonth
 		);
 	}
 	@Output() saveEvent = new EventEmitter<CalendarEvent>();
@@ -112,7 +112,7 @@ export class MonthComponent {
 		end.setHours(23, 59, 59, 999);
 	
 		return this.events.filter(event =>
-			event.start >= start && event.start <= end
+			event.startDate >= start && event.startDate <= end
 		);
 	}
 	onSaveEvent(updatedEvent: CalendarEvent) {

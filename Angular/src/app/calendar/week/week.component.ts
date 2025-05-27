@@ -52,7 +52,7 @@ export class WeekComponent {
 		endOfWeek.setHours(23, 59, 59, 999);
 	
 		return this.events.filter(event =>
-			event.start >= startOfWeek && event.start <= endOfWeek
+			event.startDate >= startOfWeek && event.startDate <= endOfWeek
 		);
 	}
 	@Output() saveEvent = new EventEmitter<CalendarEvent>();

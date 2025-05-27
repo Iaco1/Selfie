@@ -26,7 +26,7 @@ export class DayComponent {
 		endOfDay.setHours(23, 59, 59, 999);
 
 		return this.events.filter(event =>
-			event.start >= startOfDay && event.start <= endOfDay
+			event.startDate >= startOfDay && event.startDate <= endOfDay
 		);
 	}
 
@@ -42,12 +42,11 @@ export class DayComponent {
 		return range;
 	}
 
-	toggleEvent(hour: number = 0) {
+	createEvent(hour: number = 0) {
 		// console.log("day: ", this.day, "hour: ", hour);
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
 		const newEvent = new CalendarEvent(dateHour);
-		// this.events.push(newEvent);
 		this.saveEvent.emit(newEvent);
 	}
 
@@ -59,7 +58,7 @@ export class DayComponent {
 		dateHourEnd.setHours(hour + 1, 0, 0, 0);
 
 		return this.events.filter(event =>
-			event.start < dateHourEnd && event.end > dateHourStart
+			event.startDate < dateHourEnd && event.endDate > dateHourStart
 		);
 	}
 
@@ -70,5 +69,5 @@ export class DayComponent {
 	}
 	onDeleteEvent(eventToDelete: CalendarEvent) {
 		this.deleteEvent.emit(eventToDelete);
-}
+	}
 }

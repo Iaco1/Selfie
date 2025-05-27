@@ -4,15 +4,14 @@
 			{{ getName() }}
 		</div>
 	}
-	<div class="number_of_month" (click)="toggleEvent()">
+	<div class="number_of_month" (click)="createEvent()">
 		{{ day.getDate() }}
 	</div>
 	@if ( visualize == "day" || visualize == "week" ) {
 		<div class="column no-space-between">
 			@for (hour of hours; track hour) {
 				<div class="cell day-cell">
-					<!-- [attr.id]="'cell-' + day.toISOString() + '-' + hour" -->
-					<div (click)="toggleEvent(hour)">
+					<div (click)="createEvent(hour)">
 						{{ hour + ':00' }}
 					</div>
 					<event

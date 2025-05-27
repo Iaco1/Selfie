@@ -1,14 +1,6 @@
 <!-- Evento cliccabile class="box is-clickable"-->
-<!-- *ngIf="rect"
-	[ngStyle]="{
-		position: 'absolute',
-		top: rect.top + 'px',
-		left: rect.left + 'px',
-		width: rect.width + 'px',
-		height: rect.height + 'px'
-		}"-->
-<div  (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
-	<p #content>{{ evento.start | date:"HH" }}-{{ evento.end | date:"HH" }}
+<div #content (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
+	<p>{{ evento.start.time }}-{{ evento.end.time }}
 		{{ evento.title }}</p>
 	<p>{{ evento.description }}</p>
 </div>
@@ -18,52 +10,58 @@
 	<div class="modal-background" (click)="closeModal()"></div>
 	<div class="modal-card" (click)="$event.stopPropagation()">
 		<header class="modal-card-head">
-			<p class="modal-card-title">Modifica Evento</p>
+			<p class="modal-card-title">Modify Event</p>
 			<button class="delete" aria-label="close" (click)="closeModal()"></button>
 		</header>
 		<section class="modal-card-body">
 			<div class="columns">
+				<!-- title -->
 				<div class="field column is-10">
-					<label class="label">Titolo</label>
-					<div class="control">
-						<input class="input" [(ngModel)]="evento.title" placeholder="Titolo evento">
-					</div>
+					<label class="label" for="title">Title</label>
+					<input #title class="input control" [(ngModel)]="evento.title" placeholder="Titolo evento">
 				</div>
+				<!-- colour -->
 				<div class="field column is-2">
-					<label class="label">Colore</label>
-					<div class="control">
-						<input class="input" type="color" [(ngModel)]="evento.colour">
-					</div>
+					<label class="label" for="colour">Colour</label>
+					<input #colour class="input control" type="color" [(ngModel)]="evento.colour">
 				</div>
 			</div>
+			<!-- when? -->
 			<div class="columns">
+				<!-- start -->
 				<div class="field column">
-					<label class="label">Data Inizio</label>
-					<div class="control">
-						<input class="input" type="datetime-local" [(ngModel)]="evento.startString">
-					</div>
+					<label class="label" for="dateStart">Start Date</label>
+					<input #dateStart class="input control" type="date" [(ngModel)]="evento.start.date">
 				</div>
 				<div class="field column">
-					<label class="label">Data Fine</label>
-					<div class="control">
-						<input class="input" type="datetime-local" [(ngModel)]="evento.endString">
-					</div>
+					<label class="label" for="timeStart">Start Hour</label>
+					<input #timeStart class="input control" type="time" [(ngModel)]="evento.start.time">
+				</div>
+				<!-- end -->
+				<div class="field column">
+					<label class="label" for="dateEnd">End Date</label>
+					<input #dateEnd class="input control" type="date" [(ngModel)]="evento.end.date">
+				</div>
+				<div class="field column">
+					<label class="label" for="timeEnd">End Time</label>
+					<input #timeEnd class="input control" type="time" [(ngModel)]="evento.end.time">
 				</div>
 			</div>
 			<div class="field">
-				<label class="label">Descrizione</label>
-				<div class="control">
-					<textarea class="textarea" [(ngModel)]="evento.description" placeholder="Descrizione evento"></textarea>
-				</div>
+				<!-- descrizione -->
+				<label class="label" for="description">Description</label>
+				<textarea #description class="textarea control" [(ngModel)]="evento.description"
+					placeholder="Description event"></textarea>
 			</div>
 		</section>
 		<footer class="modal-card-foot level">
+			<!-- buttons -->
 			<div class="level-left">
-				<button class="level-item button is-success" (click)="saveEvent()">Salva</button>
-				<button class="level-item button" (click)="closeModal()">Annulla</button>
+				<button class="level-item button is-success" (click)="saveEvent()">Save</button>
+				<button class="level-item button" (click)="closeModal()">Cancel</button>
 			</div>
 			<div class="level-right">
-				<button class="level-item button is-danger" (click)="deleteEvent()">Elimina</button>
+				<button class="level-item button is-danger" (click)="deleteEvent()">Delete</button>
 			</div>
 		</footer>
 	</div>
