@@ -1,5 +1,5 @@
 <div class="container">
-	{{ getName(month) }} {{ year }}
+	<strong>{{ getName(month) }} {{ year }}</strong>
 	<div class="date-grid">
 	@for (d of week_days; track d.id) {
 		@if( visualize == 'month' ) {

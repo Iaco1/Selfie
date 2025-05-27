@@ -15,7 +15,7 @@ export class DayComponent {
 
 	@Input() day!: Date;
 	@Input() visualize: string = "";
-	@Input() startHour: number = 7;
+	@Input() startHour: number = 0;
 	@Input() endHour: number = 23;
 
 	@Input() events: CalendarEvent[] = [];

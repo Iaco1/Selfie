@@ -1,7 +1,7 @@
 <!-- Evento cliccabile class="box is-clickable"-->
 <div #content (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
-	<p>{{ evento.start.time }}-{{ evento.end.time }}
-		{{ evento.title }}</p>
+	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
+	<p> {{ evento.title }} </p>
 	<p>{{ evento.description }}</p>
 </div>
 
