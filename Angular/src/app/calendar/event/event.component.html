@@ -1,77 +1,68 @@
-<div class="card content">
-	<!-- INFOS -->
-	@if ( visualize == "day" || visualize == "week") {
-		<div *ngFor="let i of infos; trackBy: trackById" class="level">
-			@if( i.icon ) {
-				<i class="fas fa-{{i.icon}}"></i>
-			} @else {
-				<label> {{ i.name }}	</label>
-			}
-			<span class="level-item" [class.is-hidden]="i.hidden">
-				<input class="input" type="text" [placeholder]="i.name" [(ngModel)]="i.value" />
-				<button class="button" (click)="edit(i)">Edit</button>
-			</span>
-			<span class="level-item" (click)="toggle(i)" [class.is-hidden]="!i.hidden">
-				{{ i.value }}
-			</span>
-		</div>
-		<!-- DATE RANGE -->
-		<div class="is-flex is-align-items-center is-justify-content-center is-flex-wrap-wrap" style="gap: 1.5rem;">
-		
-			<!-- DATE FROM -->
-			<div class="is-flex is-flex-direction-column is-align-items-center"
-					style="min-width: 90px; position: relative;" (click)="editDateFrom()">
-				<p class="is-size-7 mb-1">{{ event.dateFrom | date: 'dd MMM' }}</p>
-				<p class="title is-6 mb-0">{{ event.dateFrom | date: 'H:mm' }}</p>
-				<!-- non mi piace la pencil
-				<span class="icon is-small"
-						style="position: absolute; left: -1.5rem; top: 50%; transform: translateY(-50%);"
-						title="Modifica inizio">
-					<i class="fas fa-pencil-alt" (click)="editDateFrom()"></i>
-				</span>	-->
-			</div>
-		
-			<!-- ARROW -->
-			<div class="is-flex is-align-items-center" style="height: 100%;">
-				<i class="fas fa-arrow-right"></i>
-			</div>
-		
-			<!-- DATE TO -->
-			<div class="is-flex is-flex-direction-column is-align-items-center"
-					style="min-width: 90px; position: relative;" (click)="editDateTo()">
-				<p class="is-size-7 mb-1">{{ event.dateTo | date: 'dd MMM' }}</p>
-				<p class="title is-6 mb-0">{{ event.dateTo | date: 'H:mm' }}</p>
-				<!-- non mi piace la pencil
-				<span class="icon is-small"
-						style="position: absolute; right: -1.5rem; top: 50%; transform: translateY(-50%);"
-						title="Modifica fine">
-					<i class="fas fa-pencil-alt" (click)="editDateTo()"></i>
-				</span> -->
-			</div>
-		</div>
+<!-- Evento cliccabile class="box is-clickable"-->
+<div #content (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
+	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
+	<p> {{ evento.title }} </p>
+	<p>{{ evento.description }}</p>
+</div>
 
-		<!-- WHO -->
-		<div #who class="mb-3">
-			<div class="is-flex is-align-items-center">
-				<i class="far fa-user mr-2"></i>
-				<p class="mb-1 has-text-weight-medium">Partecipanti:</p>
+<!-- Modale con Bulma -->
+<div class="modal" [ngClass]="{ 'is-active': showModal }">
+	<div class="modal-background" (click)="closeModal()"></div>
+	<div class="modal-card" (click)="$event.stopPropagation()">
+		<header class="modal-card-head">
+			<p class="modal-card-title">Modify Event</p>
+			<button class="delete" aria-label="close" (click)="closeModal()"></button>
+		</header>
+		<section class="modal-card-body">
+			<div class="columns">
+				<!-- title -->
+				<div class="field column is-10">
+					<label class="label" for="title">Title</label>
+					<input #title class="input control" [(ngModel)]="evento.title" placeholder="Titolo evento">
+				</div>
+				<!-- colour -->
+				<div class="field column is-2">
+					<label class="label" for="colour">Colour</label>
+					<input #colour class="input control" type="color" [(ngModel)]="evento.colour">
+				</div>
 			</div>
-			<ul class="ml-4">
-				@for (person of event.who; track person.id) {
-					<li>{{ person.name }}</li>
-				}
-			</ul>
-		</div>
-
-		<!-- REPEAT -->
-		<div #repeat class="is-flex is-align-items-center mb-3">
-			<i class="fas fa-alarm-clock mr-2"></i>
-			<span class="mr-2">Ripetizione:</span>
-			<div>
-				@for (r of event.repeat; track r.id) {
-					<span class="tag is-light mr-1">{{ r.time }}</span>
-				}
+			<!-- when? -->
+			<div class="columns">
+				<!-- start -->
+				<div class="field column">
+					<label class="label" for="dateStart">Start Date</label>
+					<input #dateStart class="input control" type="date" [(ngModel)]="evento.start.date">
+				</div>
+				<div class="field column">
+					<label class="label" for="timeStart">Start Hour</label>
+					<input #timeStart class="input control" type="time" [(ngModel)]="evento.start.time">
+				</div>
+				<!-- end -->
+				<div class="field column">
+					<label class="label" for="dateEnd">End Date</label>
+					<input #dateEnd class="input control" type="date" [(ngModel)]="evento.end.date">
+				</div>
+				<div class="field column">
+					<label class="label" for="timeEnd">End Time</label>
+					<input #timeEnd class="input control" type="time" [(ngModel)]="evento.end.time">
+				</div>
 			</div>
-		</div>
-	}
+			<div class="field">
+				<!-- descrizione -->
+				<label class="label" for="description">Description</label>
+				<textarea #description class="textarea control" [(ngModel)]="evento.description"
+					placeholder="Description event"></textarea>
+			</div>
+		</section>
+		<footer class="modal-card-foot level">
+			<!-- buttons -->
+			<div class="level-left">
+				<button class="level-item button is-success" (click)="saveEvent()">Save</button>
+				<button class="level-item button" (click)="closeModal()">Cancel</button>
+			</div>
+			<div class="level-right">
+				<button class="level-item button is-danger" (click)="deleteEvent()">Delete</button>
+			</div>
+		</footer>
+	</div>
 </div>

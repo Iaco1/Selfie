@@ -1,17 +1,29 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 0;
 }
 
 .date-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    border: 1px solid #ccc;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	width: 100%;
+	gap: 0;
+	border: 1px solid #ccc;
 }
-div {
-    text-align: center;
+
+.date-grid > div {
+	margin: 0;
+	padding: 4px;
+	text-align: center;
 }
-app-day {
-    margin-inline: 10px;
+
+app-day, day {
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
+  

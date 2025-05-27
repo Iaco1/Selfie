@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { EventComponent } from '../event/event.component';
 
 @Component({
 	selector: 'day',
-	imports: [EventComponent],
+	imports: [CommonModule, EventComponent],
 	templateUrl: './day.component.html',
 	styleUrl: './day.component.css',
 	standalone: true
@@ -14,22 +15,20 @@ export class DayComponent {
 
 	@Input() day!: Date;
 	@Input() visualize: string = "";
-	@Input() startHour: number = 9;
-	@Input() endHour: number = 18;
+	@Input() startHour: number = 0;
+	@Input() endHour: number = 23;
 
-	calendar_events: CalendarEvent[] = [
-		{
-			title: 'Sample Event',
-			start: new Date('2025-05-07T09:00:00'),
-			end: new Date('2025-05-07T12:00:00'),
-			color: 'blue'
-		}
-		/* i think i should fetch calendar events in calendar not in day,
-		event should be a div in a position absolute with
-		element = getElement...
-		rect = element.getBoundingClientRect()
-		then use rect.top, rect.left, rect.right, rect.bottom*/
-	];
+	@Input() events: CalendarEvent[] = [];
+	get dayEvents(): CalendarEvent[] {
+		const startOfDay = new Date(this.day);
+		startOfDay.setHours(0, 0, 0, 0);
+		const endOfDay = new Date(startOfDay);
+		endOfDay.setHours(23, 59, 59, 999);
+
+		return this.events.filter(event =>
+			event.startDate >= startOfDay && event.startDate <= endOfDay
+		);
+	}
 
 	getName() {
 		return this.day.toLocaleString('en-US', { weekday: 'long' });
@@ -43,40 +42,32 @@ export class DayComponent {
 		return range;
 	}
 
-	hasEventAtHour(hour: number): boolean {
+	createEvent(hour: number = 0) {
+		// console.log("day: ", this.day, "hour: ", hour);
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
-		return this.calendar_events.some(event =>
-			event.start <= dateHour && event.end > dateHour
+		const newEvent = new CalendarEvent(dateHour);
+		this.saveEvent.emit(newEvent);
+	}
+
+	hasEventsAtHour(hour: number): CalendarEvent[] {
+		const dateHourStart = new Date(this.day);
+		dateHourStart.setHours(hour, 0, 0, 0);
+
+		const dateHourEnd = new Date(this.day);
+		dateHourEnd.setHours(hour + 1, 0, 0, 0);
+
+		return this.events.filter(event =>
+			event.startDate < dateHourEnd && event.endDate > dateHourStart
 		);
 	}
 
-	getEventTitle(hour: number): string | null {
-		const dateHour = new Date(this.day);
-		dateHour.setHours(hour, 0, 0, 0);
-		const event = this.calendar_events.find(e =>
-			e.start <= dateHour && e.end > dateHour
-		);
-		return event ? event.title : null;
+	@Output() saveEvent = new EventEmitter<CalendarEvent>();
+	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
+	onSaveEvent(updatedEvent: CalendarEvent) {
+		this.saveEvent.emit(updatedEvent);
 	}
-
-	toggleEvent(hour: number): void {
-		const dateHour = new Date(this.day);
-		dateHour.setHours(hour, 0, 0, 0);
-
-		const index = this.calendar_events.findIndex(event =>
-			event.start.getTime() === dateHour.getTime()
-		);
-
-		if (index >= 0) {
-			this.calendar_events.splice(index, 1); // Remove event at that hour
-		} else {
-			this.calendar_events.push({
-				title: 'New Event',
-				start: new Date(dateHour),
-				end: new Date(dateHour.getTime() + 60 * 60 * 1000), // 1 hour event
-				color: 'blue'
-			});
-		}
+	onDeleteEvent(eventToDelete: CalendarEvent) {
+		this.deleteEvent.emit(eventToDelete);
 	}
 }

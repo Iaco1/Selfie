@@ -1,5 +1,5 @@
 <div class="container">
-	{{ getName(month) }} {{ year }}
+	<strong>{{ getName(month) }} {{ year }}</strong>
 	<div class="date-grid">
 	@for (d of week_days; track d.id) {
 		@if( visualize == 'month' ) {
@@ -11,12 +11,14 @@
 	@for (i of createRange(prev_days); track i) {
 		<div>{{ i + min }}</div>
 	}
-	@for (day of days; track day.id) {
-		<day
-			[day]="day.date"
-			[visualize]="visualize">
-		</day>
-	}
+	<day
+		*ngFor="let day of days"
+		[day]="day.date"
+		[visualize]="visualize"
+		[events]="getEventsForDay(day.date)"
+		(saveEvent)="onSaveEvent($event)"
+		(deleteEvent)="onDeleteEvent($event)">
+	</day>
 	@for (i of createRange(next_days); track i) {
 		<div>{{ i }}</div>
 	}

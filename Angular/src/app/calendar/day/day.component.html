@@ -4,20 +4,32 @@
 			{{ getName() }}
 		</div>
 	}
-	<div class="number_of_month">
+	<div class="number_of_month has-text-centered" (click)="createEvent()">
 		{{ day.getDate() }}
 	</div>
 	@if ( visualize == "day" || visualize == "week" ) {
 		<div class="column no-space-between">
 			@for (hour of hours; track hour) {
-				<div
-					class="cell day-cell"
-					(click)="toggleEvent(hour)"
-					[class.has-background-primary-light]="hasEventAtHour(hour)"
-					style="cursor: pointer;">
-					{{ getEventTitle(hour) || (hour + ':00') }}
+				<div class="cell day-cell">
+					<div (click)="createEvent(hour)">
+						{{ hour + ':00' }}
+					</div>
+					<event
+						*ngFor="let event of hasEventsAtHour(hour)"
+						[evento]="event"
+						(save)="onSaveEvent($event)"
+						(delete)="onDeleteEvent($event)">
+					</event>
 				</div>
 			}
 		</div>
+	}
+	@if (visualize == "month") {
+		<event
+			*ngFor="let event of events"
+			[evento]="event"
+			(save)="onSaveEvent($event)"
+			(delete)="onDeleteEvent($event)">
+		</event>
 	}
 </div>

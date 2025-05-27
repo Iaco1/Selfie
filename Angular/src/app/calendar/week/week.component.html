@@ -1,11 +1,13 @@
-<p>week works!</p>
 <div class="fixed-grid has-7-cols">
 	<div class="grid">
 	@for(i of createWeek(); track i.id) {
 		<div class="cell">
 			<day
 				[day]="i.date"
-				[visualize]="'week'">
+				[visualize]="'week'"
+				[events]="events"
+				(saveEvent)="onSaveEvent($event)"
+				(deleteEvent)="onDeleteEvent($event)">
 			</day>
 		</div>
 	}

@@ -2,7 +2,9 @@
 	color: yellow;
 }
 .number_of_month {
-	color: green ;
+	color: lightgreen ;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .day-cell {
 	border: 1px solid #ddd;

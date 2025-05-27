@@ -1,79 +1,33 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CalendarEvent } from '../models/calendar-event.model';
 
 @Component({
-	selector: 'app-event',
+	selector: 'event',
 	imports: [CommonModule, FormsModule],
 	templateUrl: './event.component.html',
 	styleUrl: './event.component.css'
 })
 export class EventComponent {
-	@Input() visualize: string = "";
+	@Input() evento!: CalendarEvent;
+	@Output() save = new EventEmitter<CalendarEvent>();
+	@Output() delete = new EventEmitter<CalendarEvent>();
 
-	event = {
-		id: 'mongoDB choose me :P',
-		info: {
-			note: 'go to luigi',
-			description: "go to luigi's house at 10",
-			location: "luigi's house",
-			colour: 'green',
-			emoji: ':3'
-		},
-		dateFrom: new Date(),
-		dateTo: new Date(),
-		who: [
-			{ id: 0, name: 'its me Mario!' },
-			{ id: 1, name: 'Toad' }
-		],
-		repeat: [
-			{ id: 0, time: '5 min' },
-			{ id: 1, time: '1 hour' },
-			{ id: 2, time: '1 day' },
-			{ id: 3, time: '2 day' },
-			{ id: 4, time: '1 week' }
-		],
-	};
-
-	infos: any[] = [];
-
-	constructor() {
-		this.infos = Object.entries(this.event.info)
-			.map(([key, value], index) =>
-			({
-				id: index,
-				name: key,
-				value: value,
-				hidden: true,
-				icon: ""
-			}));
-		//add icons to the description
-		let i: any;
-		if (i = this.infos.find(info => info.name === "description")) {	i.icon = "clipboard"; }
-		if (i = this.infos.find(info => info.name === "location")) { i.icon = "location-dot"; }
-		if (i = this.infos.find(info => info.name === "emoji")) { i.icon = "face-smile"; }
-		//console.log(this.infos);
+	showModal = false;
+	openModal() {
+		this.showModal = true;
+	}
+	closeModal() {
+		this.showModal = false;
 	}
 
-	toggle(info: any) {
-		info.hidden = !info.hidden;
+	saveEvent() {
+		this.save.emit(this.evento);
+		this.closeModal();
 	}
-
-	edit(info: any) {
-		info.hidden = true;
-		// This is the assertion TypeScript needs:
-		this.event.info[info.name as keyof typeof this.event.info] = info.value;
-	}
-
-	trackById(index: number, item: any) {
-		return item.id;
-	}
-
-	editDateFrom() {
-		console.log('edit date from not implemented yet');
-	}
-
-	editDateTo() {
-		console.log('edit date to   not implemented yet');
+	deleteEvent() {
+		this.delete.emit(this.evento);
+		this.closeModal();
 	}
 }
