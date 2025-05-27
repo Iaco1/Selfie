@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  navbarMenuOpen = false;
   constructor(private router: Router ) {}
   navigateToHomePage(){
     this.router.navigate(['/HomepageComponent']);
@@ -20,5 +21,13 @@ export class HeaderComponent {
   }
   navigateToSignupComponent(){
     this.router.navigate(['/SignupComponent']);
+  }
+  toggleNavbarBurger(navbarBurger: HTMLAnchorElement){
+    if (navbarBurger.classList.contains('is-active')) {
+      navbarBurger.classList.remove('is-active');
+    }else{
+      navbarBurger.classList.add('is-active');
+    }
+    this.navbarMenuOpen = !this.navbarMenuOpen;
   }
 }

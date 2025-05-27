@@ -12,6 +12,7 @@ import {FormsModule} from '@angular/forms';
 })
 export class HomeheaderComponent {
   sidebarIsToggled = false;
+  navbarMenuOpen = false;
 
   constructor(private router: Router ) {}
 
@@ -38,5 +39,14 @@ export class HomeheaderComponent {
   navigateToHomepage(){
     console.log("navigateToHomepage ran");
     this.router.navigate([{outlets: {header: "HomeheaderComponent", primary: "HomepageComponent"}}]);
+  }
+
+  toggleNavbarBurger(navbarBurger: HTMLAnchorElement){
+    if (navbarBurger.classList.contains('is-active')) {
+      navbarBurger.classList.remove('is-active');
+    }else{
+      navbarBurger.classList.add('is-active');
+    }
+    this.navbarMenuOpen = !this.navbarMenuOpen;
   }
 }

@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="columns is-centered">
-    <form [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column is-two-fifths">
+    <form [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column is-two-fifths-desktop is-two-thirds-tablet">
       <div #emailfield class="field">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">
@@ -18,15 +18,15 @@
         </div>
       </div>
       <div #passwordfield class="field">
-        <div class="level">
-          <p class="control has-icons-left has-icons-right level-item">
-            <input #passwordInputTag class="input" type="password" placeholder="Password"
-                   [formControl]="passwordInputControl">
-            <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-          </p>
-          <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInputTag, eyeIcon)"></i>
+        <div class="control has-icons-left has-icons-right level-item">
+          <input #passwordInputTag class="input" type="password" placeholder="Password"
+                 [formControl]="passwordInputControl">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+          <span class="icon is-small is-right">
+            <i #eyeIcon class="fas fa-eye" (click)="togglePasswordVisibility(passwordInputTag, eyeIcon)" style="pointer-events: auto; cursor: pointer; z-index: 1;"></i>
+          </span>
         </div>
       </div>
       <div class="field is-grouped is-grouped-centered">

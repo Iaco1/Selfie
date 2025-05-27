@@ -2,11 +2,11 @@
   <div class="navbar-brand">
     <a class="navbar-item" href="#" (click)="navigateToHomePage()">
       <figure class="image" style="height: 52px; width: auto">
-        <img src="/selfie-brand3.png" >
+        <img src="/selfie-brand3.png" alt="brand logo" >
       </figure>
     </a>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+    <a #navbarBurger role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" (click)="toggleNavbarBurger(navbarBurger)">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -14,14 +14,14 @@
     </a>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+  <div id="navbarBasicExample" class="navbar-menu" [class.is-active]="navbarMenuOpen">
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary" (click)="navigateToSignupComponent()">
+          <a class="button is-primary" (click)="navigateToSignupComponent(); toggleNavbarBurger(navbarBurger);">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light" (click)="navigateToLoginComponent()">
+          <a class="button is-light" (click)="navigateToLoginComponent(); toggleNavbarBurger(navbarBurger);">
             Log in
           </a>
         </div>
@@ -29,3 +29,6 @@
     </div>
   </div>
 </nav>
+
+
+<!--in this very moment i have navbar which has a burger that is shown when i reduce the window size and on mobile. The burger is supposed to have the buttons and I'm trying to understand how this -->
