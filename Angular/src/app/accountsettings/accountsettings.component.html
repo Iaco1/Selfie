@@ -40,6 +40,7 @@
         </div>
         <hr>
         <h1>My Account</h1>
+        <app-datumupdater [datum]="username" [datumStorageKey]="usernameStorageKey" [datumName]="usernameFieldName" [datumType]="DatumType.STRING" [placeholderText]="'your username'"></app-datumupdater>
         <div class="level">
           <div class="level-left">Email: </div>
           <span class="level-item" [class.is-hidden]="emailEditorHidden">
