@@ -21,4 +21,12 @@ export class SidebarComponent {
   navigateToAccountsettings(){
     this.router.navigate(['/AccountsettingsComponent']);
   }
+
+  navigateToPomodoro(){
+    this.router.navigate(['/PomodoroComponent']);
+  }
+
+  navigateToNotes(){
+    this.router.navigate(['/NotesComponent']);
+  }
 }

@@ -12,8 +12,8 @@ import {RouterOutlet, Router} from '@angular/router';
         <p> Hello World from the app component</p>
         <router-outlet name="primary"></router-outlet>
       </div>
-
     </div>
+    <router-outlet name="footer"></router-outlet>
 
   `
 })
