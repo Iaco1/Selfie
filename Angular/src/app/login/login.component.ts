@@ -13,10 +13,10 @@ import {RouterOutlet, Router} from '@angular/router';
   styleUrl: 'login.component.css'
 })
 export class LoginComponent {
-  emailInput =  new FormControl('', [Validators.required, Validators.email]);
+  usernameInput =  new FormControl('', [Validators.required]);
   passwordInputControl = new FormControl('');
   loginGroup = new FormGroup({
-    emailInput: this.emailInput, passwordInputControl: this.passwordInputControl
+    usernameInput: this.usernameInput, passwordInputControl: this.passwordInputControl
   })
   protected timeout: number = 2000;
 
@@ -37,9 +37,11 @@ export class LoginComponent {
   }
 
   onSubmit(){
+    //this.testdbquery(this.usernameInput.value, this.passwordInputControl.value, "davideiacomino");
+
     let message: string = "<p>log in successful</p>\n";
 
-    if(this.emailInput.invalid){
+    if(this.usernameInput.invalid){
       console.log("invalid form");
     }else{
       console.log("form valid")
@@ -50,4 +52,24 @@ export class LoginComponent {
     }
     return
   }
+/*
+  testdbquery(email: string | null, password: string | null, username: string| null){
+    if(!email || !password || !username ){
+      console.log("one of the inputs (email, password, username) are null, undefined, false, 0, `` or NaN");
+      return;
+    }
+
+    this.authService.http.post('/users/login', {
+      email: email,
+      password: password,
+    }).subscribe({
+      next: res => {
+        console.log('Logged in:', res);
+      },
+      error: err => {
+        console.error('Login failed:', err);
+      }
+    });
+
+  }*/
 }

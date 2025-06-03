@@ -24,5 +24,36 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+const bcrypt = require('bcrypt');           // Import bcrypt for password hashing comparison
+const jwt = require('jsonwebtoken');        // Import JWT for generating authentication tokens
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  console.log('Login attempt:', email, password);
+
+  const user = await User.findOne({ email });
+  console.log('User found:', user);
+
+  if (!user) {
+    console.log('No user found');
+    return res.status(401).send('Invalid email');
+  }
+
+  const valid = await bcrypt.compare(password, user.password);
+  console.log('Password valid:', valid);
+
+  if (!valid) {
+    console.log('Invalid password');
+    return res.status(401).send('Invalid credentials');
+  }
+
+  const token = jwt.sign({ userId: user._id }, 'secretKey');
+  console.log('JWT token generated:', token);
+
+  res.json({ token });
+});
+
+
+
 // Export the router to be used in app.js
 module.exports = router;
