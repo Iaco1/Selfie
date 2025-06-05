@@ -22,5 +22,6 @@ export class AppComponent {
     this.router.navigate([{outlets: { header: 'HeaderComponent'}}]);
   }
 
-  title = 'Angular';
+  title = 'Selfie';
+
 }
