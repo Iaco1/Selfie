@@ -1,1 +1,7 @@
-<dateselect></dateselect>
+<dateselect
+	[need_time]="true"
+	(changedDayEvent)="changedDay($event)"
+	(changeDWMY)="changedDwmy($event)">
+</dateselect>
+
+<p>Day: {{day}}, selected: {{dwmy}}</p>
