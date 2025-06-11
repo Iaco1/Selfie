@@ -1,0 +1,16 @@
+.flipY {
+  animation: flipHorizontally 1s linear infinite;
+}
+.flipX {
+  animation: flipVertically 1s linear infinite;
+}
+
+@keyframes flipHorizontally {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes flipVertically {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(360deg); }
+}

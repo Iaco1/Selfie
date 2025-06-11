@@ -9,7 +9,6 @@ import {RouterOutlet, Router} from '@angular/router';
     <div class="is-flex">
       <router-outlet name="aside"></router-outlet>
       <div class="container">
-        <p> Hello World from the app component</p>
         <router-outlet name="primary"></router-outlet>
       </div>
     </div>
