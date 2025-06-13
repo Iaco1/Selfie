@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'dateselect',
+	selector: 'dateselect',standalone: true,
 	imports: [CommonModule, FormsModule],
 	templateUrl: './dateselect.component.html',
 	styleUrl: './dateselect.component.css'
@@ -22,7 +22,7 @@ export class DateselectComponent {
 	}
 
 	//fai in modo che angular cambi il template...
-	cambiaRiferimento(str : string) {
+	cambiaRiferimento(str : string = "") {
 		this.today = new Date(this.today);
 		this.changedDayEvent.emit(this.today);
 //  console.log(str, this.today);
@@ -46,5 +46,20 @@ export class DateselectComponent {
 		};
 		operazioni[dwmy]();
 		this.cambiaRiferimento(direz + this.dwmy);
+	}
+	//time 00:00
+	@Input() need_time = false;
+	time: string = "";
+	onTimeChange(newValue: string) {
+		// console.log("CHANGE TIME", newValue);
+		if (!newValue || !this.today) return;
+
+		const [hoursStr, minutesStr] = newValue.split(':');
+		const hours = parseInt(hoursStr, 10);
+		const minutes = parseInt(minutesStr, 10);
+	  
+		this.today.setHours(hours, minutes, 0, 0);
+		console.log("Updated this.day:", this.today);
+		this.cambiaRiferimento();
 	}
 }

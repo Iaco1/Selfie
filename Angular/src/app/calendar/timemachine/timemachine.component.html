@@ -4,6 +4,12 @@
     Time Machine
     <i class="fa-solid fa-copyright fa-xs"></i>
   </div>
-  <dateselect></dateselect>
+  <dateselect
+    [need_time]="true"
+	  (changedDayEvent)="changedDay($event)"
+	  (changeDWMY)="changedDwmy($event)">
+
+  </dateselect>
+  <p>Day: {{day}}, selected: {{dwmy}}</p>
 </div>
 
