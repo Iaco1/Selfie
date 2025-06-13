@@ -8,12 +8,12 @@
 <body>
   <div class="columns is-centered">
     <form [formGroup]="loginGroup" (ngSubmit)="onSubmit()" class="column is-two-fifths-desktop is-two-thirds-tablet">
-      <div #emailfield class="field">
-        <label class="label">Email</label>
+      <div #usernamefield class="field">
+        <label class="label">Username</label>
         <div class="control has-icons-left has-icons-right">
-          <input class="input" type="email" placeholder="Email input" value="hello@" [formControl]="emailInput">
+          <input class="input" type="email" placeholder="Username input" value="user-Name11" [formControl]="usernameInput">
           <span class="icon is-small is-left">
-            <i class="fas fa-envelope"></i>
+            <i class="fas fa-user"></i>
           </span>
         </div>
       </div>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="field is-grouped is-grouped-centered">
-        <button type="submit" [disabled]="emailInput.invalid" class="button is-primary is-outlined"> Login</button>
+        <button type="submit" [disabled]="usernameInput.invalid" class="button is-primary is-outlined"> Login</button>
       </div>
     </form>
   </div>

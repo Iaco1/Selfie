@@ -12,6 +12,8 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {TimemachineComponent} from './calendar/timemachine/timemachine.component';
 import {CalendarComponent} from './calendar/calendar.component';
 import {AccountsettingsComponent} from './accountsettings/accountsettings.component';
+import {PomodoroComponent} from './pomodoro/pomodoro.component';
+import {NotesComponent} from './notes/notes.component';
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -21,9 +23,11 @@ export const routes: Routes = [
   {path: 'HeaderComponent', component: HeaderComponent, outlet: 'header'},
   {path: 'HomeheaderComponent', component: HomeheaderComponent, outlet: 'header'},
   {path: 'SidebarComponent', component: SidebarComponent, outlet: 'aside'},
-  {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'primary'},
+  {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'footer'},
   {path: 'CalendarComponent', component: CalendarComponent, outlet: 'primary'},
   {path: 'AccountsettingsComponent', component: AccountsettingsComponent, outlet: 'primary'},
+  {path: 'PomodoroComponent', component: PomodoroComponent, outlet: 'primary'},
+  {path: 'NotesComponent', component: NotesComponent, outlet: 'primary'},
 ];
 
 export const appConfig: ApplicationConfig = {

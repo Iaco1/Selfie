@@ -24,13 +24,13 @@ export class CalendarEvent {
 
 	splitDateTime(dateObj: Date): { date: string; time: string } {
 		const pad = (n: number) => n.toString().padStart(2, '0');
-	
+
 		const year = dateObj.getFullYear();
 		const month = pad(dateObj.getMonth() + 1); // getMonth() is 0-based
 		const date = pad(dateObj.getDate());
 		const hours = pad(dateObj.getHours());
 		const minutes = pad(dateObj.getMinutes());
-	
+
 		return {
 			date: `${year}-${month}-${date}`,
 			time: `${hours}:${minutes}`

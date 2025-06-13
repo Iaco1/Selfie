@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import {DatumupdaterComponent} from '../datumupdater/datumupdater.component';
-import {NgOptimizedImage} from "@angular/common";
 import {DatumType} from "../datumupdater/datumtype.enum";
 
 @Component({
   selector: 'app-accountsettings',
   imports: [
     DatumupdaterComponent,
-    NgOptimizedImage
   ],
   templateUrl: './accountsettings.component.html',
   styleUrl: './accountsettings.component.css'
@@ -16,6 +14,10 @@ export class AccountsettingsComponent {
   name: string;
   birthday: Date;
   email: string;
+
+  usernameStorageKey = 'username';
+  username: string = localStorage.getItem(this.usernameStorageKey) || 'default-username';
+  usernameFieldName = 'Username';
 
   passwordStorageKey: string = 'password';
   userPassword: string = localStorage.getItem(this.passwordStorageKey) || "password1234";
