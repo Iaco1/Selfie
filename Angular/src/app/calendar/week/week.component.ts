@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DayComponent } from '../day/day.component';
-import { CalendarEvent } from '../models/calendar-event.model';
+import { CalendarEvent } from '../../types/calendar-event.model';
 
 @Component({
 	selector: 'week',

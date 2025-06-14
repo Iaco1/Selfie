@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CalendarEvent } from '../models/calendar-event.model';
+import { CalendarEvent } from '../../types/calendar-event.model';
 import { EventComponent } from '../event/event.component';
 
 @Component({

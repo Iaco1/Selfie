@@ -13,7 +13,7 @@ import {TimemachineComponent} from './calendar/timemachine/timemachine.component
 import {CalendarComponent} from './calendar/calendar.component';
 import {AccountsettingsComponent} from './accountsettings/accountsettings.component';
 import {PomodoroComponent} from './pomodoro/pomodoro.component';
-import {NotesComponent} from './notes/notes.component';
+import {SearchNotesComponent} from './searchnotes/search-notes.component';
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -27,7 +27,7 @@ export const routes: Routes = [
   {path: 'CalendarComponent', component: CalendarComponent, outlet: 'primary'},
   {path: 'AccountsettingsComponent', component: AccountsettingsComponent, outlet: 'primary'},
   {path: 'PomodoroComponent', component: PomodoroComponent, outlet: 'primary'},
-  {path: 'NotesComponent', component: NotesComponent, outlet: 'primary'},
+  {path: 'SearchNotesComponent', component: SearchNotesComponent, outlet: 'primary'},
 ];
 
 export const appConfig: ApplicationConfig = {

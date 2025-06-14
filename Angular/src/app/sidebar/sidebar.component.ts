@@ -27,6 +27,6 @@ export class SidebarComponent {
   }
 
   navigateToNotes(){
-    this.router.navigate(['/NotesComponent']);
+    this.router.navigate(['/SearchNotesComponent']);
   }
 }
