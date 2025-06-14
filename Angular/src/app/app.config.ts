@@ -14,6 +14,7 @@ import {CalendarComponent} from './calendar/calendar.component';
 import {AccountsettingsComponent} from './accountsettings/accountsettings.component';
 import {PomodoroComponent} from './pomodoro/pomodoro.component';
 import {NotesComponent} from './notes/notes.component';
+import {NotificationComponent} from './notification/notification.component';
 
 export const routes: Routes = [
   {path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -22,12 +23,13 @@ export const routes: Routes = [
   {path: 'SuccessComponent', component: SuccessComponent, outlet: 'primary'},
   {path: 'HeaderComponent', component: HeaderComponent, outlet: 'header'},
   {path: 'HomeheaderComponent', component: HomeheaderComponent, outlet: 'header'},
-  {path: 'SidebarComponent', component: SidebarComponent, outlet: 'aside'},
+  {path: 'SidebarComponent', component: SidebarComponent, outlet: 'asideLeft'},
   {path: 'TimemachineComponent', component: TimemachineComponent, outlet: 'footer'},
   {path: 'CalendarComponent', component: CalendarComponent, outlet: 'primary'},
   {path: 'AccountsettingsComponent', component: AccountsettingsComponent, outlet: 'primary'},
   {path: 'PomodoroComponent', component: PomodoroComponent, outlet: 'primary'},
   {path: 'NotesComponent', component: NotesComponent, outlet: 'primary'},
+  {path: 'NotificationComponent', component: NotificationComponent, outlet: 'asideRight'},
 ];
 
 export const appConfig: ApplicationConfig = {

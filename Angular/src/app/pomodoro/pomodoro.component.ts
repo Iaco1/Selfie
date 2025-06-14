@@ -1,5 +1,6 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, Renderer2, ViewChild} from '@angular/core';
 import {CyclePhase} from './cyclephase.enum';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-pomodoro',
@@ -25,6 +26,8 @@ export class PomodoroComponent {
   @ViewChild('repetitionsInput') repetitionsInput!: ElementRef<HTMLInputElement>;
   repetitionsLeft = 5;
 
+  constructor(private router: Router) {}
+
   ngAfterViewInit() {
     this.repetitionsLeft = Number(this.repetitionsInput.nativeElement.value);
   }
@@ -37,9 +40,14 @@ export class PomodoroComponent {
     this.autocomputedcycles = Math.floor(tst / (si + bi));
   }
 
+  emitNotification(){
+    this.router.navigate([{outlets: {asideRight: 'NotificationComponent'} }]);
+  }
+
   startCycle(){
     this.repetitionsLeft = Number(this.repetitionsInput.nativeElement.value);
     this.resumeCycle();
+    this.emitNotification();
   }
 
   resumeCycle(){

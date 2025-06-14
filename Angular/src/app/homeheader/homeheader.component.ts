@@ -17,12 +17,12 @@ export class HomeheaderComponent {
   constructor(private router: Router ) {}
 
   openSidebar(){
-    this.router.navigate([{outlets: { header: "HomeheaderComponent", aside: 'SidebarComponent'}}]);
+    this.router.navigate([{outlets: { header: "HomeheaderComponent", asideLeft: 'SidebarComponent'}}]);
     console.log("openSideBar ran");
   }
 
   closeSidebar(){
-    this.router.navigate([{outlets: {aside: null}}]);
+    this.router.navigate([{outlets: {asideLeft: null}}]);
     console.log("closeSideBar ran");
   }
 
