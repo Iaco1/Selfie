@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import {RouterOutlet, Router} from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HttpClientModule],
   template: `
     <router-outlet name="header"></router-outlet>
     <div class="is-flex">

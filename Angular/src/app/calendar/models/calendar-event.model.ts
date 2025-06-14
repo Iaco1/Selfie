@@ -5,6 +5,12 @@ export class CalendarEvent {
 	start : {date: string, time:string}; // e.g., {date: '2025-05-07', time: '09:00:00'}
 	end : {date: string, time:string};   // e.g., {date: '2025-05-08', time: '12:00:00'}
 	colour? : string;
+	//TODO
+	user?: string;
+	location?: string;
+	repeat?: string;
+	notification?: [];
+	pomodoro?: {bool: false, studyFor: string, restFor: string};
 
 	constructor(start: Date, durationInHours: number = 1, colour: string = "blue",
 		title: string = "New Event", description:string="") {
