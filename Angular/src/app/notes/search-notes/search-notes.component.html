@@ -1,0 +1,11 @@
+<p>notes works!</p>
+<note [markdown]="'**rendered** by *marked*'"></note>
+<button (click)="createNote()">Create New Note</button>
+
+<ul>
+  <li *ngFor="let note of notes">
+    {{ note.title }}
+    <button (click)="editNote(note.id)">Edit</button>
+  </li>
+</ul>
+
