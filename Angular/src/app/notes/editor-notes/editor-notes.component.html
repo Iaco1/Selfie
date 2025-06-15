@@ -1,1 +1,25 @@
-<p>editor works!</p>
+<p> editing note with id: {{noteId}} </p>
+<div class="card">
+	<header class="card-header">
+		<p class="card-header-title">
+			<input [(ngModel)]="me.title" placeholder="Title" class="input is-primary"/>
+		</p>
+	</header>
+	<div class="card-content">
+		<textarea [(ngModel)]="me.text" rows="10" class="textarea" placeholder="Your note..."></textarea>
+		<hr>
+		<p> creation: {{me.creation.getDate() | date: 'longDate' }}</p>
+		<p> last mod: {{me.lastModification.getDate() | date: 'longDate' }}</p>
+	</div>
+	<footer class="card-footer">
+		<a class="card-footer-item">
+			<button class="button is-success" (click)="Save()">Save</button>
+		</a>
+		<a class="card-footer-item">
+			<button class="button is-warning" (click)="Reset()">Reset</button>
+		</a>
+		<a class="card-footer-item">
+			<button class="button is-warning" (click)="Clear()">Clear</button>
+		</a>
+	</footer>
+</div>

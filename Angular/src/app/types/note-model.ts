@@ -1,20 +1,19 @@
 import { StringDate } from "./string-date";
 
 export class NoteModel {
-	id: number;
+	id: number = 0;
 	title: string;
-	length?: number;
 	text: string;
 	tags: string[];
 	creation: StringDate;
 	lastModification: StringDate;
 
-	constructor(title: string, text: string="", tags: string[] = []) {
+	constructor(title: string="", text: string="", tags: string[] = []) {
 		this.title = title;
 		this.text = text;
 		this.tags = tags;
 		let creationDate = new Date()
-		this.id = creationDate.getTime();
+		//this.id = creationDate.getTime();
 		this.creation = StringDate.fromDate(creationDate);
 		this.lastModification = this.creation.clone();
 	}

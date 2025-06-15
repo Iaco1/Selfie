@@ -1,11 +1,7 @@
-<p>notes works!</p>
-<note [markdown]="'**rendered** by *marked*'"></note>
-<button (click)="createNote()">Create New Note</button>
+<button class="button is-primary" (click)="createNote()">Create New Note</button>
 
-<ul>
-  <li *ngFor="let note of notes">
-    {{ note.title }}
-    <button (click)="editNote(note.id)">Edit</button>
-  </li>
-</ul>
-
+<div class="columns is-multiline">
+	<div class="column is-one-third" *ngFor="let note of notes">
+		<note [me]="note"></note>
+	</div>
+</div>
