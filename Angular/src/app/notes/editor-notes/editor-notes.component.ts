@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { marked } from 'marked';
 import { StringDate } from '../../types/string-date';
 import { NoteModel } from '../../types/note-model';
 import { NoteService } from '../../services/note.service';
@@ -16,6 +17,8 @@ export class EditorNotesComponent implements OnInit {
 	noteId: number | null = null;
 	me! : NoteModel;
 	originalNote: NoteModel | null = null;
+	tagsInput: string = "";
+	convertedMarkdown: string = '';
 
 	constructor(private route: ActivatedRoute, private noteService: NoteService) {}
 
@@ -31,11 +34,21 @@ export class EditorNotesComponent implements OnInit {
 			this.me = note ? { ...note } : new NoteModel();
 			this.originalNote = { ...this.me }; // shallow copy
 		}
+		this.tagsInput = this.me.tags.join(', ');
+		this.convertMarkdown();
 	}
-
+	async convertMarkdown() {
+		if (this.me?.text) {
+			this.convertedMarkdown = await marked(this.me.text);
+		}
+	}
+	Preview() {
+		this.convertMarkdown()
+	}
 	Save() {
 		if (!this.me) return;
 		console.log("save ", this.me.id);
+		this.updateTagsFromInput();  // Ensure tags are synced before saving
 		this.me.lastModification = StringDate.fromDate(new Date());
 		this.noteService.saveNote(this.me);
 		this.goBackToSearch();
@@ -48,12 +61,22 @@ export class EditorNotesComponent implements OnInit {
 		console.log("clear ", this.me.id);
 		this.me.title = "";
 		this.me.text = "";
+		this.me.tags = [];
+		this.tagsInput = "";
 	}
 	Reset() {
 		console.log("reset ", this.me.id);
 		if (this.originalNote) {
 			this.me.title = this.originalNote.title;
 			this.me.text = this.originalNote.text;
+			this.me.tags = [...this.originalNote.tags];
+			this.tagsInput = this.me.tags.join(', ');
 		}
+	}
+	updateTagsFromInput() {
+		this.me.tags = this.tagsInput
+			.split(',')
+			.map(tag => tag.trim())
+			.filter(tag => tag.length > 0);
 	}
 }

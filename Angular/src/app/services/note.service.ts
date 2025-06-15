@@ -21,7 +21,7 @@ export class NoteService {
 	}
 
 	saveNote(note: NoteModel) {
-    	let date = new Date();
+		let date = new Date();
 		if (!note.id) {
 			note.id = this.nextId++;
 			note.creation = StringDate.fromDate(date);

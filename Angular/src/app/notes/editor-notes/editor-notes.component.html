@@ -6,12 +6,48 @@
 		</p>
 	</header>
 	<div class="card-content">
-		<textarea [(ngModel)]="me.text" rows="10" class="textarea" placeholder="Your note..."></textarea>
+		<div class="columns">
+			<!-- Left column: textarea -->
+			<div class="column is-half">
+				<label class="label">text or Markdown</label>
+				<textarea [(ngModel)]="me.text" rows="10" class="textarea" placeholder="Your note..."></textarea>
+			</div>
+			<!-- Right column: markdown preview -->
+			<div class="column is-half">
+				<label class="label">Preview</label>
+				<div [innerHTML]="convertedMarkdown"></div>
+			</div>
+		</div>
 		<hr>
-		<p> creation: {{me.creation.getDate() | date: 'longDate' }}</p>
-		<p> last mod: {{me.lastModification.getDate() | date: 'longDate' }}</p>
+		<div class="columns">
+			<!-- Left column: creation and last modification dates -->
+			<div class="column is-half">
+				<p>Creation: {{ me.creation.getDate() | date: 'longDate' }}</p>
+				<p>Last Modified: {{ me.lastModification.getDate() | date: 'longDate' }}</p>
+			</div>		
+			<!-- Right column: tags input -->
+			<div class="column is-half">
+				<div class="field">
+					<div class="level">
+						<label class="label">Tags</label>
+						<p class="help">e.g. work, personal, ideas</p>
+					</div>
+					<div class="control">
+						<input
+							[(ngModel)]="tagsInput"
+							(ngModelChange)="updateTagsFromInput()"
+							placeholder="Enter tags, comma-separated"
+							class="input"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>				  
 	</div>
 	<footer class="card-footer">
+		<a class="card-footer-item">
+			<button class="button is-info" (click)="Preview()">Preview</button>
+		</a>
 		<a class="card-footer-item">
 			<button class="button is-success" (click)="Save()">Save</button>
 		</a>
@@ -19,7 +55,7 @@
 			<button class="button is-warning" (click)="Reset()">Reset</button>
 		</a>
 		<a class="card-footer-item">
-			<button class="button is-warning" (click)="Clear()">Clear</button>
+			<button class="button is-danger" (click)="Clear()">Clear</button>
 		</a>
 	</footer>
 </div>

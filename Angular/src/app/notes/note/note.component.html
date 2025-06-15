@@ -12,6 +12,13 @@
 		<hr>
 		<p> creation: {{me.creation.getDate() | date: 'longDate' }}</p>
 		<p> last mod: {{me.lastModification.getDate() | date: 'longDate' }}</p>
+		<!-- Tags section -->
+		<div class="tags" *ngIf="me.tags && me.tags.length">
+			<span *ngFor="let tag of me.tags"
+				class="tag is-blue is-info is-rounded">
+				{{ tag }}
+			</span>
+		</div>
 	</div>
 	<footer class="card-footer">
 		<a class="card-footer-item">
