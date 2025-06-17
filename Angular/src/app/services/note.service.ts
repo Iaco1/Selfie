@@ -20,11 +20,11 @@ export class NoteService {
 		return this.notes.find(note => note.id === id);
 	}
 
-	saveNote(note: NoteModel) {
-		let date = new Date();
+	saveNote(note: NoteModel, date: Date) {
 		if (!note.id) {
 			note.id = this.nextId++;
 			note.creation = StringDate.fromDate(date);
+			note.lastModification = note.creation.clone();
 			this.notes.push(note);
 		} else {
 			const existing = this.notes.find(n => n.id === note.id);

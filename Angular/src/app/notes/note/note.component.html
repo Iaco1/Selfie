@@ -10,8 +10,8 @@
 	<div class="card-content">
 		<div [innerHTML]="convertedMarkdown"></div>
 		<hr>
-		<p> creation: {{me.creation.getDate() | date: 'longDate' }}</p>
-		<p> last mod: {{me.lastModification.getDate() | date: 'longDate' }}</p>
+		<p> creation: {{me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+		<p> last mod: {{me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
 		<!-- Tags section -->
 		<div class="tags" *ngIf="me.tags && me.tags.length">
 			<span *ngFor="let tag of me.tags"
