@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { marked } from 'marked';
-import { StringDate } from '../../types/string-date';
 import { NoteModel } from '../../types/note-model';
 import { NoteService } from '../../services/note.service';
 import { TimeMachineService } from '../../services/time-machine.service';
@@ -20,7 +19,7 @@ export class EditorNotesComponent implements OnInit {
 	me! : NoteModel;
 	originalNote: NoteModel | null = null;
 	tagsInput: string = "";
-	convertedMarkdown: string = '';
+	convertedMarkdown: string = "";
 
 	constructor(
 		private route: ActivatedRoute,

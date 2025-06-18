@@ -7,6 +7,15 @@
 	<div class="number_of_month has-text-centered" (click)="createEvent()">
 		{{ day.getDate() }}
 	</div>
+	@if (visualize != "year") {
+		<event
+			*ngFor="let event of (visualize === 'month' ? dayEvents : dayEvents.filter(allDay))"
+			[evento]="event"
+			[cornerMask]="getCornerMask(event)"
+			(save)="onSaveEvent($event)"
+			(delete)="onDeleteEvent($event)">
+		</event>
+	}
 	@if ( visualize == "day" || visualize == "week" ) {
 		<div class="column no-space-between">
 			@for (hour of hours; track hour) {
@@ -15,21 +24,14 @@
 						{{ hour + ':00' }}
 					</div>
 					<event
-						*ngFor="let event of hasEventsAtHour(hour)"
+						*ngFor="let event of getEventsForHour(hour)"
 						[evento]="event"
+						[cornerMask]="getCornerMask(event, hour)"
 						(save)="onSaveEvent($event)"
 						(delete)="onDeleteEvent($event)">
 					</event>
 				</div>
 			}
 		</div>
-	}
-	@if (visualize == "month") {
-		<event
-			*ngFor="let event of events"
-			[evento]="event"
-			(save)="onSaveEvent($event)"
-			(delete)="onDeleteEvent($event)">
-		</event>
 	}
 </div>

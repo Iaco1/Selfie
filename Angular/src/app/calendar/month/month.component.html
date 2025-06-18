@@ -15,7 +15,7 @@
 		*ngFor="let day of days"
 		[day]="day.date"
 		[visualize]="visualize"
-		[events]="getEventsForDay(day.date)"
+		[events]="events"
 		(saveEvent)="onSaveEvent($event)"
 		(deleteEvent)="onDeleteEvent($event)">
 	</day>

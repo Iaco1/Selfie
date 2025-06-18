@@ -1,3 +1,15 @@
+<label for="sorting" class="is-size-4">Sorting</label>
+&nbsp;
+<span class="select is-normal">
+	<select [(ngModel)]="sorting" (ngModelChange)="onSortingChange()" name="sorting">
+		<option value="id" selected>Id or none</option>
+		<option value="title">Title</option>
+		<option value="creation">Creation</option>
+		<option value="lastMod">Last Modification</option>
+		<option value="length">Content Length</option>
+	</select>
+</span>
+&nbsp;
 <button class="button is-primary" (click)="createNote()">Create New Note</button>
 
 <div class="columns is-multiline">

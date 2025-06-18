@@ -1,7 +1,15 @@
-<!-- Evento cliccabile class="box is-clickable"-->
-<div #content (click)="openModal()" [ngStyle]="{ 'background-color': evento.colour }">
+<!-- Evento cliccabile -->
+<div #content
+	(click)="openModal()"
+	class="has-text-centered"
+	[ngClass]="getCornerClasses()"
+	[ngStyle]="{ 'background-color': evento.colour }">
 	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
-	<p> {{ evento.title }} </p>
+	<p>
+		<span *ngIf="cornerMask === 'left'"> {{evento.start.time.slice(0, 2)}} - </span>
+		{{ evento.title }}
+		<span *ngIf="cornerMask === 'right'"> - {{evento.end.time.slice(0, 2)}} </span>
+	</p>
 	<p>{{ evento.description }}</p>
 </div>
 

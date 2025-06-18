@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CalendarEvent } from '../../types/calendar-event.model';
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { CalendarEvent } from "../../types/calendar-event.model";
 
 @Component({
-	selector: 'event',
+	selector: "event",
 	imports: [CommonModule, FormsModule],
-	templateUrl: './event.component.html',
-	styleUrl: './event.component.css'
+	templateUrl: "./event.component.html",
+	styleUrl: "./event.component.css"
 })
 export class EventComponent {
 	@Input() evento!: CalendarEvent;
+	@Input() cornerMask: string ="none";
 	@Output() save = new EventEmitter<CalendarEvent>();
 	@Output() delete = new EventEmitter<CalendarEvent>();
 
@@ -29,5 +30,9 @@ export class EventComponent {
 	deleteEvent() {
 		this.delete.emit(this.evento);
 		this.closeModal();
+	}
+
+	getCornerClasses(): string {
+		return "rounded-"+this.cornerMask;
 	}
 }

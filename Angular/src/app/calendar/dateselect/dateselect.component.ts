@@ -97,9 +97,10 @@ export class DateselectComponent {
 	ngOnInit() {
 		if(this.liveTime) {
 			this.timer = setInterval(() => {
-				let updated = new Date(Date.now() + this.offsetMs);
+				let system_now = Date.now();
+				this.default_time = new Date(system_now);
+				this.today = new Date(system_now + this.offsetMs);
 				//console.log("Tick:", updated);
-				this.today = updated;
 				this.changedDayEvent.emit(this.today);
 			}, 1000);
 		}
