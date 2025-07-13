@@ -32,7 +32,7 @@
             <i class="fas fa-lock"></i>
           </span>
           <span class="icon is-small is-right">
-            <i #eyeIcon class="fas fa-eye" (click)="loginComponentHelper.togglePasswordVisibility(passwordInputTag, eyeIcon)" style="pointer-events: auto; cursor: pointer; z-index: 1;"></i>
+            <i #eyeIcon class="fas fa-eye" (click)="this.visualeffectsService.togglePasswordVisibility(passwordInputTag, eyeIcon)" style="pointer-events: auto; cursor: pointer; z-index: 1;"></i>
           </span>
         </div>
       </div>

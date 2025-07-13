@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterOutlet, Router} from '@angular/router';
 import { AuthService } from '../auth.service';
+import { VisualeffectsService } from '../visualeffects.service';
 
 @Component({
   selector: 'app-login',
@@ -21,20 +22,7 @@ export class LoginComponent {
   })
   protected timeout: number = 2000;
 
-  constructor(private router: Router, private authService: AuthService) {
-  }
-
-  togglePasswordVisibility(passwordInputTag: HTMLInputElement, eyeIcon: HTMLElement){
-    if(passwordInputTag.type === 'password'){
-      passwordInputTag.type = 'text'; //this will show the password
-      //changing icoon
-      eyeIcon.classList.remove('fa-eye');
-      eyeIcon.classList.add('fa-eye-slash');
-    }else{ //it's either gonna be password or text, only this method modifies it so far
-      passwordInputTag.type = 'password';
-      eyeIcon.classList.remove('fa-eye-slash');
-      eyeIcon.classList.add('fa-eye');
-    }
+  constructor(private router: Router, private authService: AuthService, protected visualeffectsService: VisualeffectsService) {
   }
 
   onSubmit(){

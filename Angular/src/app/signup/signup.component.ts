@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import { LoginComponent } from '../login/login.component';
+import {VisualeffectsService} from '../visualeffects.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +11,7 @@ import { LoginComponent } from '../login/login.component';
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
-  constructor(private router: Router, protected loginComponentHelper: LoginComponent) {
+  constructor(private router: Router, protected visualeffectsService: VisualeffectsService) {
   }
   protected timeout: number = 2000;
   emailInputControl = new FormControl('', [Validators.required, Validators.email]);
