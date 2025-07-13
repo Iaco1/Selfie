@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="auth.js" type="NodeJSConfigurationType" application-parameters="--inspect" nameIsGenerated="true" path-to-js-file="auth.js" working-dir="$PROJECT_DIR$/Express">
+    <method v="2" />
+  </configuration>
+</component>
