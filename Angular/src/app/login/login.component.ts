@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterOutlet, Router} from '@angular/router';
 import { AuthService } from '../auth.service';
 import { VisualeffectsService } from '../visualeffects.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent {
   loginGroup = new FormGroup({
     usernameInput: this.usernameInput, passwordInputControl: this.passwordInputControl
   })
-  protected timeout: number = 2000;
+  protected timeout: number = environment.timeout;
 
   constructor(private router: Router, private authService: AuthService, protected visualeffectsService: VisualeffectsService) {
   }

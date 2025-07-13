@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import { LoginComponent } from '../login/login.component';
 import {VisualeffectsService} from '../visualeffects.service';
+import {UserService} from '../user.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -11,28 +12,46 @@ import {VisualeffectsService} from '../visualeffects.service';
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
-  constructor(private router: Router, protected visualeffectsService: VisualeffectsService) {
+  constructor(private router: Router, protected visualeffectsService: VisualeffectsService, private userService: UserService) {
   }
-  protected timeout: number = 2000;
-  emailInputControl = new FormControl('', [Validators.required, Validators.email]);
+  protected timeout: number = environment.timeout;
+  emailInputControl = new FormControl('');
   passwordInputControl = new FormControl('');
   usernameInputControl = new FormControl('');
 
   signupGroup = new FormGroup({
     emailInputControl: this.emailInputControl, passwordInputControl: this.passwordInputControl, usernameInputControl: this.usernameInputControl
   })
+
+  insertNewUserInDB(email: string, password: string, username: string){
+    let message: string = "<p>signup failed</p>\n";
+    this.userService.signup(email, username, password).subscribe({
+      next: (response) => {
+        console.log("signup result: ", response.message);
+
+        if(response.status == 200){
+          message = "<p>signup successful, you can now log in with your credentials</p>\n";
+
+          setTimeout(()=>{
+            this.router.navigate([{outlets: { header: 'HeaderComponent', primary: "LoginComponent"}}]);
+          }, this.timeout);
+          this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
+        }else{
+          setTimeout(()=>{
+            this.router.navigate([{outlets: { header: 'HeaderComponent', primary: "SignupComponent"}}]);
+          }, this.timeout)
+          this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
+        }
+      }
+    })
+  }
+
+
   onSubmit(){
-    let message: string = "<p>signup successful</p>\n";
-    //console.log(this.signupGroup.controls['emailInputControl'].value);
-    if(this.emailInputControl.invalid){
-      console.log("invalid form");
+    if(this.usernameInputControl == null || this.emailInputControl == null || this.passwordInputControl == null){
+      console.log("invalid form, null username or password");
     }else{
-      console.log("valid form");
-      setTimeout(()=>{
-        this.router.navigate(["/HomepageComponent"]);
-      }, this.timeout);
-      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
+      this.insertNewUserInDB(this.emailInputControl.value!, this.passwordInputControl.value!, this.usernameInputControl.value!)
     }
-    return
   }
 }

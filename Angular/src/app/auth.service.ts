@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root', // Makes the service available throughout the application
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:4200/api'; // proxied then to the backend url, i.e. localhost:3002, to avoid cors policies blocks
+  private baseUrl = environment.baseURL; // proxied then to the backend url, i.e. localhost:3002, to avoid cors policies blocks
 
   constructor(private http: HttpClient) {}
 
