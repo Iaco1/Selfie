@@ -10,9 +10,7 @@ import { LoginComponent } from '../login/login.component';
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
-  loginComponentHelper = new LoginComponent(new Router());
-
-  constructor(private router: Router) {
+  constructor(private router: Router, protected loginComponentHelper: LoginComponent) {
   }
   protected timeout: number = 2000;
   emailInputControl = new FormControl('', [Validators.required, Validators.email]);

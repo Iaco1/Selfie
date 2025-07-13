@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterOutlet, Router} from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +14,14 @@ import {RouterOutlet, Router} from '@angular/router';
   styleUrl: 'login.component.css'
 })
 export class LoginComponent {
-  usernameInput =  new FormControl('', [Validators.required]);
+  usernameInput =  new FormControl('');
   passwordInputControl = new FormControl('');
   loginGroup = new FormGroup({
     usernameInput: this.usernameInput, passwordInputControl: this.passwordInputControl
   })
   protected timeout: number = 2000;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   togglePasswordVisibility(passwordInputTag: HTMLInputElement, eyeIcon: HTMLElement){
@@ -37,39 +38,42 @@ export class LoginComponent {
   }
 
   onSubmit(){
-    //this.testdbquery(this.usernameInput.value, this.passwordInputControl.value, "davideiacomino");
-
-    let message: string = "<p>log in successful</p>\n";
-
-    if(this.usernameInput.invalid){
-      console.log("invalid form");
+    if(this.usernameInput == null || this.passwordInputControl == null){
+      console.log("invalid form, null username or password");
     }else{
-      console.log("form valid")
-      setTimeout(()=>{
-        this.router.navigate([{outlets: { header: 'HomeheaderComponent', primary: "HomepageComponent", footer: "TimemachineComponent"}}]);
-      }, this.timeout);
-      this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
+      this.authenticate( this.usernameInput.value!, this.passwordInputControl.value!);
     }
-    return
   }
-/*
-  testdbquery(email: string | null, password: string | null, username: string| null){
-    if(!email || !password || !username ){
-      console.log("one of the inputs (email, password, username) are null, undefined, false, 0, `` or NaN");
-      return;
-    }
 
-    this.authService.http.post('/users/login', {
-      email: email,
-      password: password,
-    }).subscribe({
-      next: res => {
-        console.log('Logged in:', res);
+  authenticate(username: string, password: string){
+    let message: string = "<p>log in failed</p>\n";
+
+    this.authService.login(username, password).subscribe({
+      next: (response) => {
+        console.log("login result: ", response.message);
+
+        if(response.status == 200){ //auth succeeded
+          message = "<p>log in successful</p>\n";
+          //wait timeout and redirect to the homepage
+          setTimeout(()=>{
+            this.router.navigate([{outlets: { header: 'HomeheaderComponent', primary: "HomepageComponent", footer: "TimemachineComponent"}}]);
+          }, this.timeout);
+          this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
+        }else{ //auth failed
+          // wait timeout and redirect to login
+          setTimeout(()=>{
+            this.router.navigate([{outlets: { header: 'HeaderComponent', primary: "LoginComponent"}}]);
+          }, this.timeout);
+          this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
+        }
       },
-      error: err => {
-        console.error('Login failed:', err);
+      error: (error) => {
+        console.log("login failed: ", error);
+        setTimeout(()=>{
+            this.router.navigate([{outlets: { header: 'HeaderComponent', primary: "LoginComponent"}}]);
+          }, this.timeout);
+          this.router.navigate(['/SuccessComponent'], {queryParams: {sm: message, timeout: this.timeout}});
       }
-    });
-
-  }*/
+    })
+  }
 }

@@ -11,7 +11,7 @@
       <div #usernamefield class="field">
         <label class="label">Username</label>
         <div class="control has-icons-left has-icons-right">
-          <input class="input" type="email" placeholder="Username input" value="user-Name11" [formControl]="usernameInput">
+          <input class="input" type="email" placeholder="Username input" value="user-Name11" [formControl]="usernameInput" required>
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
           </span>
@@ -20,7 +20,7 @@
       <div #passwordfield class="field">
         <div class="control has-icons-left has-icons-right level-item">
           <input #passwordInputTag class="input" type="password" placeholder="Password"
-                 [formControl]="passwordInputControl">
+                 [formControl]="passwordInputControl" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="field is-grouped is-grouped-centered">
-        <button type="submit" [disabled]="usernameInput.invalid" class="button is-primary is-outlined"> Login</button>
+        <button type="submit" class="button is-primary is-outlined"> Login</button>
       </div>
     </form>
   </div>

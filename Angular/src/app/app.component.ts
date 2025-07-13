@@ -1,9 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {RouterOutlet, Router} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
+import {AuthService} from './auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HttpClientModule],
+  providers: [AuthService],
   template: `
     <router-outlet name="header"></router-outlet>
     <div class="is-flex">
