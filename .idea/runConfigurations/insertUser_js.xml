@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="insertUser.js" type="NodeJSConfigurationType" application-parameters="--inspect" nameIsGenerated="true" path-to-js-file="insertUser.js" working-dir="$PROJECT_DIR$/Express">
-    <method v="2" />
-  </configuration>
-</component>
