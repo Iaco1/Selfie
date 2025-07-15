@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="signup.js" type="NodeJSConfigurationType" application-parameters="--inspect" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/Express/signup.js" working-dir="$PROJECT_DIR$/Express">
+  <configuration default="false" name="signup.js" type="NodeJSConfigurationType" application-parameters="--inspect" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/Express/modules/signup.js" working-dir="$PROJECT_DIR$/Express">
     <method v="2" />
   </configuration>
 </component>
