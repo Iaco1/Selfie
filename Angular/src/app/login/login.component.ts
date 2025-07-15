@@ -40,9 +40,11 @@ export class LoginComponent {
     this.authService.authenticate(username, password).subscribe({
       next: (response) => {
         console.log("authentication result: ", response.message);
+        console.log("authToken: ", response.authToken);
 
         if(response.status == 200){ //auth succeeded
           message = "<p>log in successful</p>\n";
+          localStorage.setItem('authToken', response.authToken);
           //wait timeout and redirect to the homepage
           setTimeout(()=>{
             this.router.navigate([{outlets: { header: 'HomeheaderComponent', primary: "HomepageComponent", footer: "TimemachineComponent"}}]);

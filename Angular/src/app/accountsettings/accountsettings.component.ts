@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {DatumupdaterComponent} from '../datumupdater/datumupdater.component';
 import {DatumType} from "../datumupdater/datumtype.enum";
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-accountsettings',
@@ -28,11 +29,12 @@ export class AccountsettingsComponent {
   userProfilePicFieldName: string = "Profile Picture";
 
 
-  constructor() {
+  constructor(private userService: UserService) {
     //value initialization for name, birthday, email fields
     this.name = localStorage.getItem('name') || 'John Smith';
     this.birthday = new Date(localStorage.getItem('date') || Date.now());
     this.email = localStorage.getItem('email') || 'something@domain.com';
+    this.setAccountDetails();
   }
   nameEditorHidden = true;
   birthdayEditorHidden = true;
@@ -41,6 +43,7 @@ export class AccountsettingsComponent {
 
   toggleNameEdit(){
     this.nameEditorHidden = !this.nameEditorHidden;
+    this.setAccountDetails();
   }
   editName(newName: HTMLInputElement){
     localStorage.setItem('name', newName.value);
@@ -64,6 +67,21 @@ export class AccountsettingsComponent {
     localStorage.setItem('email', newEmailInput.value);
     this.email = newEmailInput.value;
     this.toggleEmailEdit();
+  }
+
+  setAccountDetails(){
+    console.log("authToken: ", localStorage.getItem("authToken"));
+    this.userService.getAccountDetails(localStorage.getItem("authToken")).subscribe({
+      next: (res) => {
+        const user = res.user;
+        this.username = user.username;
+        this.userPassword = user.password;
+        this.email = user.email;
+      },
+      error: (err) => {
+        console.log("get request failed: ", err);
+      }
+    })
   }
 
   protected readonly DatumType = DatumType;

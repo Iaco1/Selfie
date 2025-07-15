@@ -16,4 +16,7 @@ export class UserService {
     return this.http.post(environment.baseURL + '/signup', {email, username, password});
   }
 
+  getAccountDetails(authToken: string | null): Observable<any>{
+    return this.http.get(environment.baseURL + `/user/${authToken}`);
+  }
 }
