@@ -3,7 +3,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular
 import {RouterOutlet, Router} from '@angular/router';
 import { AuthService } from '../auth.service';
 import { VisualeffectsService } from '../visualeffects.service';
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -37,9 +37,9 @@ export class LoginComponent {
   authenticate(username: string, password: string){
     let message: string = "<p>log in failed</p>\n";
 
-    this.authService.login(username, password).subscribe({
+    this.authService.authenticate(username, password).subscribe({
       next: (response) => {
-        console.log("login result: ", response.message);
+        console.log("authentication result: ", response.message);
 
         if(response.status == 200){ //auth succeeded
           message = "<p>log in successful</p>\n";
