@@ -1,8 +1,9 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterOutlet, Router} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
+import {HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -27,5 +28,16 @@ export class AppComponent {
   }
 
   title = 'Selfie';
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler() {
+    localStorage.setItem("saveStateUrl", this.router.url);
+  }
+
+  ngOnInit(){
+    const url = localStorage.getItem("saveStateUrl");
+    if(url == null) return;
+    this.router.navigateByUrl(url!);
+  }
 
 }

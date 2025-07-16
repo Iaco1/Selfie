@@ -33,6 +33,7 @@ export class SidebarComponent {
   logout(){
     this.router.navigate([{ outlets: { header: 'HeaderComponent', asideLeft: null, primary: null, asideRight: null, footer: null }}]);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('saveStateUrl');
   }
 
 }
