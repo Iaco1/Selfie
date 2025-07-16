@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {VisualeffectsService} from '../visualeffects.service';
-import {UserService} from '../user.service';
+import {VisualeffectsService} from '../services/visualeffects.service';
+import {UserService} from '../services/user.service';
 import {environment} from '../../environments/environment';
 
 @Component({
