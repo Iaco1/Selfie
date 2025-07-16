@@ -29,4 +29,11 @@ export class SidebarComponent {
   navigateToNotes(){
     this.router.navigate(['/SearchNotesComponent']);
   }
+
+  logout(){
+    this.router.navigate([{ outlets: { header: 'HeaderComponent', asideLeft: null, primary: null, asideRight: null, footer: null }}]);
+    localStorage.removeItem('authToken');
+  }
+
 }
+
