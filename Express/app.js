@@ -33,11 +33,11 @@ app.listen(port, () => {
 })
 
 process.on('SIGINT', async () => {
-    mongoose.connection.close().then(() => {
-      console.log('Connection to mongodb closed');
-      process.exit(0);
-    }).catch((err) => {
-      console.error('Error closing connection to mongodb: ', err);
-      process.exit(1);
-    });
+  mongoose.connection.close().then(() => {
+    console.log('Connection to mongodb closed');
+    process.exit(0);
+  }).catch((err) => {
+    console.error('Error closing connection to mongodb: ', err);
+    process.exit(1);
+  });
 })

@@ -27,4 +27,24 @@ router.get('/:token', async (req, res) => {
   }
 })
 
+router.delete('/:token', async (req, res) => {
+  console.log("requested user: ", req.params.token);
+  if(!req.params.token)  res.json({
+    status: 400,
+    message: "authToken is empty"
+  })
+
+  await dbUtils.deleteUser(req.params.token).then(response => {
+    res.json({
+      status: 200,
+      message: "deletion successful"
+    });
+  }).catch(err => {
+    res.json({
+      status: 500,
+      message: "deletion failed"
+    })
+  });
+});
+
 module.exports = router;

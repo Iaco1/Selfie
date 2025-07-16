@@ -58,6 +58,28 @@
         </div>
         <hr>
         <app-datumupdater [datum]="userPassword" [datumStorageKey]="passwordStorageKey" [datumName]="passwordFieldName" [datumType]="DatumType.STRING" [placeholderText]="'some password'" ></app-datumupdater>
+        <div class="has-text-centered">
+          <button class="button is-danger" (click)="showModal = true">Delete Account</button>
+        </div>
+
+        <div class="modal" [class.is-active]="showModal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Confirm Deletion</p>
+              <button class="delete" aria-label="close" (click)="showModal = false"></button>
+            </header>
+            <section class="modal-card-body">
+              <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-danger" (click)="deleteAccount()">Yes, Delete</button>
+              <button class="button" (click)="showModal = false">Cancel</button>
+            </footer>
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>

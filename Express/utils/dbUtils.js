@@ -35,9 +35,21 @@ async function insertUser(user) {
   }
 }
 
+async function deleteUser(token) {
+  console.log("attempting deletion of: ", token);
+
+  try{
+    await User.deleteOne({email: token});
+    console.log(" deletion successful");
+  }catch(error){
+    console.log("deletion failed");
+  }
+}
+
 module.exports = {
   getUsers,
   insertUser,
   getUserByEmail,
-  getUserByUsername
+  getUserByUsername,
+  deleteUser
 };

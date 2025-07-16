@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,7 +9,7 @@ import {Router} from "@angular/router";
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
-  constructor(private router: Router) {
+  constructor(private router: Router, protected userService: UserService) {
   }
   navigateToTimemachine(){
     this.router.navigate(['/TimemachineComponent']);
@@ -28,12 +29,6 @@ export class SidebarComponent {
 
   navigateToNotes(){
     this.router.navigate(['/SearchNotesComponent']);
-  }
-
-  logout(){
-    this.router.navigate([{ outlets: { header: 'HeaderComponent', asideLeft: null, primary: null, asideRight: null, footer: null }}]);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('saveStateUrl');
   }
 
 }

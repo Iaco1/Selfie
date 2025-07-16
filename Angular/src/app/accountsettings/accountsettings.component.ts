@@ -12,6 +12,7 @@ import {UserService} from '../services/user.service';
   styleUrl: './accountsettings.component.css'
 })
 export class AccountsettingsComponent {
+  showModal: boolean = false;
   name: string;
   birthday: Date;
   email: string;
@@ -80,6 +81,17 @@ export class AccountsettingsComponent {
       },
       error: (err) => {
         console.log("get request failed: ", err);
+      }
+    })
+  }
+
+  deleteAccount(){
+    this.userService.deleteAccount(localStorage.getItem("authToken")).subscribe({
+      next: (res) => {
+        this.userService.logout();
+      },
+      error: (err) => {
+        console.log("delete request failed: ", err);
       }
     })
   }
