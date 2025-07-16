@@ -3,9 +3,9 @@ const app = express();
 const port = 3002;
 const login = require('./routes/login');
 const signup = require('./routes/signup');
-const user = require('./routes/userCruds');
-const note = require('./routes/notes');
-const event = require('./routes/events');
+const user = require('./routes/user');
+const note = require('./routes/note');
+const event = require('./routes/event');
 
 const mongoose = require("mongoose");
 const config = require('./config');
@@ -17,7 +17,7 @@ app.use("/auth", login);
 app.use("/signup", signup);
 app.use("/user", user);
 app.use("/note", note);
-app.use("/events", event);
+app.use("/event", event);
 
 mongoose.connect(config.mongoURI, {
       useNewUrlParser: true,
