@@ -71,10 +71,19 @@ async function Delete(model, id, res, text = "document") {
 	}
 }
 
+function sanitizeBody(body, allowedFields) {
+	const clean = {};
+	for (let key of allowedFields) {
+		if (body[key] !== undefined) clean[key] = body[key];
+	}
+	return clean;
+}
+
 module.exports = {
 	Create,
 	Read,
 	ReadById,
 	Update,
-	Delete
+	Delete,
+	sanitizeBody
 };

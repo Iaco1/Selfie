@@ -1,53 +1,26 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+const CRUD = require("../event-note/crud.service");
+const Event = require("../event-note/event.model");
+const router = require("express").Router();
 
-const app = express();
-const port = 3000;
+const allowed_Event = ['title', 'description', 'start', 'end', 'colour', 'user', 'location', 'repeat', 'notification', 'pomodoro'];
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// MongoDB
-mongoose.connect('mongodb://localhost:27017/calendar', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+// Routes: EVENTS
+router.post('/', async (req, res) => {
+	const cleanData = CRUD.sanitizeBody(req.body, allowed_Event);
+	await CRUD.Create(Event, cleanData, res, "event");
+});
+router.get('/', async (_, res) => {
+	await CRUD.Read(Event, res, "event");
+});
+router.get('/:id', async (req, res) => {
+	await CRUD.ReadById(Event, req.params.id, res, "event");
+});
+router.put('/:id', async (req, res) => {
+	const cleanData = CRUD.sanitizeBody(req.body, allowed_Event);
+	await CRUD.Update(Event, req.params.id, cleanData, res, "event");
+});
+router.delete('/:id', async (req, res) => {
+	await CRUD.Delete(Event, req.params.id, res, "event");
 });
 
-// Event model
-const Event = mongoose.model('Event', {
-    id: String,
-    title: String,
-    start: Date,
-    end: Date,
-    color: Object,
-    allDay: Boolean,
-});
-
-// Routes
-app.get('/events', async (req, res) => {
-    const events = await Event.find();
-    res.json(events);
-});
-
-app.post('/events', async (req, res) => {
-    const event = new Event(req.body);
-    await event.save();
-    res.json(event);
-});
-
-app.put('/events/:id', async (req, res) => {
-    const updated = await Event.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
-    res.json(updated);
-});
-
-app.delete('/events/:id', async (req, res) => {
-    await Event.deleteOne({ id: req.params.id });
-    res.json({ message: 'Event deleted' });
-});
-
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-});
+module.exports = router;
