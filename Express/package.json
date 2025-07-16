@@ -1,18 +1,21 @@
 {
-  "name": "selfie---tw-project-directory",
-  "version": "0.0.0",
-  "private": true,
+  "name": "express-test-project",
+  "version": "1.0.0",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "mongoose": "^8.15.0",
-    "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "faker": "^5.5.3",
+    "mongoose": "^8.16.2",
+    "pbkdf2-password": "^1.2.1"
   }
 }
