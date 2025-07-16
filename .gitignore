@@ -3,3 +3,5 @@ node_modules/
 /.idea/dataSources.xml
 /.idea/vcs.xml
 /.idea/Selfie.iml
+
+*.idea

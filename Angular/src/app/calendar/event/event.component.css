@@ -20,3 +20,32 @@ textarea.textarea {
 	padding-left: 10px;
 	padding-right: 10px;
 }
+
+/* Common rounded corner utility classes */
+.rounded-top {
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+
+.rounded-bottom {
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+}
+
+.rounded-left {
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
+}
+
+.rounded-right {
+	border-top-right-radius: 12px;
+	border-bottom-right-radius: 12px;
+}
+
+.rounded-all {
+	border-radius: 12px;
+}
+
+.rounded-none {
+	border-radius: 0;
+}

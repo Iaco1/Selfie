@@ -16,13 +16,15 @@
 		</select>
 	</span>
 	<span class="is-size-4"> {{ today | date: 'fullDate' }} </span>
-	<ng-container *ngIf="need_time">
+	<ng-container *ngIf="liveTime">
 		<div class="control">
 			<label for="time" class="label" style="margin-bottom: 0; padding-right: 0.5rem;">Time</label>
 		</div>
 		<div class="control">
-			<input #time type="time" class="input"
-				[(ngModel)]="time" (ngModelChange)="onTimeChange($event)" />
+			<input type="time"
+				class="input"
+				[value]="time ?? ''"
+				(input)="onTimeInput($event)" />
 		</div>
 	</ng-container>
 </div>

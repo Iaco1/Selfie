@@ -3,7 +3,7 @@ import { DateselectComponent } from './dateselect/dateselect.component';
 import { MonthComponent } from './month/month.component';
 import { DayComponent } from './day/day.component';
 import { WeekComponent } from './week/week.component';
-import { CalendarEvent } from './models/calendar-event.model';
+import { CalendarEvent } from '../types/calendar-event.model';
 
 @Component({
 	selector: 'calendar',
