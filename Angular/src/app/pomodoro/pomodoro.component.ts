@@ -1,10 +1,13 @@
 import {Component, ElementRef, Inject, Renderer2, ViewChild} from '@angular/core';
 import {CyclePhase} from './cyclephase.enum';
 import {Router} from "@angular/router";
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-pomodoro',
-  imports: [],
+  imports: [
+    FormsModule
+  ],
   templateUrl: './pomodoro.component.html',
   styleUrl: './pomodoro.component.css'
 })
@@ -17,27 +20,26 @@ export class PomodoroComponent {
   studyAnimationActive = false;
   repetitionsLeftHidden = true;
   repetitionsInputHidden = false;
-  @ViewChild('toggleCycleBtn') toggleCycleBtn!: ElementRef<HTMLButtonElement>;
-  @ViewChild('totalSessionTimeHours') tsth! : ElementRef<HTMLInputElement>;
-  @ViewChild('totalSessionTimeMinutes') tstm! : ElementRef<HTMLInputElement>;
-  @ViewChild('studyingTimeIntervalHours') stih! : ElementRef<HTMLInputElement>;
-  @ViewChild('studyingTimeIntervalMinutes') stim! : ElementRef<HTMLInputElement>;
-  @ViewChild('breakInterval') bi!: ElementRef<HTMLInputElement>;
-  @ViewChild('repetitionsInput') repetitionsInput!: ElementRef<HTMLInputElement>;
+  cycleButton = "start cycle";
+
+  sessionTime = {h: 0, m: 0, s: 0};
+  pomodoroTime = {h: 0, m: 30, s: 0};
+  breakTime = { m: 5, s: 0};
+  repetitions = 5;
   repetitionsLeft = 5;
 
   constructor(private router: Router) {}
 
   ngAfterViewInit() {
-    this.repetitionsLeft = Number(this.repetitionsInput.nativeElement.value);
+    this.repetitionsLeft = this.repetitions;
   }
 
 
   autoComputeCycles() {
-    let tst : number = Number(this.tsth.nativeElement.value)*60 + Number(this.tstm.nativeElement.value);
-    let si : number = Number(this.stih.nativeElement.value)*60 + Number(this.stim.nativeElement.value);
-    let bi : number = Number(this.bi.nativeElement.value);
-    this.autocomputedcycles = Math.floor(tst / (si + bi));
+    let sT : number = this.sessionTime.h*60 + this.sessionTime.m;
+    let pT : number = this.pomodoroTime.h*60 + this.pomodoroTime.m;
+    let bT : number = this.breakTime.m;
+    this.autocomputedcycles = Math.floor(sT / (pT + bT));
   }
 
   emitNotification(){
@@ -45,13 +47,13 @@ export class PomodoroComponent {
   }
 
   startCycle(){
-    this.repetitionsLeft = Number(this.repetitionsInput.nativeElement.value);
+    this.repetitionsLeft = this.repetitions;
     this.resumeCycle();
     this.emitNotification();
   }
 
   resumeCycle(){
-    this.toggleCycleBtn.nativeElement.innerText = "pause cycle";
+    this.cycleButton = "pause cycle";
     this.cyclephase = CyclePhase.STUDYING;
     this.breakTimeHidden = false;
     this.breakAnimationActive = false;
@@ -61,7 +63,7 @@ export class PomodoroComponent {
   }
 
   pauseCycle(){
-    this.toggleCycleBtn.nativeElement.innerText = "resume cycle";
+    this.cycleButton = "resume cycle";
     this.cyclephase = CyclePhase.RESTING;
     this.breakTimeHidden = true;
     this.studyAnimationActive = false;
@@ -81,7 +83,7 @@ export class PomodoroComponent {
   endSession() {
     this.studyTimeInputHidden = false;
     this.cyclephase = CyclePhase.IDLE;
-    this.toggleCycleBtn.nativeElement.innerText = "start cycle";
+    this.cycleButton = "start cycle";
     this.studyAnimationActive = false;
     this.breakAnimationActive = false;
     this.breakTimeHidden = false;

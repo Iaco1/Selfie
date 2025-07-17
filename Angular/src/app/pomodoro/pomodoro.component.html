@@ -4,31 +4,31 @@
     <h2>Study Time</h2>
     <div #studyTimeInput [class.is-hidden]="studyTimeInputHidden" class="field columns is-centered">
       <div class="control column is-2">
-        <input #studyingTimeIntervalHours class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles()"> hours
+        <input [(ngModel)]="pomodoroTime.h" class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles()"> hours
       </div>
       <div class="control column is-2">
-        <input #studyingTimeIntervalMinutes class="input" type="number" min="0" max="59" placeholder="Minutes" value="30" (input)="autoComputeCycles()"> minutes
+        <input [(ngModel)]="pomodoroTime.m" class="input" type="number" min="0" max="59" placeholder="Minutes" value="30" (input)="autoComputeCycles()"> minutes
       </div>
     </div>
     <div #studyTimeCountdown [class.is-hidden]="!studyTimeInputHidden">
-      <h1 [class.flipX]="studyAnimationActive">{{studyingTimeIntervalHours.value}} h : {{studyingTimeIntervalMinutes.value}} m</h1>
+      <h1 [class.flipX]="studyAnimationActive">{{pomodoroTime.h}} h : {{pomodoroTime.m}} m {{pomodoroTime.s}} s</h1>
     </div>
     <h2>Relax Time</h2>
     <div class="columns is-centered">
       <div class="column is-2">
         <div #breakTimeInput [class.is-hidden]="breakTimeHidden" class="field">
           <div class="control">
-            <input #breakInterval class="input" type="number" min="0" max="59" placeholder="Minutes" value="5" (input)="autoComputeCycles()"> minutes
+            <input [(ngModel)]="breakTime" class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
           </div>
         </div>
         <div #breakTimeCountdown [class.is-hidden]="!breakTimeHidden">
-          <h1 [class.flipX]="breakAnimationActive">{{breakInterval.value}} m</h1>
+          <h1 [class.flipX]="breakAnimationActive">{{breakTime.m}} m {{breakTime.s}} s</h1>
         </div>
       </div>
     </div>
     <div class="columns is is-centered">
       <div class="column is-2">
-        <button #toggleCycleBtn class="button has-background-primary has-text-primary-invert" (click)="toggleCycle()">start cycle</button>
+        <button class="button has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
         <button class="button is-dark mt-2" (click)="endSession()">end session</button>
       </div>
     </div>
@@ -37,7 +37,7 @@
       <div class="level-left">
         <div [class.is-hidden]="repetitionsInputHidden" class="field">
           <div class="control">
-            <input #repetitionsInput class="input" type="number" min="0" placeholder="Repetitions" value="5"> repetitions
+            <input [(ngModel)]="repetitions" class="input" type="number" min="0" placeholder="Repetitions" value="5"> repetitions
           </div>
         </div>
         <div [class.is-hidden]="repetitionsLeftHidden">
@@ -58,10 +58,10 @@
       <div class="column">
         <div class="field">
           <div class="control">
-            <input #totalSessionTimeHours class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles()"> hours
+            <input [(ngModel)]="sessionTime.h" class="input" type="number" min="0" placeholder="Hours" (input)="autoComputeCycles()"> hours
           </div>
           <div class="control">
-            <input #totalSessionTimeMinutes class="input" type="number" min="0" max="59" placeholder="Minutes" value="30" (input)="autoComputeCycles()"> minutes
+            <input [(ngModel)]="sessionTime.m"  class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
           </div>
         </div>
       </div>
