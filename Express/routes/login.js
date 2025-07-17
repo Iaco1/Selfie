@@ -15,7 +15,7 @@ function authenticateCredentials(username, password, user) {
       return {
         status: 200,
         message: "authentication successful",
-        authToken: user.email
+        authToken: user._id
       }
     }
     else{
@@ -27,8 +27,8 @@ function authenticateCredentials(username, password, user) {
     }
 }
 
-function authenticateToken(token, email) {
-  if(token === email){
+function authenticateToken(token, id) {
+  if(token === id){
     return {
       status: 200,
       message: "authentication successful",
@@ -51,9 +51,9 @@ async function authenticate(body, verbose = false) {
 
     //differentiate between authenticating with token and with credentials
     if(body.authToken){
-      user = dbUtils.getUserByEmail(userCollection, body.authToken);
+      user = dbUtils.getUserById(userCollection, body.authToken);
       console.log(`${timestamp} - authenticating ${body.authToken}`);
-      return authenticateToken(body.authToken, user.email);
+      return authenticateToken(body.authToken, user._id);
     }else{
       user = dbUtils.getUserByUsername(userCollection, body.username);
       console.log(`${timestamp} - authenticating %s:%s`, body.username, body.password);

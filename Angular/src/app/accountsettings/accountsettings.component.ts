@@ -13,16 +13,14 @@ import {UserService} from '../services/user.service';
 })
 export class AccountsettingsComponent {
   showModal: boolean = false;
-  name: string;
-  birthday: Date;
-  email: string;
+  name: string = 'John Smith';
+  birthday: Date = new Date(Date.now());
+  email: string = 'something@domain.com';
+  userPassword: string = 'password1234';
+  username: string = 'default-username';
 
-  usernameStorageKey = 'username';
-  username: string = localStorage.getItem(this.usernameStorageKey) || 'default-username';
   usernameFieldName = 'Username';
 
-  passwordStorageKey: string = 'password';
-  userPassword: string = localStorage.getItem(this.passwordStorageKey) || "password1234";
   passwordFieldName: string = "Password:";
 
   userProfilePicStorageKey: string = "userProfilePic";
@@ -32,23 +30,23 @@ export class AccountsettingsComponent {
 
   constructor(private userService: UserService) {
     //value initialization for name, birthday, email fields
-    this.name = localStorage.getItem('name') || 'John Smith';
-    this.birthday = new Date(localStorage.getItem('date') || Date.now());
-    this.email = localStorage.getItem('email') || 'something@domain.com';
     this.setAccountDetails();
   }
   nameEditorHidden = true;
   birthdayEditorHidden = true;
   emailEditorHidden = true;
 
+  editField(newDatum: HTMLInputElement, fieldName: string){
+    this.userService.editField(newDatum, fieldName);
+    this.setAccountDetails();
+  }
+
 
   toggleNameEdit(){
     this.nameEditorHidden = !this.nameEditorHidden;
-    this.setAccountDetails();
   }
   editName(newName: HTMLInputElement){
-    localStorage.setItem('name', newName.value);
-    this.name = newName.value;
+    this.editField(newName, 'name');
     this.toggleNameEdit();
   }
 
@@ -56,8 +54,7 @@ export class AccountsettingsComponent {
     this.birthdayEditorHidden = !this.birthdayEditorHidden;
   }
   editBirthday(newDateInput: HTMLInputElement){
-    localStorage.setItem('date', newDateInput.value);
-    this.birthday = new Date(newDateInput.value);
+    this.editField(newDateInput, 'birthday');
     this.toggleBirthdayEdit();
   }
 
@@ -65,8 +62,7 @@ export class AccountsettingsComponent {
     this.emailEditorHidden = !this.emailEditorHidden;
   }
   editEmail(newEmailInput: HTMLInputElement){
-    localStorage.setItem('email', newEmailInput.value);
-    this.email = newEmailInput.value;
+    this.editField(newEmailInput, 'email');
     this.toggleEmailEdit();
   }
 
@@ -78,6 +74,8 @@ export class AccountsettingsComponent {
         this.username = user.username;
         this.userPassword = user.password;
         this.email = user.email;
+        this.name = user.name;
+        this.birthday = new Date(user.birthday);
       },
       error: (err) => {
         console.log("get request failed: ", err);
@@ -93,7 +91,7 @@ export class AccountsettingsComponent {
       error: (err) => {
         console.log("delete request failed: ", err);
       }
-    })
+    });
   }
 
   protected readonly DatumType = DatumType;

@@ -6,7 +6,7 @@
       <div class="content">
         <h1> My Profile</h1>
         <hr>
-        <app-datumupdater [datum]="userProfilePicUrl" [datumStorageKey]="userProfilePicStorageKey" [datumName]="userProfilePicFieldName" [datumType]="DatumType.IMAGE" [placeholderText]="'image url'"></app-datumupdater>
+        <app-datumupdater [datumDbName]="'profilePic'" [datum]="userProfilePicUrl" [datumName]="userProfilePicFieldName" [datumType]="DatumType.IMAGE" [placeholderText]="'image url'"></app-datumupdater>
         <hr>
 
         <div class="level">
@@ -40,7 +40,7 @@
         </div>
         <hr>
         <h1>My Account</h1>
-        <app-datumupdater [datum]="username" [datumStorageKey]="usernameStorageKey" [datumName]="usernameFieldName" [datumType]="DatumType.STRING" [placeholderText]="'your username'"></app-datumupdater>
+        <app-datumupdater [datumDbName]="'username'" [datum]="username" [datumName]="usernameFieldName" [datumType]="DatumType.STRING" [placeholderText]="'your username'"></app-datumupdater>
         <div class="level">
           <div class="level-left">Email: </div>
           <span class="level-item" [class.is-hidden]="emailEditorHidden">
@@ -57,7 +57,7 @@
 
         </div>
         <hr>
-        <app-datumupdater [datum]="userPassword" [datumStorageKey]="passwordStorageKey" [datumName]="passwordFieldName" [datumType]="DatumType.STRING" [placeholderText]="'some password'" ></app-datumupdater>
+        <app-datumupdater [datumDbName]="'password'" [datum]='userPassword' [datumName]="passwordFieldName" [datumType]="DatumType.STRING" [placeholderText]="'some password'" ></app-datumupdater>
         <div class="has-text-centered">
           <button class="button is-danger" (click)="showModal = true">Delete Account</button>
         </div>

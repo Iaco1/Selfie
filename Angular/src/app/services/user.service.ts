@@ -30,4 +30,33 @@ export class UserService {
   deleteAccount(authToken: string | null): Observable<any>{
     return this.http.delete(environment.baseURL + `/user/${authToken}`);
   }
+
+  update(authToken: string | null, user: any): Observable<any>{
+    return this.http.put(environment.baseURL + `/user/${authToken}`, user);
+  }
+
+  editField(newDatum: HTMLInputElement, fieldName: string): any{
+
+
+
+    this.update(localStorage.getItem("authToken"), {[fieldName]: newDatum.value}).subscribe({
+      next: (res) => {
+        if(res.status == 200){
+          console.log(`${fieldName} updated successfully`);
+          if(fieldName === 'password') this.logout();
+        }else{
+          console.log("name update failed");
+          console.log("response: ", res);
+        }
+        return res;
+      }, error: (err) => {
+        console.log("error: ", err);
+        return JSON.stringify({
+          status: 500,
+          message: "Error updating name"
+        });
+      }
+    })
+  }
+
 }

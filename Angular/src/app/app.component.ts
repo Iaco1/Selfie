@@ -36,7 +36,7 @@ export class AppComponent {
 
   ngOnInit(){
     const url = localStorage.getItem("saveStateUrl");
-    if(url == null) return;
+    if(url == null || url == '/') return;
     this.router.navigateByUrl(url!);
   }
 
