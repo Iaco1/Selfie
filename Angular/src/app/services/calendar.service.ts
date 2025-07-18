@@ -1,29 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CalendarEvent } from 'angular-calendar';
+import { CalendarEvent } from '../types/calendar-event.model';
 import { Observable } from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class CalendarService {
-  private apiUrl = 'http://localhost:3000/events';
-
-  constructor(private http: HttpClient) {}
-
-  getEvents(): Observable<CalendarEvent[]> {
-    return this.http.get<CalendarEvent[]>(this.apiUrl);
-  }
-
-  saveEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.post<CalendarEvent>(this.apiUrl, event);
-  }
-
-  updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.put<CalendarEvent>(`${this.apiUrl}/${event.id}`, event);
-  }
-
-  deleteEvent(eventId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${eventId}`);
-  }
+	myURL = environment.baseURL + "/event";
+	constructor(private http: HttpClient) {}
+	//create
+	saveEvent(event: CalendarEvent): Observable<CalendarEvent> {
+		return this.http.post<CalendarEvent>(this.myURL, event);
+	}
+	//read
+	getAllEvents(): Observable<CalendarEvent[]> {
+		return this.http.get<CalendarEvent[]>(this.myURL);
+	}
+	//read by id
+	getEvent(eventId: string): Observable<CalendarEvent> {
+		return this.http.get<CalendarEvent>(`${this.myURL}/${eventId}`);
+	}
+	//update
+	updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
+		return this.http.put<CalendarEvent>(`${this.myURL}/${event.id}`, event);
+	}
+	//delete
+	deleteEvent(eventId: string): Observable<any> {
+		return this.http.delete(`${this.myURL}/${eventId}`);
+	}
 }

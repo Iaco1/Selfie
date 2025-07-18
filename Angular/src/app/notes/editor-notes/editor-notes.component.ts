@@ -1,95 +1,138 @@
+// editor-notes.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { marked } from 'marked';
-import { NoteModel } from '../../types/note-model';
-import { NoteService } from '../../services/note.service';
+import { NoteModel } from '../../types/note.model';
+import { StringDate } from '../../types/string-date';
+
 import { TimeMachineService } from '../../services/time-machine.service';
+
+import { HttpClientModule } from '@angular/common/http';
+import { NoteService } from '../../services/note.service';
 
 @Component({
 	selector: 'editor-notes',
-	imports: [CommonModule, FormsModule],
+	standalone: true,
+	imports: [CommonModule, FormsModule, HttpClientModule],
+	providers: [NoteService],
 	templateUrl: './editor-notes.component.html',
 	styleUrl: './editor-notes.component.css'
 })
 export class EditorNotesComponent implements OnInit {
-	currentDate! : Date;
-	noteId: number | null = null;
-	me! : NoteModel;
+	currentDate!: Date;
+	noteId: string | null = null;
+	me: NoteModel = new NoteModel();
 	originalNote: NoteModel | null = null;
-	tagsInput: string = "";
-	convertedMarkdown: string = "";
+	tagsInput: string = '';
+	convertedMarkdown: string = '';
 
 	constructor(
 		private route: ActivatedRoute,
 		private noteService: NoteService,
 		private timeMachine: TimeMachineService
 	) {}
+
 	ngOnInit() {
 		this.timeMachine.day$.subscribe(date => {
 			this.currentDate = date;
 		});
-		this.noteId = +this.route.snapshot.paramMap.get('id')!;
-		if (isNaN(this.noteId)) {
+
+		this.noteId = this.route.snapshot.paramMap.get('id');
+		if (!this.noteId) {
 			// Create mode
-			this.noteId = null;
 			this.me = new NoteModel();
 		} else {
-			// Edit mode - fetch note by this.noteId
-			const note = this.noteService.getNoteById(this.noteId);
-			this.me = note ? { ...note } : new NoteModel();
-			this.originalNote = { ...this.me }; // shallow copy
+			// Edit mode - fetch note from server
+			this.noteService.getNote(this.noteId).subscribe({
+				next: (date) => {
+					//console.log('note id: ', this.noteId , ' note:', date);
+					this.me = date;
+					this.originalNote = { ...this.me };
+					this.tagsInput = this.me.tags.join(', ');
+					this.convertMarkdown();
+				},
+				error: (err) => {
+					console.error('Failed to load note:', err);
+					this.me = new NoteModel();
+				}
+			});			
 		}
-		this.tagsInput = this.me.tags.join(', ');
-		this.convertMarkdown();
 	}
-	//ausiliar functions
+	ngOnDestroy() {
+		this.me = new NoteModel(); // Clean up
+	}
+
 	async convertMarkdown() {
-		if (! this.me) return;
+		if (!this.me) return;
 		this.convertedMarkdown = await marked(this.me.text);
 	}
+
 	goBackToSearch() {
-		// optionally redirect after saving
-		window.history.back(); // or use router.navigate(['/search']) if set up
+		window.history.back();
 	}
+
 	updateTagsFromInput() {
 		this.me.tags = this.tagsInput
 			.split(',')
 			.map(tag => tag.trim())
 			.filter(tag => tag.length > 0);
 	}
-	//buttons
+
 	Preview() {
-		// console.log("preview", this.me.id);
-		this.convertMarkdown()
+		this.convertMarkdown();
 	}
+
 	Save() {
-		if (!this.me) return;
-		// console.log("save ", this.me.id);
-		this.updateTagsFromInput();  // Ensure tags are synced before saving
-		this.noteService.saveNote(this.me, this.currentDate);
-		this.goBackToSearch();
+		this.updateTagsFromInput();
+		this.me.lastModification = StringDate.fromDate(new Date());
+		if (this.me._id) {
+			// Update existing note
+			this.noteService.updateNote(this.me).subscribe({
+				next: (updatedNote) => {
+					this.me = updatedNote;
+					this.goBackToSearch();
+				},
+				error: (err) => {
+					console.error('Failed to update note:', err);
+				}
+			});
+		} else {
+			// Create new note
+			//TODO this.me.author = "...";
+			this.noteService.saveNote(this.me).subscribe({
+				next: (newNote) => {
+					this.me = newNote;
+					this.goBackToSearch();
+				},
+				error: (err) => {
+					console.error('Failed to save note:', err);
+				}
+			});
+		}
 	}
+
 	Clear() {
-		// console.log("clear ", this.me.id);
-		this.me.title = "";
-		this.me.text = "";
+		this.me.title = '';
+		this.me.text = '';
 		this.me.tags = [];
-		this.tagsInput = "";
+		this.tagsInput = '';
+		this.convertMarkdown();
 	}
+
 	Reset() {
-		// console.log("reset ", this.me.id);
 		if (this.originalNote) {
 			this.me.title = this.originalNote.title;
 			this.me.text = this.originalNote.text;
 			this.me.tags = [...this.originalNote.tags];
 			this.tagsInput = this.me.tags.join(', ');
+			this.convertMarkdown();
 		}
 	}
+
 	Close() {
-		if (!this.me) return;
-		// console.log("close", this.me.id);
 		this.goBackToSearch();
 	}
 }

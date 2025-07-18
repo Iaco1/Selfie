@@ -1,4 +1,5 @@
-const router = require("./login")
+const express = require('express');
+const router = express.Router();
 const CRUD = require("../event-note/crud.service")
 const Note = require('../event-note/note.model');
 
@@ -12,6 +13,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (_, res) => {
 	await CRUD.Read(Note, res, "note");
 });
+
 router.get('/:id', async (req, res) => {
 	await CRUD.ReadById(Note, req.params.id, res, "note");
 });

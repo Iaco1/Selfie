@@ -14,6 +14,6 @@
 
 <div class="columns is-multiline">
 	<div class="column is-one-third" *ngFor="let note of notes">
-		<note [me]="note"></note>
+		<note [me]="note" (deleted)="onNoteDeleted($event)"></note>
 	</div>
 </div>
