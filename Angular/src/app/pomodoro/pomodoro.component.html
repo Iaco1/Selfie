@@ -5,8 +5,6 @@
     <div #studyTimeInput [class.is-hidden]="studyTimeInputHidden" class="field columns is-centered">
       <div class="control column is-2">
         <input [(ngModel)]="pomodoroTime.h" class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles()"> hours
-      </div>
-      <div class="control column is-2">
         <input [(ngModel)]="pomodoroTime.m" class="input" type="number" min="0" max="59" placeholder="Minutes" value="30" (input)="autoComputeCycles()"> minutes
       </div>
     </div>
@@ -27,46 +25,37 @@
       </div>
     </div>
     <div class="columns is is-centered">
-      <div class="column is-2">
+      <div class="column is-2 border-primary is-flex is-flex-direction-column">
         <button class="button has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
         <button class="button is-dark mt-2" (click)="endSession()">end session</button>
+        <button class="button mt-2" (click)="skipToNextCycle()">skip to {{nextPhase}}</button>
+        <button class="button mt-2">restart pomodoro</button>
       </div>
     </div>
 
-    <div class="level">
-      <div class="level-left">
-        <div [class.is-hidden]="repetitionsInputHidden" class="field">
-          <div class="control">
-            <input [(ngModel)]="repetitions" class="input" type="number" min="0" placeholder="Repetitions" value="5"> repetitions
-          </div>
-        </div>
-        <div [class.is-hidden]="repetitionsLeftHidden">
-          <h1>Repetitions left: {{repetitionsLeft}}</h1>
-        </div>
-      </div>
-      <div class="level-right">
-        <button class="button" (click)="skipToNextCycle()">skip to next relax/study</button>
-        <button class="button">restart study cycle</button>
-      </div>
+    <div [class.is-hidden]="repetitionsHidden">
+      <h2>Repetitions left <br>{{repetitions}}</h2>
     </div>
-    <hr>
-  </div>
-
-  <div class="content">
-    <h2>Auto compute cycles</h2>
-    <div class="columns">
-      <div class="column">
-        <div class="field">
-          <div class="control">
-            <input [(ngModel)]="sessionTime.h" class="input" type="number" min="0" placeholder="Hours" (input)="autoComputeCycles()"> hours
+    <div [class.is-hidden]="!repetitionsHidden">
+      <h2>choose number of repetitions</h2>
+      <div class="columns is-centered mb-6">
+        <div class="column is-2">
+          <div [class.is-hidden]="repetitionsInputHidden" class="field">
+            <div class="control">
+              <input [(ngModel)]="repetitions" class="input" type="number" min="0" placeholder="Repetitions" value="5"> repetitions
+            </div>
           </div>
-          <div class="control">
-            <input [(ngModel)]="sessionTime.m"  class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
+          <h6>
+            or autocompute
+            <i class="fa-solid fa-question fa-xs" title="autocompute repetitions of selected time"></i>
+          </h6>
+          <div class="field">
+            <div class="control">
+              <input [(ngModel)]="sessionTime.h" class="input" type="number" min="0" placeholder="Hours" (input)="autoComputeCycles()"> hours
+              <input [(ngModel)]="sessionTime.m"  class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
+            </div>
           </div>
         </div>
-      </div>
-      <div class="column content">
-        <h1>No. cycles: {{autocomputedcycles}}</h1>
       </div>
     </div>
   </div>
