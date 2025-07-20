@@ -36,9 +36,6 @@ export class UserService {
   }
 
   editField(newDatum: HTMLInputElement, fieldName: string): any{
-
-
-
     this.update(localStorage.getItem("authToken"), {[fieldName]: newDatum.value}).subscribe({
       next: (res) => {
         if(res.status == 200){

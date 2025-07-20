@@ -1,6 +1,9 @@
 const User = require("../models/User");
 const cryptoUtils = require("./cryptoUtils");
+const Pomodoro = require("../models/Pomodoro");
 
+
+// USERS
 async function getUsers(verbose = false) {
   try {
     // Fetch the documents and assign them to userCollection
@@ -20,8 +23,14 @@ function getUserByUsername(userCollection, username) {
   return userCollection.find(u => u.username === username);
 }
 
-function getUserById(userCollection, id) {
-  return userCollection.find(u => u.id === id);
+async function getUserById(id) {
+  try{
+    const u = await User.find({_id: id});
+    return u[0];
+  }catch (err){
+    console.log("user fetch failed");
+    throw err;
+  }
 }
 
 async function insertUser(user) {
@@ -80,6 +89,32 @@ async function changePassword(token, newPassword) {
   })
 
 }
+
+//POMODOROS
+
+async function getPomodoros() {}
+
+async function insertPomodoro(pomodoro) {
+  try{
+    await Pomodoro.insertOne(pomodoro);
+    return {
+      status: 200,
+      message: "insertion successful"
+    }
+  }catch(error){
+    return {
+      status: 500,
+      message: "error inserting pomodoro"
+    };
+  }
+}
+
+async function getPomodoroByID(pomodoroCollection, id) {}
+
+async function updatePomodoro(id, pomodoroData) {}
+
+async function deletePomodoro(id) {}
+
 module.exports = {
   getUsers,
   insertUser,
@@ -87,5 +122,10 @@ module.exports = {
   getUserByUsername,
   deleteUser,
   updateUser,
-  getUserById
+  getUserById,
+  getPomodoros,
+  insertPomodoro,
+  getPomodoroByID,
+  updatePomodoro,
+  deletePomodoro
 };

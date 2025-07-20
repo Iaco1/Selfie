@@ -1,23 +1,20 @@
 const express = require('express');
 const app = express();
-const port = 3002;
-const login = require('./routes/login');
-const signup = require('./routes/signup');
-const user = require('./routes/user');
-const note = require('./routes/note');
-const event = require('./routes/event');
-
 const mongoose = require("mongoose");
 const config = require('./config');
+const port = config.port;
+
+
 
 
 app.use(express.json());
 
-app.use("/auth", login);
-app.use("/signup", signup);
-app.use("/user", user);
-app.use("/note", note);
-app.use("/event", event);
+app.use("/auth", require("./routes/login"));
+app.use("/signup", require("./routes/signup"));
+app.use("/user", require("./routes/user"));
+app.use("/note", require("./routes/note"));
+app.use("/event", require("./routes/event"));
+app.use("/pomodoro", require("./routes/pomodoro"));
 
 mongoose.connect(config.mongoURI, {
       useNewUrlParser: true,

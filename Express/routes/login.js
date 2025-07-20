@@ -43,27 +43,23 @@ function authenticateToken(token, id) {
 
 async function authenticate(body, verbose = false) {
   const timestamp = new Date().toISOString();
-
+  let user;
   try{
-    const userCollection = await dbUtils.getUsers();
-    let user;
-    if(verbose) console.log(`found user: ${user}`);
-
     //differentiate between authenticating with token and with credentials
     if(body.authToken){
-      user = dbUtils.getUserById(userCollection, body.authToken);
+      user = dbUtils.getUserById(body.authToken);
       console.log(`${timestamp} - authenticating ${body.authToken}`);
       return authenticateToken(body.authToken, user._id);
     }else{
-      user = dbUtils.getUserByUsername(userCollection, body.username);
+      user = dbUtils.getUserByUsername(body.username);
       console.log(`${timestamp} - authenticating %s:%s`, body.username, body.password);
       return authenticateCredentials(body.username, body.password, user);
     }
   }catch (err){
-    console.error('Error fetching userCollection: ', err);
+    console.error('Error fetching user: ', err);
     return {
       status: 500,
-      message: "error fetching userCollection"
+      message: "error fetching user"
     }
   }
 }
