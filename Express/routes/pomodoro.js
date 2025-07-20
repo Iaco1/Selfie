@@ -19,8 +19,6 @@ router.post('/', async (req, res) => {
   }
 })
 
-
-
 router.get('/:userid', async (req, res) => {
   try{
     let pomodoro;
@@ -35,7 +33,28 @@ router.get('/:userid', async (req, res) => {
     });
   }catch (err){
     console.log("fetch failed with error: ", err);
+    res.json({
+      status: 500,
+      message: `fetch failed with error ${err}`
+    })
   }
 })
 
+router.delete('/:userid', async (req, res) => {
+  try{
+    if(req.query.pomodoroId) await dbUtils.deletePomodoro(req.query.pomodoroId);
+    else await dbUtils.deleteAllPomodoros(req.params.userid);
+    console.log("deletion successful");
+    res.json({
+      status: 200,
+      message: "deletion successful"
+    })
+  }catch (err){
+    console.log("deletion failed with error: ", err);
+    res.json({
+      status: 500,
+      message: `deletion failed with error ${err}`
+    })
+  }
+})
 module.exports = router;

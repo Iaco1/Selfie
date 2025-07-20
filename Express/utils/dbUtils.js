@@ -62,8 +62,6 @@ async function updateUser(token, userData) {
     return changePassword(token, userData.password);
   }
 
-  let updated = false;
-
   const result = await User.updateOne({_id: token}, {$set: userData});
 
   if(!result.acknowledged){
@@ -90,14 +88,15 @@ async function changePassword(token, newPassword) {
 
 }
 
+
+
 //POMODOROS
 
-//ADD FUCKING AUTHOR ID, YOU CAN'T CHECK AGAINST EVERYONE'S POMODOROS
 async function overlaps(pomodoro) {
   const Pst = new Date(pomodoro.startTime);
   const Pet = new Date(pomodoro.endTime);
   try{
-    const pomodoroCollection = await Pomodoro.find({});
+    const pomodoroCollection = await Pomodoro.find({authorId: pomodoro.authorId});
     return pomodoroCollection.some(p=> {
       const pst = new Date(p.startTime);
       const pet = new Date(p.endTime);
@@ -132,10 +131,10 @@ async function insertPomodoro(pomodoro) {
   }
 }
 
-async function getPomodoros(userId, pomodoroId = null) {
+async function getPomodoros(authorId, pomodoroId = null) {
   try {
-    if(!pomodoroId) return await Pomodoro.find({authorId: userId});
-    else return await Pomodoro.find({authorId: userId, _id: pomodoroId});
+    if(!pomodoroId) return await Pomodoro.find({authorId: authorId});
+    else return await Pomodoro.find({authorId: authorId, _id: pomodoroId});
   }catch (err){
     throw err;
   }
@@ -143,8 +142,21 @@ async function getPomodoros(userId, pomodoroId = null) {
 
 //async function updatePomodoro(id, pomodoroData) {}
 
-async function deletePomodoro(id) {}
+async function deletePomodoro(pomodoroId) {
+  try{
+    await Pomodoro.deleteOne({_id: pomodoroId});
+  }catch (err){
+    throw err;
+  }
+}
 
+async function deleteAllPomodoros(authorId) {
+  try{
+    await Pomodoro.deleteMany({authorId: authorId});
+  }catch (err){
+    throw err;
+  }
+}
 module.exports = {
   getUsers,
   insertUser,
@@ -154,5 +166,6 @@ module.exports = {
   getUserById,
   getPomodoros,
   insertPomodoro,
-  deletePomodoro
+  deletePomodoro,
+  deleteAllPomodoros
 };

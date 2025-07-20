@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const config = require('./config');
 const port = config.port;
+mongoose.set('strictQuery', false);
 
 
 
