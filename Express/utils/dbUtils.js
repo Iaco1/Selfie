@@ -19,14 +19,18 @@ function getUserByEmail(userCollection, email) {
   return userCollection.find(u => u.email === email);
 }
 
-function getUserByUsername(userCollection, username) {
-  return userCollection.find(u => u.username === username);
+async function getUserByUsername(username) {
+  try{
+    return await User.findOne({username: username});
+  }catch (err){
+    console.log("user fetch failed");
+    throw err;
+  }
 }
 
 async function getUserById(id) {
   try{
-    const u = await User.find({_id: id});
-    return u[0];
+    return await User.findOne({_id: id});
   }catch (err){
     console.log("user fetch failed");
     throw err;

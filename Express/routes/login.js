@@ -47,11 +47,11 @@ async function authenticate(body, verbose = false) {
   try{
     //differentiate between authenticating with token and with credentials
     if(body.authToken){
-      user = dbUtils.getUserById(body.authToken);
+      user = await dbUtils.getUserById(body.authToken);
       console.log(`${timestamp} - authenticating ${body.authToken}`);
-      return authenticateToken(body.authToken, user._id);
+      return authenticateToken(body.authToken, user.id);
     }else{
-      user = dbUtils.getUserByUsername(body.username);
+      user = await dbUtils.getUserByUsername(body.username);
       console.log(`${timestamp} - authenticating %s:%s`, body.username, body.password);
       return authenticateCredentials(body.username, body.password, user);
     }
