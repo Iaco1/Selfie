@@ -96,19 +96,43 @@ async function changePassword(token, newPassword) {
 
 //POMODOROS
 
+async function overlaps(pomodoro) {
+  const Pst = new Date(pomodoro.startTime);
+  const Pet = new Date(pomodoro.endTime);
+  try{
+    const pomodoroCollection = await Pomodoro.find({});
+    return pomodoroCollection.some(p=> {
+      const pst = new Date(p.startTime);
+      const pet = new Date(p.endTime);
+      if(Pst >= pst && Pst <= pet || Pet >= pst && Pet <= pet){
+        console.log("overlap detected");
+        return true;
+      }
+      console.log("no overlap detected");
+      return false;
+    });
+  }catch (err){
+    throw err;
+  }
+}
+
 async function getPomodoros() {}
 
 async function insertPomodoro(pomodoro) {
   try{
+    if(await overlaps(pomodoro)) return {
+      status: 400,
+      message: "overlap detected"
+    }
     await Pomodoro.insertOne(pomodoro);
     return {
       status: 200,
       message: "insertion successful"
     }
-  }catch(error){
+  }catch(err){
     return {
       status: 500,
-      message: "error inserting pomodoro"
+      message: `error inserting pomodoro: ${err}`
     };
   }
 }
