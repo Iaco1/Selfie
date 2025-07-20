@@ -11,7 +11,7 @@ router.get('/:token', async (req, res) => {
 
   try{
     const userCollection = await dbUtils.getUsers();
-    const user = dbUtils.getUserById(userCollection, req.params.token);
+    const user = await dbUtils.getUserById(req.params.token);
     if(!user) throw new Error("user not found");
     console.log("fetch successful");
     res.json({

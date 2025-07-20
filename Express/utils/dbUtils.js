@@ -15,10 +15,6 @@ async function getUsers(verbose = false) {
   }
 }
 
-function getUserByEmail(userCollection, email) {
-  return userCollection.find(u => u.email === email);
-}
-
 async function getUserByUsername(username) {
   try{
     return await User.findOne({username: username});
@@ -96,6 +92,7 @@ async function changePassword(token, newPassword) {
 
 //POMODOROS
 
+//ADD FUCKING AUTHOR ID, YOU CAN'T CHECK AGAINST EVERYONE'S POMODOROS
 async function overlaps(pomodoro) {
   const Pst = new Date(pomodoro.startTime);
   const Pet = new Date(pomodoro.endTime);
@@ -116,8 +113,6 @@ async function overlaps(pomodoro) {
   }
 }
 
-async function getPomodoros() {}
-
 async function insertPomodoro(pomodoro) {
   try{
     if(await overlaps(pomodoro)) return {
@@ -137,23 +132,27 @@ async function insertPomodoro(pomodoro) {
   }
 }
 
-async function getPomodoroByID(pomodoroCollection, id) {}
+async function getPomodoros(userId, pomodoroId = null) {
+  try {
+    if(!pomodoroId) return await Pomodoro.find({authorId: userId});
+    else return await Pomodoro.find({authorId: userId, _id: pomodoroId});
+  }catch (err){
+    throw err;
+  }
+}
 
-async function updatePomodoro(id, pomodoroData) {}
+//async function updatePomodoro(id, pomodoroData) {}
 
 async function deletePomodoro(id) {}
 
 module.exports = {
   getUsers,
   insertUser,
-  getUserByEmail,
   getUserByUsername,
   deleteUser,
   updateUser,
   getUserById,
   getPomodoros,
   insertPomodoro,
-  getPomodoroByID,
-  updatePomodoro,
   deletePomodoro
 };

@@ -3,15 +3,6 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  console.log("post requested for pomodoro:", req.body);
-  if(!req.body){
-    console.log("request body is empty");
-    return res.json({
-      status: 400,
-      message: "request body is empty"
-    })
-  }
-
   try{
     const user = await dbUtils.getUserById(req.body.authorId);
     console.log("found user: ", user.username);
@@ -25,6 +16,25 @@ router.post('/', async (req, res) => {
       status: 500,
       message: `insertion failed with error ${err}`
     })
+  }
+})
+
+
+
+router.get('/:userid', async (req, res) => {
+  try{
+    let pomodoro;
+    console.log(typeof req.params.userid, " typeof userid in request");
+    if(req.query.pomodoroId) pomodoro = await dbUtils.getPomodoros(req.params.userid, req.query.pomodoroId);
+    else pomodoro = await dbUtils.getPomodoros(req.params.userid);
+    console.log("fetch successful");
+    res.json({
+      status: 200,
+      message: "fetch successful",
+      pomodoro: pomodoro
+    });
+  }catch (err){
+    console.log("fetch failed with error: ", err);
   }
 })
 
