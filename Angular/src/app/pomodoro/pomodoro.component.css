@@ -14,3 +14,57 @@
   from { transform: rotateX(0deg); }
   to { transform: rotateX(360deg); }
 }
+
+
+.rotating-icon {
+  display: inline-block;
+  animation: rotate360 2s linear infinite;
+}
+
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.smile-animation {
+  display: flex;
+  position: relative;
+  width: 50px; /* Set width and height for proper animation layout */
+  height: 50px;
+}
+
+.smile-animation i {
+  position: absolute; /* Stack icons on top of each other */
+  top: 0;
+  left: 0;
+  font-size: 40px; /* Set size of the icons */
+  color: #FFF;
+  opacity: 0; /* Hide all icons by default */
+  animation: icon-rotation 8s infinite;
+}
+
+.smile-animation i:nth-child(1) {
+  animation-delay: 0s;
+}
+.smile-animation i:nth-child(2) {
+  animation-delay: 2s;
+}
+.smile-animation i:nth-child(3) {
+  animation-delay: 4s;
+}
+.smile-animation i:nth-child(4) {
+  animation-delay: 6s;
+}
+
+@keyframes icon-rotation {
+  0%, 25% {
+    opacity: 1; /* Display icon */
+  }
+  50%, 100% {
+    opacity: 0; /* Hide icon */
+  }
+}

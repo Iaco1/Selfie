@@ -9,40 +9,51 @@
       </div>
     </div>
     <div #studyTimeCountdown [class.is-hidden]="!studyTimeInputHidden">
-      <h1 [class.flipX]="studyAnimationActive">{{pomodoroTime.h}} h : {{pomodoroTime.m}} m {{pomodoroTime.s}} s</h1>
+      <h1>
+        {{pomodoroTime.h}} h : {{pomodoroTime.m}} m {{pomodoroTime.s}} s
+        <i class="fa-solid fa-rotate fa-xs" [class.is-hidden]="!studyAnimationActive" [class.rotating-icon]="studyAnimationActive"></i>
+      </h1>
+
     </div>
     <h2>Relax Time</h2>
     <div class="columns is-centered">
       <div class="column is-2">
         <div #breakTimeInput [class.is-hidden]="breakTimeHidden" class="field">
           <div class="control">
-            <input [(ngModel)]="breakTime" class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
+            <input [(ngModel)]="breakTime.m" class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
           </div>
         </div>
-        <div #breakTimeCountdown [class.is-hidden]="!breakTimeHidden">
-          <h1 [class.flipX]="breakAnimationActive">{{breakTime.m}} m {{breakTime.s}} s</h1>
+        <div #breakTimeCountdown [class.is-hidden]="!breakTimeHidden" class="level">
+          <h1 class="level-left">{{breakTime.m}} m {{breakTime.s}} s</h1>
+            <div class="smile-animation level-right" [class.is-hidden]="!breakAnimationActive" [class.smile-animation]="breakAnimationActive">
+              <i class="fa-solid fa-face-smile"></i>
+              <i class="fa-solid fa-face-smile-beam"></i>
+              <i class="fa-solid fa-face-laugh-beam"></i>
+              <i class="fa-solid fa-face-laugh-wink"></i>
+            </div>
         </div>
       </div>
     </div>
     <div class="columns is is-centered">
       <div class="column is-2 border-primary is-flex is-flex-direction-column">
-        <button class="button has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
-        <button class="button is-dark mt-2" (click)="endSession()">end session</button>
-        <button class="button mt-2" (click)="skipToNextCycle()">skip to {{nextPhase}}</button>
-        <button class="button mt-2">restart pomodoro</button>
+        <button [class.is-hidden]="intervalsSet" (click)="setIntervals()" class="button"> set study and break times</button>
+        <button [class.is-hidden]="!intervalsSet" class="button mt-2 has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
+        <button [class.is-hidden]="!intervalsSet" class="button is-dark mt-2" (click)="endSession()">end session</button>
+        <button [class.is-hidden]="!intervalsSet" class="button mt-2" (click)="skipToNextCycle()">skip to next cycle</button>
+        <button [class.is-hidden]="!intervalsSet" class="button mt-2">restart pomodoro</button>
       </div>
     </div>
 
     <div [class.is-hidden]="repetitionsHidden">
       <h2>Repetitions left <br>{{repetitions}}</h2>
     </div>
-    <div [class.is-hidden]="!repetitionsHidden">
+    <div [class.is-hidden]="repetitionsSelectorHidden">
       <h2>choose number of repetitions</h2>
       <div class="columns is-centered mb-6">
         <div class="column is-2">
-          <div [class.is-hidden]="repetitionsInputHidden" class="field">
+          <div class="field">
             <div class="control">
-              <input [(ngModel)]="repetitions" class="input" type="number" min="0" placeholder="Repetitions" value="5"> repetitions
+              <input [(ngModel)]="manualRepetitions" class="input" type="number" min="0" placeholder="Repetitions" value="5" (input)="autoComputeCycles(true)"> repetitions
             </div>
           </div>
           <h6>
