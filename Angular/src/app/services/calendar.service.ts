@@ -1,33 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { CalendarEvent } from '../types/calendar-event.model';
-import { Observable } from 'rxjs';
-import {environment} from '../../environments/environment';
+import { BaseService } from './base.service';
+import { StringDate } from '../types/string-date';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class CalendarService {
-	myURL = environment.baseURL + "/event";
-	constructor(private http: HttpClient) {}
-	//create
-	saveEvent(event: CalendarEvent): Observable<CalendarEvent> {
-		return this.http.post<CalendarEvent>(this.myURL, event);
+export class CalendarService extends BaseService<CalendarEvent> {
+	constructor(http: HttpClient) {
+		super(http, environment.baseURL + '/event', CalendarService.transform);
 	}
-	//read
-	getAllEvents(): Observable<CalendarEvent[]> {
-		return this.http.get<CalendarEvent[]>(this.myURL);
-	}
-	//read by id
-	getEvent(eventId: string): Observable<CalendarEvent> {
-		return this.http.get<CalendarEvent>(`${this.myURL}/${eventId}`);
-	}
-	//update
-	updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
-		return this.http.put<CalendarEvent>(`${this.myURL}/${event.id}`, event);
-	}
-	//delete
-	deleteEvent(eventId: string): Observable<any> {
-		return this.http.delete(`${this.myURL}/${eventId}`);
+
+	private static transform (json: any): CalendarEvent {
+		let start = new StringDate(json.start.date, json.start.time);
+		let end   = new StringDate(json.end.date,   json.end.time);
+		let evento = new CalendarEvent(start, end, json.duration, json.colour, json.title, json.description);
+		evento.setId(json._id);
+		return evento;
 	}
 }
