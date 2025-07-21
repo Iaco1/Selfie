@@ -46,7 +46,7 @@ export class EditorNotesComponent implements OnInit {
 			this.me = new NoteModel();
 		} else {
 			// Edit mode - fetch note from server
-			this.noteService.getNote(this.noteId).subscribe({
+			this.noteService.getById(this.noteId).subscribe({
 				next: (date) => {
 					//console.log('note id: ', this.noteId , ' note:', date);
 					this.me = date;
@@ -90,7 +90,7 @@ export class EditorNotesComponent implements OnInit {
 		this.me.lastModification = StringDate.fromDate(new Date());
 		if (this.me._id) {
 			// Update existing note
-			this.noteService.updateNote(this.me).subscribe({
+			this.noteService.update(this.me._id, this.me).subscribe({
 				next: (updatedNote) => {
 					this.me = updatedNote;
 					this.goBackToSearch();
@@ -102,7 +102,7 @@ export class EditorNotesComponent implements OnInit {
 		} else {
 			// Create new note
 			//TODO this.me.author = "...";
-			this.noteService.saveNote(this.me).subscribe({
+			this.noteService.create(this.me).subscribe({
 				next: (newNote) => {
 					this.me = newNote;
 					this.goBackToSearch();
