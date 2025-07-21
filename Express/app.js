@@ -19,10 +19,9 @@ app.use("/user", user);
 app.use("/note", note);
 app.use("/event", event);
 
-mongoose.connect(config.mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(config.mongoURI
+// , { useNewUrlParser: true, useUnifiedTopology: true}
+).then(() => {
   console.log('Connected to MongoDB');
 }).catch(err => {
   console.log('Error connecting to MongoDB:', err);

@@ -1,8 +1,8 @@
 const CRUD = require("../event-note/crud.service");
-const Event = require("../event-note/event.model");
+const Event = require("../models/Event");
 const router = require("express").Router();
 
-const allowed_Event = ['title', 'description', 'start', 'end', 'colour', 'user', 'location', 'repeat', 'notification', 'pomodoro'];
+const allowed_Event = ['title', 'description', 'start', 'end', 'duration', 'colour', 'user', 'location', 'repeat', 'notification', 'pomodoro'];
 
 // Routes: EVENTS
 router.post('/', async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const CRUD = require("../event-note/crud.service")
-const Note = require('../event-note/note.model');
+const Note = require('../models/Note');
 
 const allowed_Note = ['title', 'author', 'text', 'tags', 'creation', 'lastModification'];
 
