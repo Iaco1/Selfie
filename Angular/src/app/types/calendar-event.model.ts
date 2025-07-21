@@ -1,30 +1,38 @@
 import { StringDate } from "./string-date";
 
 export class CalendarEvent {
+	//setted by the program
 	_id : string = "";
+	user : string;
+	//required true
 	title : string;
-	description? : string;
 	start : StringDate; // e.g., {date: '2025-05-07', time: '09:00:00'}
-	end : StringDate;  // e.g., {date: '2025-05-08', time: '12:00:00'}
+	end   : StringDate; // e.g., {date: '2025-05-08', time: '12:00:00'}
+	//often used but required false
 	duration : {number: number, measure: string};
 	colour : string;
+	//required false
+	description? : string;
 	//TODO
-	user?: string;
-	location?: string;
-	repeat?: string;
-	notification?: string[];
-	pomodoro?: {bool: boolean, studyFor: string, restFor: string};
+	location? : string;
+	repeat? : {bool: boolean, frequency:string, interval: number};
+	notification? : string[];
+	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
 
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
-		colour: string = "blue", title: string = "New Event", description:string="",
+		title: string = "New Event", description:string="", colour: string = "blue",
+		user: string = ""
 	) {
 		this.title = title;
 		this.colour = colour;
 		this.description = description;
 		this.start = start;
 		this.duration = duration;
+		if (user) { this.user = user; } else {
+			this.user = localStorage.getItem("authToken") || "user";
+		}
 		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
 	}
 
@@ -48,9 +56,7 @@ export class CalendarEvent {
 	}
 
 	//facoltativi anche su mongoDB
-	setUser         (user: string)           { this.user = user; }
 	setLocation     (location: string)       { this.location = location; }
-	setRepeat       (repeat: string)         { this.repeat = repeat; }
 	setNotification (notification: string[]) { this.notification = notification; }
 	setPomodoro     (b: boolean, study:string, rest:string) {
 		this.pomodoro = { bool: b, studyFor: study, restFor: rest }

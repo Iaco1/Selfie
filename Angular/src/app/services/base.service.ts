@@ -14,8 +14,8 @@ export abstract class BaseService<T> {
 			.pipe(map(res => this.transformFn(res.result)));
 	}
 
-	getAll(): Observable<T[]> {
-		return this.http.get<{ message: string; result: any[] }>(this.baseURL)
+	getAll(query: string = ""): Observable<T[]> {
+		return this.http.get<{ message: string; result: any[] }>(this.baseURL + query)
 			.pipe(map(res => res.result.map(this.transformFn)));
 	}
 

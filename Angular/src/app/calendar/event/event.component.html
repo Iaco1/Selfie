@@ -26,12 +26,14 @@
 				<!-- title -->
 				<div class="field column is-10">
 					<label class="label" for="title">Title</label>
-					<input #title class="input control" [(ngModel)]="evento.title" placeholder="Titolo evento">
+					<input #title class="input control" type="text"
+						[(ngModel)]="evento.title" placeholder="Titolo evento">
 				</div>
 				<!-- colour -->
 				<div class="field column is-2">
 					<label class="label" for="colour">Colour</label>
-					<input #colour class="input control" type="color" [(ngModel)]="evento.colour">
+					<input #colour class="input control" type="color"
+						[(ngModel)]="evento.colour">
 				</div>
 			</div>
 			<!-- when? -->
@@ -65,20 +67,18 @@
 						</select>
 					</span>
 				</div>
-				<!-- end
-				(troppi casini (se un evento finisce prima di iniziare non si puo` piu` modificare ed e` presente su mongodb))
-				<div class="field column">
-					<label class="label" for="dateEnd">End Date</label>
-					<input #dateEnd class="input control" type="date" [(ngModel)]="evento.end.date">
-				</div>
-				<div class="field column">
-					<label class="label" for="timeEnd">End Time</label>
-					<input #timeEnd class="input control" type="time" [(ngModel)]="evento.end.time">
-				</div> -->
 			</div>
 			<div> End Date: {{evento.end.date}} {{evento.end.time}} </div>
+			<!-- location ? -->
+			<div class="level">
+				<div class="field level-item">
+					<label class="label" for="location">Location&nbsp;?&nbsp;</label>
+					<input #location class="input control" type="text"
+						[(ngModel)]="evento.location" placeholder="Location">
+				</div>
+			</div>
+			<!-- descrizione -->
 			<div class="field">
-				<!-- descrizione -->
 				<label class="label" for="description">Description</label>
 				<textarea #description class="textarea control" [(ngModel)]="evento.description"
 					placeholder="Description event"></textarea>

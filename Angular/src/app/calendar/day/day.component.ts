@@ -73,6 +73,16 @@ export class DayComponent implements OnChanges {
 
 		return "none";
 	}
+	classMonth(): string {
+		if(this.visualize == "month") { return "number_of_month"} else return "";
+	}
+	getBackgroundColour(): string {
+		if(this.visualize == "year") {
+			if(this.filteredEvents.length > 0) {
+				return this.filteredEvents[0].colour;
+			} else { return "black" }
+		} else return "";
+	}
 
 	getName(): string {
 		return this.day.toLocaleString("en-US", { weekday: "long" });
@@ -105,7 +115,7 @@ export class DayComponent implements OnChanges {
 	@Output() saveEvent = new EventEmitter<CalendarEvent>();
 	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
 
-	createEvent(hour: number = 7) {
+	createEvent(hour: number = 0) {
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
 		const newEvent = new CalendarEvent(StringDate.fromDate(dateHour));

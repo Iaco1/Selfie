@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { NoteModel } from '../types/note.model';
 import { environment } from '../../environments/environment';
 import { StringDate } from '../types/string-date';
@@ -15,4 +17,9 @@ export class NoteService extends BaseService<NoteModel> {
 		creation: new StringDate(note.creation.date, note.creation.time),
 		lastModification: new StringDate(note.lastModification.date, note.lastModification.time)
 	});
+
+	getOnlyMyNotes(): Observable<NoteModel[]> {
+		let author = localStorage.getItem("authToken");
+		return this.getAll(`/?author=${author}`);
+	}
 }

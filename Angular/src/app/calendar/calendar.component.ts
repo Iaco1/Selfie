@@ -41,7 +41,7 @@ export class CalendarComponent implements OnInit {
 	constructor(private calendarService: CalendarService) {}
 
 	ngOnInit(): void {
-		this.calendarService.getAll().subscribe({
+		this.calendarService.getOnlyMyEvents().subscribe({
 			next: events => this.events = events,
 			error: err => console.error('Error loading events:', err)
 		});

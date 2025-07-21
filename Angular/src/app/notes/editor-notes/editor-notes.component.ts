@@ -101,7 +101,6 @@ export class EditorNotesComponent implements OnInit {
 			});
 		} else {
 			// Create new note
-			//TODO this.me.author = "...";
 			this.noteService.create(this.me).subscribe({
 				next: (newNote) => {
 					this.me = newNote;
