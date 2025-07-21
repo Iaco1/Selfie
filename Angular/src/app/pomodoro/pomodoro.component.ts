@@ -113,12 +113,13 @@ export class PomodoroComponent {
   }
 
   pauseCycle(startBreak: boolean = true){
-    this.cyclephase = CyclePhase.RESTING;
+    this.cyclephase = CyclePhase.IDLE;
     this.nextPhase = "study";
     this.cycleButton = "resume cycle";
     this.studyAnimationActive = false;
 
     if(startBreak){
+      this.cyclephase = CyclePhase.RESTING;
       this.breakTimeHidden = true;
       this.breakAnimationActive = true;
     }
@@ -165,7 +166,6 @@ export class PomodoroComponent {
     this.pomodoroTime = this.pomodoroDuration;
     this.breakTime = this.breakDuration;
     this.intervalsSet = !this.intervalsSet;
-
   }
 
   skipToNextCycle(){
@@ -178,25 +178,20 @@ export class PomodoroComponent {
 
     switch (this.cyclephase) {
       case CyclePhase.RESTING:
-        console.log("studying");
-        this.cyclephase = CyclePhase.STUDYING;
-        this.repetitions--;
-        this.pomodoroTime = this.pomodoroDuration;
-        this.breakTime = this.breakDuration;
-        this.resumeCycle();
+        this.cyclephase = CyclePhase.RESTING;
+        this.pauseCycle(false);
         break;
       case CyclePhase.STUDYING:
-        console.log("resting");
-        this.repetitions--;
         this.cyclephase = CyclePhase.RESTING;
-        this.pomodoroTime = this.pomodoroDuration;
-        this.breakTime = this.breakDuration;
         this.pauseCycle(false); // i need a new method for stopping the pausing the cycle but not starting the breaktime
         //this.resumeCycle();
         break;
       case CyclePhase.IDLE:
         break;
     }
+    this.repetitions--;
+    this.pomodoroTime = this.pomodoroDuration;
+    this.breakTime = this.breakDuration;
   }
 
   setIntervals(){
@@ -204,6 +199,11 @@ export class PomodoroComponent {
     this.studyTimeInputHidden = !this.studyTimeInputHidden;
     this.breakTimeHidden = !this.breakTimeHidden;
     this.repetitionsSelectorHidden = false;
+  }
 
+  restartPomodoro(){
+    this.pauseCycle(false);
+    this.pomodoroTime = this.pomodoroDuration;
+    this.breakTime = this.breakDuration;
   }
 }

@@ -4,7 +4,7 @@
     <h2>Study Time</h2>
     <div #studyTimeInput [class.is-hidden]="studyTimeInputHidden" class="field columns is-centered">
       <div class="control column is-2">
-        <input [(ngModel)]="pomodoroTime.h" class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles()"> hours
+        <input [(ngModel)]="pomodoroTime.h" class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles(false)"> hours
         <input [(ngModel)]="pomodoroTime.m" class="input" type="number" min="0" max="59" placeholder="Minutes" value="30" (input)="autoComputeCycles()"> minutes
       </div>
     </div>
@@ -40,7 +40,7 @@
         <button [class.is-hidden]="!intervalsSet" class="button mt-2 has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
         <button [class.is-hidden]="!intervalsSet" class="button is-dark mt-2" (click)="endSession()">end session</button>
         <button [class.is-hidden]="!intervalsSet" class="button mt-2" (click)="skipToNextCycle()">skip to next cycle</button>
-        <button [class.is-hidden]="!intervalsSet" class="button mt-2">restart pomodoro</button>
+        <button [class.is-hidden]="!intervalsSet" class="button mt-2" (click)="restartPomodoro()">restart pomodoro</button>
       </div>
     </div>
 
