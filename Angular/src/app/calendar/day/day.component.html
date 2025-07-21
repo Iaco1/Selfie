@@ -9,7 +9,7 @@
 	</div>
 	@if (visualize != "year") {
 		<event
-			*ngFor="let event of (visualize === 'month' ? dayEvents : dayEvents.filter(allDay))"
+			*ngFor="let event of (visualize === 'month' ? filteredEvents : filteredEvents.filter(allDay))"
 			[evento]="event"
 			[cornerMask]="getCornerMask(event)"
 			(save)="onSaveEvent($event)"

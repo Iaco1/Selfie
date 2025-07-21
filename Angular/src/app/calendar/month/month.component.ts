@@ -91,17 +91,7 @@ export class MonthComponent {
 
 	//events
 	@Input() events: CalendarEvent[] = [];
-	get monthEvents(): CalendarEvent[] {
-		const startOfMonth = new Date(this.year, this.month, 1);
-		startOfMonth.setHours(0, 0, 0, 0);
 	
-		const endOfMonth = new Date(this.year, this.month + 1, 0);
-		endOfMonth.setHours(23, 59, 59, 999);
-	
-		return this.events.filter(event =>
-			event.startDate >= startOfMonth && event.startDate <= endOfMonth
-		);
-	}
 	@Output() saveEvent = new EventEmitter<CalendarEvent>();
 	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
 	onSaveEvent(updatedEvent: CalendarEvent) {
