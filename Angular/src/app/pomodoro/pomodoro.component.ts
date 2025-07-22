@@ -35,8 +35,11 @@ export class PomodoroComponent {
 
 
   pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
+  pomodoroLog: any;
 
-  constructor(private router: Router, private timemachine: TimeMachineService, private pomodoroService: PomodoroService) {}
+  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService) {
+    this.setPomodoroLog();
+  }
 
   resetPomodoroObject(){
     this.pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
@@ -103,8 +106,8 @@ export class PomodoroComponent {
   startCycle(){
     this.setRepetitions(false);
     this.resumeCycle();
+    this.logStartTime();
     if(this.pomodoroSecondsLeft > 0) {
-      this.logStartTime();
       this.tickPomodoro();
     }
   }
@@ -118,9 +121,9 @@ export class PomodoroComponent {
 
   pauseCycle(){
     this.resumePause();
+    this.logEndTime();
     if( this.breakSecondsLeft > 0) {
       this.tickBreak();
-      this.logEndTime();
     }
   }
 
@@ -272,5 +275,15 @@ export class PomodoroComponent {
     }
   }
 
-  protected readonly CyclePhase = CyclePhase;
+  setPomodoroLog(){
+    this.pomodoroService.get(localStorage.getItem("authToken")).subscribe({
+      next: (response) => {
+        console.log("pomodoro log: ", response.pomodoro);
+        this.pomodoroLog = response.pomodoro;
+      },
+      error: (error) => {
+        console.log("error: ", error);
+      }
+    });
+  }
 }

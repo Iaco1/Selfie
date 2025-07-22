@@ -69,5 +69,19 @@
         </div>
       </div>
     </div>
-  </div>
+
+    <hr>
+    <h2>Stats</h2>
+    <div class="columns">
+      <div class="column is-left">Date</div>
+      <div class="column is-right">Duration</div>
+    </div>
+    @for(p of pomodoroLog; track p.id){
+      <div class="columns">
+        <div class="column is-left">{{p.startTime}}</div>
+        <div class="column is-right">{{p.duration}}s</div>
+      </div>
+    }
+
+    </div>
 </div>

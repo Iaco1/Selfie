@@ -10,10 +10,23 @@ export class PomodoroService {
 
   constructor(private http: HttpClient) {}
 
+  formatDate(date: Date){
+    return date.toLocaleString("en-US", {
+        timeZone: "Europe/Rome",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+  }
+
   getStringDatesEquivalent(pomodoro: {startTime: Date; endTime: Date; duration: number; completionStatus: boolean; authorId: string | null}){
     return {
-      startTime: pomodoro.startTime.toISOString(),
-      endTime: pomodoro.endTime.toISOString(),
+      startTime: this.formatDate(pomodoro.startTime),
+      endTime: this.formatDate(pomodoro.endTime),
       duration: pomodoro.duration,
       completionStatus: pomodoro.completionStatus,
       authorId: pomodoro.authorId,
@@ -39,5 +52,9 @@ export class PomodoroService {
         console.log(err);
       }
     });
+  }
+
+  get(userId: string | null): Observable<any> {
+    return this.http.get(environment.baseURL+`/pomodoro/${userId}`);
   }
 }
