@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {FormsModule} from '@angular/forms';
 import {TimeMachineService} from '../services/time-machine.service';
 import {finalize, take, takeWhile} from 'rxjs';
+import {PomodoroService} from '../services/pomodoro.service';
 
 @Component({
   selector: 'app-pomodoro',
@@ -33,9 +34,13 @@ export class PomodoroComponent {
   breakDuration = {h: 0, m: 5, s: 0};
 
 
-  pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, competionStatus: false, authorId: ""};
+  pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
 
-  constructor(private router: Router, private timemachine: TimeMachineService) {}
+  constructor(private router: Router, private timemachine: TimeMachineService, private pomodoroService: PomodoroService) {}
+
+  resetPomodoroObject(){
+    this.pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
+  }
 
   resetCountdowns(){
     this.pomodoroSecondsLeft = this.pomodoroDuration.h*3600 + this.pomodoroDuration.m*60;
@@ -98,7 +103,10 @@ export class PomodoroComponent {
   startCycle(){
     this.setRepetitions(false);
     this.resumeCycle();
-    if(this.pomodoroSecondsLeft > 0) this.tickPomodoro();
+    if(this.pomodoroSecondsLeft > 0) {
+      this.logStartTime();
+      this.tickPomodoro();
+    }
   }
 
 
@@ -110,7 +118,10 @@ export class PomodoroComponent {
 
   pauseCycle(){
     this.resumePause();
-    if( this.breakSecondsLeft > 0) this.tickBreak();
+    if( this.breakSecondsLeft > 0) {
+      this.tickBreak();
+      this.logEndTime();
+    }
   }
 
   resumePause(){
@@ -220,6 +231,9 @@ export class PomodoroComponent {
       (day) => {
         this.pomodoro.endTime = day;
         console.log("endTime: " + day);
+        this.pomodoro.duration = (this.pomodoro.endTime.getTime() - this.pomodoro.startTime.getTime())/1000;
+        this.pomodoroService.insert(this.pomodoro);
+        this.resetPomodoroObject();
       }
     )
   }
