@@ -2,30 +2,30 @@
   <div class="content has-text-centered">
     <h1>Pomodoro</h1>
     <h2>Study Time</h2>
-    <div #studyTimeInput [class.is-hidden]="studyTimeInputHidden" class="field columns is-centered">
+    <div [class.is-hidden]="hideTimeInputs()" class="field columns is-centered">
       <div class="control column is-2">
-        <input [(ngModel)]="pomodoroTime.h" class="input" type="number" min="0" placeholder="Hours" value="0" (input)="autoComputeCycles(false)"> hours
-        <input [(ngModel)]="pomodoroTime.m" class="input" type="number" min="0" max="59" placeholder="Minutes" value="30" (input)="autoComputeCycles()"> minutes
+        <input [(ngModel)]="pomodoroDuration.h" class="input" type="number" min="0" placeholder="Hours"> hours
+        <input [(ngModel)]="pomodoroDuration.m" class="input" type="number" min="1" max="59" placeholder="Minutes" > minutes
       </div>
     </div>
-    <div #studyTimeCountdown [class.is-hidden]="!studyTimeInputHidden">
+    <div [class.is-hidden]="hideCountdowns()">
       <h1>
         {{pomodoroTime.h}} h : {{pomodoroTime.m}} m {{pomodoroTime.s}} s
-        <i class="fa-solid fa-rotate fa-xs" [class.is-hidden]="!studyAnimationActive" [class.rotating-icon]="studyAnimationActive"></i>
+        <i class="fa-solid fa-rotate fa-xs" [class.is-hidden]="hideStudyAnimation()" [class.rotating-icon]="runStudyAnimation()"></i>
       </h1>
 
     </div>
     <h2>Relax Time</h2>
     <div class="columns is-centered">
       <div class="column is-2">
-        <div #breakTimeInput [class.is-hidden]="breakTimeHidden" class="field">
+        <div [class.is-hidden]="hideTimeInputs()" class="field">
           <div class="control">
-            <input [(ngModel)]="breakTime.m" class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
+            <input [(ngModel)]="breakDuration.m" class="input" type="number" min="1" max="59" placeholder="Minutes"> minutes
           </div>
         </div>
-        <div #breakTimeCountdown [class.is-hidden]="!breakTimeHidden" class="level">
+        <div [class.is-hidden]="hideCountdowns()" class="level">
           <h1 class="level-left">{{breakTime.m}} m {{breakTime.s}} s</h1>
-            <div class="smile-animation level-right" [class.is-hidden]="!breakAnimationActive" [class.smile-animation]="breakAnimationActive">
+            <div class="smile-animation level-right" [class.is-hidden]="hideBreakAnimation()" [class.smile-animation]="runBreakAnimation()">
               <i class="fa-solid fa-face-smile"></i>
               <i class="fa-solid fa-face-smile-beam"></i>
               <i class="fa-solid fa-face-laugh-beam"></i>
@@ -36,24 +36,24 @@
     </div>
     <div class="columns is is-centered">
       <div class="column is-2 border-primary is-flex is-flex-direction-column">
-        <button [class.is-hidden]="intervalsSet" (click)="setIntervals()" class="button"> set study and break times</button>
-        <button [class.is-hidden]="!intervalsSet" class="button mt-2 has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
-        <button [class.is-hidden]="!intervalsSet" class="button is-dark mt-2" (click)="endSession()">end session</button>
-        <button [class.is-hidden]="!intervalsSet" class="button mt-2" (click)="skipToNextCycle()">skip to next cycle</button>
-        <button [class.is-hidden]="!intervalsSet" class="button mt-2" (click)="restartPomodoro()">restart pomodoro</button>
+        <button [class.is-hidden]="hideSetIntervals()" (click)="readyCycle()" class="button"> set study and break times</button>
+        <button [class.is-hidden]="hideMainInterface()" class="button mt-2 has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
+        <button [class.is-hidden]="hideMainInterface()" class="button is-dark mt-2" (click)="endSession()">end session</button>
+        <button [class.is-hidden]="hideSkip()" class="button mt-2" (click)="skipToNextCycle()">skip to next cycle</button>
+        <button [class.is-hidden]="hideRestart()" class="button mt-2" (click)="restartPomodoro()">restart pomodoro</button>
       </div>
     </div>
 
-    <div [class.is-hidden]="repetitionsHidden">
+    <div [class.is-hidden]=hideRepetitionsLeft()>
       <h2>Repetitions left <br>{{repetitions}}</h2>
     </div>
-    <div [class.is-hidden]="repetitionsSelectorHidden">
+    <div [class.is-hidden]="hideRepetitionSelector()">
       <h2>choose number of repetitions</h2>
       <div class="columns is-centered mb-6">
         <div class="column is-2">
           <div class="field">
             <div class="control">
-              <input [(ngModel)]="manualRepetitions" class="input" type="number" min="0" placeholder="Repetitions" value="5" (input)="autoComputeCycles(true)"> repetitions
+              <input [(ngModel)]="repetitions" class="input" type="number" min="0" placeholder="Repetitions" (input)="setRepetitions(true, true)"> repetitions
             </div>
           </div>
           <h6>
@@ -62,8 +62,8 @@
           </h6>
           <div class="field">
             <div class="control">
-              <input [(ngModel)]="sessionTime.h" class="input" type="number" min="0" placeholder="Hours" (input)="autoComputeCycles()"> hours
-              <input [(ngModel)]="sessionTime.m"  class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="autoComputeCycles()"> minutes
+              <input [(ngModel)]="sessionTime.h" class="input" type="number" min="0" placeholder="Hours" (input)="setRepetitions(true)"> hours
+              <input [(ngModel)]="sessionTime.m"  class="input" type="number" min="0" max="59" placeholder="Minutes" (input)="setRepetitions(true)"> minutes
             </div>
           </div>
         </div>
