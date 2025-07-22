@@ -79,7 +79,12 @@
     @for(p of pomodoroLog; track p.id){
       <div class="columns">
         <div class="column is-left">{{p.startTime}}</div>
-        <div class="column is-right">{{p.duration}}s</div>
+        <div class="column is-right">
+          {{p.duration}}s
+          <button class="button is-small is-rounded is-danger" (click)="deletePomodoro(p.id)">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
       </div>
     }
 

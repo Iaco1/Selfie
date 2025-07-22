@@ -40,9 +40,9 @@ router.get('/:userid', async (req, res) => {
   }
 })
 
-router.delete('/:userid', async (req, res) => {
+router.delete('/:userid/:pomodoroId', async (req, res) => {
   try{
-    if(req.query.pomodoroId) await dbUtils.deletePomodoro(req.query.pomodoroId);
+    if(req.params.pomodoroId) await dbUtils.deletePomodoro(req.params.pomodoroId);
     else await dbUtils.deleteAllPomodoros(req.params.userid);
     console.log("deletion successful");
     res.json({

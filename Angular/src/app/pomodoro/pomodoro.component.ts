@@ -286,4 +286,16 @@ export class PomodoroComponent {
       }
     });
   }
+
+  deletePomodoro(id: string) {
+    this.pomodoroService.delete(id).subscribe({
+      next: (response) => {
+        console.log("deletion response: ", response);
+        this.setPomodoroLog();
+      },
+      error: (error) => {
+        console.log("deletion error: ", error);
+      }
+    })
+  }
 }

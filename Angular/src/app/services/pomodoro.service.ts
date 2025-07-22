@@ -57,4 +57,8 @@ export class PomodoroService {
   get(userId: string | null): Observable<any> {
     return this.http.get(environment.baseURL+`/pomodoro/${userId}`);
   }
+
+  delete(pomodoroId: string): Observable<any>{
+    return this.http.delete(environment.baseURL+`/pomodoro/${localStorage.getItem("authToken")}/${pomodoroId}`);
+  }
 }
