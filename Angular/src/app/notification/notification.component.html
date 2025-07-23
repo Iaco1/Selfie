@@ -1,4 +1,7 @@
 <div *ngIf="showbox" class="notification corner-box">
-  <button class="delete" (click)="close()"></button>
-  Pomodoro cycle started!
+
+  <span>
+    {{text}}
+    <button class="delete" (click)="close()"></button>
+  </span>
 </div>

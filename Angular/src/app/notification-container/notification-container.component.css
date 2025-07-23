@@ -1,0 +1,13 @@
+:host {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  pointer-events: none; /* Allows clicking through the container when empty */
+  display: block;
+}
+
+/* Individual notifications should reset pointer-events */
+.notification {
+  pointer-events: auto;
+}

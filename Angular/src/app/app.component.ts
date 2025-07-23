@@ -5,10 +5,11 @@ import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
 import {HostListener} from '@angular/core';
 import {PomodoroService} from './services/pomodoro.service';
+import {NotificationContainerComponent} from './notification-container/notification-container.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HttpClientModule],
+  imports: [RouterOutlet, HttpClientModule, NotificationContainerComponent],
   providers: [AuthService, UserService, PomodoroService],
   template: `
     <router-outlet name="header"></router-outlet>
@@ -20,6 +21,8 @@ import {PomodoroService} from './services/pomodoro.service';
       <router-outlet name="asideRight"></router-outlet>
     </div>
     <router-outlet name="footer"></router-outlet>
+
+    <app-notification-container></app-notification-container>
 
   `
 })
