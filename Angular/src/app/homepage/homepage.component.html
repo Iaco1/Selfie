@@ -9,6 +9,29 @@
 </head>
 <body>
   <div>
-    <p>just a homepage</p>
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">This week's events</p>
+        <p class="subtitle">July 21 - July 27</p>
+      </div>
+    </section>
+    <section class="hero is-danger">
+      <div class="hero-body">
+        <p class="title">Last Pomodoro</p>
+        <p class="subtitle">
+          Started: {{this.startTime}}
+          -
+          Lasted:
+          @if(this.duration < 60){
+            {{ this.duration | number: "1.0-0" }}s
+          }
+          @else{
+            {{ this.duration / 60 | number: "1.0-0"}}m
+            {{this.duration % 60 | number: "1.0-0"}}s
+          }
+
+        </p>
+      </div>
+    </section>
   </div>
 </body>
