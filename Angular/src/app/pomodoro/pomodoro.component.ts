@@ -5,11 +5,13 @@ import {FormsModule} from '@angular/forms';
 import {TimeMachineService} from '../services/time-machine.service';
 import {finalize, take, takeWhile} from 'rxjs';
 import {PomodoroService} from '../services/pomodoro.service';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-pomodoro',
   imports: [
-    FormsModule
+    FormsModule,
+    DecimalPipe
   ],
   templateUrl: './pomodoro.component.html',
   styleUrl: './pomodoro.component.css'
@@ -278,7 +280,7 @@ export class PomodoroComponent {
   setPomodoroLog(){
     this.pomodoroService.get(localStorage.getItem("authToken")).subscribe({
       next: (response) => {
-        console.log("pomodoro log: ", response.pomodoro);
+        //console.log("pomodoro log: ", response.pomodoro);
         this.pomodoroLog = response.pomodoro;
       },
       error: (error) => {
@@ -288,6 +290,7 @@ export class PomodoroComponent {
   }
 
   deletePomodoro(id: string) {
+    console.log("trying to delete pomodoroId: ", id);
     this.pomodoroService.delete(id).subscribe({
       next: (response) => {
         console.log("deletion response: ", response);
