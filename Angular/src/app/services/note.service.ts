@@ -1,42 +1,50 @@
-// services/note.service.ts
 import { Injectable } from '@angular/core';
-import { NoteModel } from '../types/note-model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { NoteModel } from '../types/note.model';
+import { environment } from '../../environments/environment';
 import { StringDate } from '../types/string-date';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+	providedIn: 'root'
+})
 export class NoteService {
-	private notes: NoteModel[] = [];
-	private nextId = 1;
-
-	private notesSubject = new BehaviorSubject<NoteModel[]>(this.notes);
-	notes$ = this.notesSubject.asObservable();
-
-	getNotes(): NoteModel[] {
-		return this.notes;
+	myURL = environment.baseURL + "/note";
+	constructor(private http: HttpClient) {}
+	//create
+	saveNote(note: NoteModel): Observable<NoteModel> {
+		return this.http.post<NoteModel>(this.myURL, note);
 	}
-
-	getNoteById(id: number): NoteModel | undefined {
-		return this.notes.find(note => note.id === id);
+	//read
+	getAllNotes(): Observable<NoteModel[]> {
+		return this.http.get<{ message: string; result: any[] }>(this.myURL).pipe(
+			map(response =>
+				response.result.map(note => ({
+					...note,
+					creation: new StringDate(note.creation.date, note.creation.time),
+					lastModification: new StringDate(note.lastModification.date, note.lastModification.time)
+				}))
+			)
+		);
+	}	
+	//read by id
+	getNote(noteId: string): Observable<NoteModel> {
+		return this.http.get<{ message: string; result: any }>(`${this.myURL}/${noteId}`).pipe(
+			map(response => ({
+				...response.result,
+				creation: new StringDate(response.result.creation.date, response.result.creation.time),
+				lastModification: new StringDate(response.result.lastModification.date, response.result.lastModification.time)
+			}))
+		);
 	}
-
-	saveNote(note: NoteModel, date: Date) {
-		if (!note.id) {
-			note.id = this.nextId++;
-			note.creation = StringDate.fromDate(date);
-			note.lastModification = note.creation.clone();
-			this.notes.push(note);
-		} else {
-			const existing = this.notes.find(n => n.id === note.id);
-			if (existing) {
-				Object.assign(existing, note);
-				existing.lastModification = StringDate.fromDate(date);
-			}
-		}
+	//update
+	updateNote(note: NoteModel): Observable<NoteModel> {
+		return this.http.put<NoteModel>(`${this.myURL}/${note._id}`, note);
 	}
-
-	deleteNote(id: number) {
-		this.notes = this.notes.filter(note => note.id !== id);
-		this.notesSubject.next([...this.notes]); // emit updated list
+	//delete
+	deleteNote(noteId: string): Observable<any> {
+		return this.http.delete(`${this.myURL}/${noteId}`);
 	}
 }

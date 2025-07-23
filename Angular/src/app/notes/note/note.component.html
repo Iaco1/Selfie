@@ -4,7 +4,7 @@
 			{{me.title}}
 		</p>
 		<p class="card-header-icon">
-			<span class="tag is-info is-light is-rounded">#{{ me.id }}</span>
+			<span class="tag is-info is-light is-rounded">#{{ me._id }}</span>
 		</p>
 	</header>
 	<div class="card-content">
@@ -22,7 +22,7 @@
 	</div>
 	<footer class="card-footer">
 		<a class="card-footer-item">
-			<button class="button is-success" (click)="EditNote(me.id)">Edit</button>
+			<button class="button is-success" (click)="EditNote(me._id)">Edit</button>
 		</a>
 		<a class="card-footer-item">
 			<button class="button is-danger" (click)="Delete()">Delete</button>

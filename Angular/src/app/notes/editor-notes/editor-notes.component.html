@@ -28,8 +28,8 @@
 		<div class="columns">
 			<!-- Left column: creation and last modification dates -->
 			<div class="column is-half">
-				<p>note Creation: {{ me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
-				<p>Last Modified: {{ me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+				<p *ngIf="me.creation">note Creation: {{ me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+				<p *ngIf="me.lastModification">Last Modified: {{ me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
 			</div>		
 			<!-- Right column: tags input -->
 			<div class="column is-half field">

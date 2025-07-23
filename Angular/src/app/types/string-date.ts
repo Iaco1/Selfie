@@ -8,6 +8,7 @@ export class StringDate {
 	}
 
 	getDate() { return new Date(`${this.date}T${this.time}`); }
+	getTime() { return this.getDate().getTime() }
 
 	static fromDate(dateObj: Date): StringDate {
 		const pad = (n: number) => n.toString().padStart(2, '0');

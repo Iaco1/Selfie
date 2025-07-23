@@ -32,7 +32,7 @@ export const routes: Routes = [
 	{path: 'SearchNotesComponent', component: SearchNotesComponent, outlet: 'primary'},
 	{ path: 'editor', component: EditorNotesComponent },		// For creating a new note
 	{ path: 'editor/:id', component: EditorNotesComponent },	// For editing an existing note
-	{ path: '', redirectTo: '/notes', pathMatch: 'full' },
+	{ path: '', component: HeaderComponent, outlet: 'header' }
 ];
 
 export const appConfig: ApplicationConfig = {
