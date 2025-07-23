@@ -44,7 +44,7 @@ export class PomodoroComponent {
   }
 
   resetPomodoroObject(){
-    this.pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
+    //this.pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
   }
 
   resetCountdowns(){
@@ -225,7 +225,7 @@ export class PomodoroComponent {
       })
     ).subscribe(
       (day) => {
-        this.pomodoroSecondsLeft--;
+        this.pomodoroSecondsLeft = Math.round(this.formatTimeInSeconds(this.pomodoroDuration) - (Math.abs(day.getTime() - this.pomodoro.startTime.getTime())/1000));
         this.pomodoroTime = this.formatTimeInHMS(this.pomodoroSecondsLeft);
       }
     )
@@ -254,7 +254,8 @@ export class PomodoroComponent {
       })
       ).subscribe(
       (day) => {
-        this.breakSecondsLeft--;
+        console.log("time elapsed since pomodoro end: ", Math.abs(day.getTime() - this.pomodoro.endTime.getTime())/1000);
+        this.breakSecondsLeft = Math.round(this.formatTimeInSeconds(this.breakDuration) - (Math.abs(day.getTime() - this.pomodoro.endTime.getTime())/1000));
         this.breakTime = this.formatTimeInHMS(this.breakSecondsLeft);
       }
     )
@@ -281,7 +282,7 @@ export class PomodoroComponent {
     this.pomodoroService.get(localStorage.getItem("authToken")).subscribe({
       next: (response) => {
         //console.log("pomodoro log: ", response.pomodoro);
-        this.pomodoroLog = response.pomodoro;
+        this.pomodoroLog = response.pomodoro.reverse();
       },
       error: (error) => {
         console.log("error: ", error);
