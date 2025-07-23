@@ -15,6 +15,7 @@ import {AccountsettingsComponent} from './accountsettings/accountsettings.compon
 import {PomodoroComponent} from './pomodoro/pomodoro.component';
 import {SearchNotesComponent} from './notes/search-notes/search-notes.component';
 import {EditorNotesComponent} from './notes/editor-notes/editor-notes.component';
+import { ListActivitiesComponent } from './list-activities/list-activities.component';
 
 export const routes: Routes = [
 	{path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -28,11 +29,12 @@ export const routes: Routes = [
 	{path: 'CalendarComponent', component: CalendarComponent, outlet: 'primary'},
 	{path: 'AccountsettingsComponent', component: AccountsettingsComponent, outlet: 'primary'},
 	{path: 'PomodoroComponent', component: PomodoroComponent, outlet: 'primary'},
+	{path: 'ListActivitiesComponent', component: ListActivitiesComponent, outlet: 'primary'},
 	//routers for notes
 	{path: 'SearchNotesComponent', component: SearchNotesComponent, outlet: 'primary'},
 	{ path: 'editor', component: EditorNotesComponent },		// For creating a new note
 	{ path: 'editor/:id', component: EditorNotesComponent },	// For editing an existing note
-	{ path: '', component: HeaderComponent, outlet: 'header' }
+	{ path: '', component: HeaderComponent, outlet: 'header' },
 ];
 
 export const appConfig: ApplicationConfig = {

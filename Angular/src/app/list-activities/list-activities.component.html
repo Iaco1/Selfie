@@ -1,0 +1,11 @@
+<p>list-activities works!</p>
+<button class="button is-primary" (click)="createActivity()">Create New Activity</button>
+
+<div class="is-multiline">
+	<div *ngFor="let activity of activities">
+		<activity [me]="activity"
+			(save)="onSaveActivity($event)"
+			(delete)="onDeleteActivity($event)">
+		</activity>
+	</div>
+</div>

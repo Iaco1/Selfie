@@ -6,6 +6,7 @@ const signup = require('./routes/signup');
 const user = require('./routes/user');
 const note = require('./routes/note');
 const event = require('./routes/event');
+const activity = require('./routes/activity');
 
 const mongoose = require("mongoose");
 const config = require('./config');
@@ -18,6 +19,7 @@ app.use("/signup", signup);
 app.use("/user", user);
 app.use("/note", note);
 app.use("/event", event);
+app.use("/activity", activity);
 
 mongoose.connect(config.mongoURI
 // , { useNewUrlParser: true, useUnifiedTopology: true}

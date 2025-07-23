@@ -1,0 +1,72 @@
+<!-- Evento cliccabile -->
+<div #content
+	[ngStyle]="{ 'background-color': me.colour }">
+	<p>
+		<span>
+			[ <input #completed type="checkbox" [(ngModel)]="me.completed"> ]
+		</span>
+		@if( visualize === "list") {
+			<span (click)="openModal()"> {{ me.expirationDay.date }} {{ me.expirationDay.time }} </span>
+		}<span (click)="openModal()">
+			 - {{ me.title }} : {{ me.description }}
+		</span>
+	</p>
+</div>
+
+<!-- Modale con Bulma -->
+<div class="modal" [ngClass]="{ 'is-active': showModal }">
+	<div class="modal-background" (click)="closeModal()"></div>
+	<div class="modal-card" (click)="$event.stopPropagation()">
+		<header class="modal-card-head">
+			<p class="modal-card-title">Modify Event</p>
+			<button class="delete" aria-label="close" (click)="closeModal()"></button>
+		</header>
+		<section class="modal-card-body">
+			<div class="columns">
+				<!-- title -->
+				<div class="field column is-10">
+					<label class="label" for="title">Title</label>
+					<input #title class="input control" type="text"
+						[(ngModel)]="me.title" placeholder="Titolo activity">
+				</div>
+				<!-- colour -->
+				<div class="field column is-2">
+					<label class="label" for="colour">Colour</label>
+					<input #colour class="input control" type="color"
+						[(ngModel)]="me.colour">
+				</div>
+			</div>
+			<!-- when? -->
+			<div class="columns">
+				<!-- expirationDay -->
+				<div class="field column">
+					<label class="label" for="dateStart">Start Date</label>
+					<input #dateStart class="input control" type="date"
+						[(ngModel)]="me.expirationDay.date">
+				</div>
+				<div class="field column">
+					<label class="label" for="timeStart">Start Hour</label>
+					<input #timeStart class="input control" type="time"
+						[(ngModel)]="me.expirationDay.time">
+				</div>
+			</div>
+			<!-- descrizione -->
+			<div class="field">
+				<label class="label" for="description">Description</label>
+				<textarea #description class="textarea control" [(ngModel)]="me.description"
+					placeholder="Description event"></textarea>
+			</div>
+		</section>
+		<footer class="modal-card-foot level">
+			<!-- buttons -->
+			<div class="level-left">
+				<button class="level-item button is-success" (click)="saveActivity()">Save</button>
+				<button class="level-item button" (click)="closeModal()">Cancel</button>
+			</div>
+			<div class="level-right">
+				<button class="level-item button is-danger" (click)="deleteActivity()">Delete</button>
+			</div>
+		</footer>
+	</div>
+</div>
+

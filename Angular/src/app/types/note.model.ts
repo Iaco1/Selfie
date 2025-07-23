@@ -12,10 +12,9 @@ export class NoteModel {
 	//required false
 	tags : string[];
 
-	constructor(title: string="", text: string="", author="", tags: string[] = []) {
+	constructor(creationDate: Date, title: string="", text: string="", author="", tags: string[] = []) {
 		this.title = title;
 		this.text = text;
-		let creationDate = new Date()
 		//this.id = creationDate.getTime();
 		this.creation = StringDate.fromDate(creationDate);
 		this.lastModification = this.creation.clone();
