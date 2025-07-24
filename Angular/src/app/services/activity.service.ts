@@ -17,7 +17,7 @@ export class ActivityService extends BaseService<ActivityModel> {
 
 	private static transform (json: any): ActivityModel {
 		let expirationDay = new StringDate(json.expirationDay.date, json.expirationDay.time);
-		let activity = new ActivityModel(expirationDay, json.title, json.description, json.colour, json.user);
+		let activity = new ActivityModel(expirationDay, json.title, json.description, json.colour, json.completed, json.user);
 		activity.setId(json._id);
 		return activity;
 	}

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ActivityService } from '../services/activity.service';
@@ -19,10 +18,14 @@ import { StringDate } from '../types/string-date';
 	standalone: true
 })
 export class ListActivitiesComponent {
-	activities: ActivityModel[] = [];
-	sorting: string = 'id';
+	//new activity fields
+	title = "New Activity";
+	color = "green";
+	description = "";
 
-	constructor(private activityService: ActivityService) {}
+	activities: ActivityModel[] = [];
+
+	constructor(private actService: ActivityService) {}
 
 	ngOnInit() {
 		this.fetchActivities();
@@ -30,7 +33,7 @@ export class ListActivitiesComponent {
 
 	fetchActivities() {
 		//filter activities by author
-		this.activityService.getOnlyMyActivities().subscribe({
+		this.actService.getOnlyMyActivities().subscribe({
 			next: (data) => {
 				//console.log('Fetched activities:', data);
 				this.activities = data;
@@ -42,25 +45,51 @@ export class ListActivitiesComponent {
 	}
 
 	createActivity() {
-		let date = StringDate.fromDate(new Date());
-		let newActivity = new ActivityModel(date);
+		let expiration = StringDate.fromDate(new Date());
+		let newActivity = new ActivityModel(expiration, this.title, this.description, this.color);
+		newActivity._tempID = crypto.randomUUID();
 		this.activities.push(newActivity);
 	}
 
-	onSaveActivity(updatedEvent: ActivityModel) {
-		const index = this.activities.findIndex(activity => activity._id === updatedEvent._id);
-		if (index !== -1) {
-			this.activities[index] = updatedEvent;
+	private notice(activity: ActivityModel) {
+		const i = this.activities.findIndex(e =>
+			(activity._tempID && e._tempID === activity._tempID) ||
+			(activity._id && e._id === activity._id)
+		);
+	
+		if (i !== -1) {
+			this.activities[i] = activity;
 		} else {
-			this.activities.push(updatedEvent);
+			this.activities = [...this.activities, activity];
 		}
 	}
+	onSaveActivity(activity: ActivityModel) {
+		const { _tempID, ...copy } = activity;
 	
-	onDeleteActivity(activityToDelete: ActivityModel) {
-		if (!activityToDelete._id) return;
+		const op$ = activity._id
+			? this.actService.update(activity._id, copy)
+			: this.actService.create(copy);
 	
-		this.activityService.delete(activityToDelete._id).subscribe(() => {
-			this.activities = this.activities.filter(activity => activity._id !== activityToDelete._id);
+		op$.subscribe(savedActivity => {
+			// Reattach _tempID so we can match it in notice()
+			savedActivity._tempID = _tempID;
+			this.notice(savedActivity);
 		});
+	}
+	
+	onDeleteActivity(toDelete: ActivityModel) {
+		if (toDelete._id) {
+			// Saved on backend, perform API delete
+			this.actService.delete(toDelete._id).subscribe(() => {
+				this.activities = this.activities.filter(
+					activity =>	activity._id !== toDelete._id
+				);
+			});
+		} else {
+			// Only exists locally, just remove it
+			this.activities = this.activities.filter(
+				activity => activity._tempID !== toDelete._tempID
+			);
+		}
 	}
 }

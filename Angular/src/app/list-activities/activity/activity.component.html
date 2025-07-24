@@ -1,14 +1,14 @@
-<!-- Evento cliccabile -->
-<div #content
+<!-- Activity cliccabile -->
+<div #content (click)="openModal()"
 	[ngStyle]="{ 'background-color': me.colour }">
 	<p>
-		<span>
+		<span (click)="$event.stopPropagation()">
 			[ <input #completed type="checkbox" [(ngModel)]="me.completed"> ]
 		</span>
+		<span>
 		@if( visualize === "list") {
-			<span (click)="openModal()"> {{ me.expirationDay.date }} {{ me.expirationDay.time }} </span>
-		}<span (click)="openModal()">
-			 - {{ me.title }} : {{ me.description }}
+			{{ me.expirationDay.date }} {{ me.expirationDay.time }}
+		} - {{ me.title }} : {{ me.description }}
 		</span>
 	</p>
 </div>
@@ -18,7 +18,7 @@
 	<div class="modal-background" (click)="closeModal()"></div>
 	<div class="modal-card" (click)="$event.stopPropagation()">
 		<header class="modal-card-head">
-			<p class="modal-card-title">Modify Event</p>
+			<p class="modal-card-title">Modify Activity</p>
 			<button class="delete" aria-label="close" (click)="closeModal()"></button>
 		</header>
 		<section class="modal-card-body">

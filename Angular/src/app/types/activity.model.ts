@@ -3,6 +3,7 @@ import { StringDate } from "./string-date";
 export class ActivityModel {
 	//setted by the program
 	_id : string = "";
+	_tempID? : string;
 	user : string;
 	//required true
 	completed: boolean;
@@ -15,8 +16,9 @@ export class ActivityModel {
 	//TODO
 
 	constructor(
-		expirationDay: StringDate, title: string = "New Activity", completed:boolean = false,
-		description:string="", colour: string = "green", user: string = ""
+		expirationDay: StringDate, title: string = "New Activity",
+		description:string = "", colour: string = "green",
+		completed:boolean = false, user: string = ""
 	) {
 		this.completed = completed;
 		this.title = title;
