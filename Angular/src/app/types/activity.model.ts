@@ -30,7 +30,7 @@ export class ActivityModel {
 		}
 	}
 
-	get expirationDayDate() { return this.expirationDay.getDate() }
+	get expirationDAyte() { return this.expirationDay.getDate() }
 
 	setId(id: string) {
 		this._id = id;

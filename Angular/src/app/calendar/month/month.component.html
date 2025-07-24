@@ -15,9 +15,14 @@
 		*ngFor="let day of days"
 		[day]="day.date"
 		[visualize]="visualize"
+
 		[events]="events"
 		(saveEvent)="onSaveEvent($event)"
-		(deleteEvent)="onDeleteEvent($event)">
+		(deleteEvent)="onDeleteEvent($event)"
+						
+		[activities]="activities"
+		(saveActivity)="onSaveActivity($event)"
+		(deleteActivity)="onDeleteActivity($event)">
 	</day>
 	@for (i of createRange(next_days); track i) {
 		<div>{{ i }}</div>

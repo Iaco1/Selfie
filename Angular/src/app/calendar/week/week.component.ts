@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DayComponent } from '../day/day.component';
 import { CalendarEvent } from '../../types/calendar-event.model';
+import { ActivityModel } from '../../types/activity.model';
 
 @Component({
 	selector: 'week',
@@ -49,5 +50,17 @@ export class WeekComponent {
 	}
 	onDeleteEvent(eventToDelete: CalendarEvent) {
 		this.deleteEvent.emit(eventToDelete);
+	}
+
+	//activities
+	@Input() activities: ActivityModel[] = [];
+	
+	@Output() saveActivity = new EventEmitter<ActivityModel>();
+	@Output() deleteActivity = new EventEmitter<ActivityModel>();
+	onSaveActivity(updatedActivity: ActivityModel) {
+		this.saveActivity.emit(updatedActivity);
+	}
+	onDeleteActivity(activityToDelete: ActivityModel) {
+		this.deleteActivity.emit(activityToDelete);
 	}
 }

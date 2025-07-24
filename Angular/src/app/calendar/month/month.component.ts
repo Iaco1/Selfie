@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DayComponent } from '../day/day.component';
 import { CalendarEvent } from '../../types/calendar-event.model';
 import { } from '@angular/core';
+import { ActivityModel } from '../../types/activity.model';
 
 @Component({
 	selector: 'month',
@@ -99,5 +100,17 @@ export class MonthComponent {
 	}
 	onDeleteEvent(eventToDelete: CalendarEvent) {
 		this.deleteEvent.emit(eventToDelete);
+	}
+
+	//activities
+	@Input() activities: ActivityModel[] = [];
+	
+	@Output() saveActivity = new EventEmitter<ActivityModel>();
+	@Output() deleteActivity = new EventEmitter<ActivityModel>();
+	onSaveActivity(updatedActivity: ActivityModel) {
+		this.saveActivity.emit(updatedActivity);
+	}
+	onDeleteActivity(activityToDelete: ActivityModel) {
+		this.deleteActivity.emit(activityToDelete);
 	}
 }

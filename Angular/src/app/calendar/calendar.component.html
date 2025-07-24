@@ -10,26 +10,41 @@
 		<day
 			[day]="day"
 			[visualize]="'day'"
+
 			[events]="events"
 			(saveEvent)="onSaveEvent($event)"
-			(deleteEvent)="onDeleteEvent($event)">
+			(deleteEvent)="onDeleteEvent($event)"
+
+			[activities]="activities"
+			(saveActivity)="onSaveActivity($event)"
+			(deleteActivity)="onDeleteActivity($event)">
 		</day>
 	}
 	@case('w') {
 		<week
 			[day]="day"
+
 			[events]="events"
 			(saveEvent)="onSaveEvent($event)"
-			(deleteEvent)="onDeleteEvent($event)">
+			(deleteEvent)="onDeleteEvent($event)"
+
+			[activities]="activities"
+			(saveActivity)="onSaveActivity($event)"
+			(deleteActivity)="onDeleteActivity($event)">
 		</week>
 	}
 	@case('m') {
 		<month
 			[day]="day"
 			[visualize]="'month'"
+
 			[events]="events"
 			(saveEvent)="onSaveEvent($event)"
-			(deleteEvent)="onDeleteEvent($event)">
+			(deleteEvent)="onDeleteEvent($event)"
+
+			[activities]="activities"
+			(saveActivity)="onSaveActivity($event)"
+			(deleteActivity)="onDeleteActivity($event)">
 		</month>
 	}
 	@case('y') {
@@ -41,9 +56,14 @@
 						[month]="i - 1"
 						[year]="day.getFullYear()"
 						[visualize]="'year'"
+
 						[events]="events"
 						(saveEvent)="onSaveEvent($event)"
-						(deleteEvent)="onDeleteEvent($event)">
+						(deleteEvent)="onDeleteEvent($event)"
+						
+						[activities]="activities"
+						(saveActivity)="onSaveActivity($event)"
+						(deleteActivity)="onDeleteActivity($event)">
 					</month>
 				</div>
 			}

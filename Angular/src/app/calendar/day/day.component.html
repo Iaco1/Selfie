@@ -10,12 +10,18 @@
 		{{ day.getDate() }}
 	</div>
 	<event
-		*ngFor="let event of (visualize === 'month' || 'year' ? filteredEvents : filteredEvents.filter(allDay))"
+		*ngFor="let event of upperEvents()"
 		[evento]="event"
 		[cornerMask]="getCornerMask(event)"
 		(save)="onSaveEvent($event)"
 		(delete)="onDeleteEvent($event)">
 	</event>
+	<activity
+		*ngFor = "let activity of filteredActivities"
+		[me]="activity"
+		(save)="onSaveActivity($event)"
+		(delete)="onDeleteActivity($event)">
+	</activity>
 	@if ( visualize == "day" || visualize == "week" ) {
 		<div class="column no-space-between">
 			@for (hour of hours; track hour) {

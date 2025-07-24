@@ -12,7 +12,7 @@ import { ActivityModel } from "../../types/activity.model";
 })
 export class ActivityComponent {
 	@Input() me!: ActivityModel;
-	@Input() visualize: string ="list";
+	@Input() visualize: string ="calendar";
 	@Output() save = new EventEmitter<ActivityModel>();
 	@Output() delete = new EventEmitter<ActivityModel>();
 

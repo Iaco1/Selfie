@@ -14,6 +14,7 @@
 	<div *ngFor="let a of activities">
 		<span *ngIf='a._id === ""' class="unsaved-badge">Unsaved</span>
 		<activity [me]="a"
+			[visualize]="'list'"
 			(save)="onSaveActivity($event)"
 			(delete)="onDeleteActivity($event)">
 		</activity>

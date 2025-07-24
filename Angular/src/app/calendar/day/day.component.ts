@@ -7,13 +7,16 @@ import {
 	SimpleChanges
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
+
 import { CalendarEvent } from "../../types/calendar-event.model";
-import { EventComponent } from "../event/event.component";
 import { StringDate } from "../../types/string-date";
+import { EventComponent } from "../event/event.component";
+import { ActivityComponent } from '../../list-activities/activity/activity.component';
+import { ActivityModel } from "../../types/activity.model";
 
 @Component({
 	selector: "day",
-	imports: [CommonModule, EventComponent],
+	imports: [CommonModule, EventComponent, ActivityComponent],
 	templateUrl: "./day.component.html",
 	styleUrl: "./day.component.css",
 	standalone: true
@@ -21,21 +24,25 @@ import { StringDate } from "../../types/string-date";
 export class DayComponent implements OnChanges {
 	constructor() {}
 
+	//my datas
 	@Input() day!: Date;
 	@Input() visualize: string = "";
 	@Input() startHour: number = 0;
 	@Input() endHour: number = 23;
 
+	//arrays
 	@Input() events: CalendarEvent[] = [];
-
 	filteredEvents: CalendarEvent[] = [];
+
+	@Input() activities: ActivityModel[] = []
+	filteredActivities: ActivityModel[] = [];
 
 	ngOnChanges(changes: SimpleChanges) {
 		//if (changes['day'] || changes['events']) {}
-		this.filterEvents();
+		this.filterEventsAndActivities();
 	}
 
-	filterEvents(): void {
+	filterEventsAndActivities(): void {
 		const startOfDay = new Date(this.day);
 		startOfDay.setHours(0, 0, 0, 0);
 		const endOfDay = new Date(startOfDay);
@@ -43,13 +50,17 @@ export class DayComponent implements OnChanges {
 
 		this.filteredEvents = this.events.filter(event => {
 			return event.startDate <= endOfDay && event.endDate >= startOfDay;
-		});
+		});		
+		this.filteredActivities = this.activities.filter(activity => {
+			let exp = activity.expirationDAyte;
+			return startOfDay <= exp && exp <= endOfDay; // start <= exp <= end
+		})
 	}
 
-	allDay(event: CalendarEvent): boolean {
-		return event.startDate.toDateString() !== event.endDate.toDateString();
+	//style
+	getName(): string {
+		return this.day.toLocaleString("en-US", { weekday: "long" });
 	}
-
 	getCornerMask(event: CalendarEvent, hour?: number): string {
 		const isStart = event.startDate.toDateString() === this.day.toDateString();
 		const isEnd = event.endDate.toDateString() === this.day.toDateString();
@@ -78,16 +89,16 @@ export class DayComponent implements OnChanges {
 	}
 	getBackgroundColour(): string {
 		if(this.visualize == "year") {
+			if(this.filteredActivities.length > 0) {
+				return this.filteredActivities[0].colour;
+			}
 			if(this.filteredEvents.length > 0) {
 				return this.filteredEvents[0].colour;
 			} else { return "black" }
 		} else return "";
 	}
-
-	getName(): string {
-		return this.day.toLocaleString("en-US", { weekday: "long" });
-	}
-
+	
+	//hours
 	get hours(): number[] {
 		const range: number[] = [];
 		for (let h = this.startHour; h <= this.endHour; h++) {
@@ -95,7 +106,6 @@ export class DayComponent implements OnChanges {
 		}
 		return range;
 	}
-
 	private hasEventsAtHour(hour: number): CalendarEvent[] {
 		const dateHourStart = new Date(this.day);
 		dateHourStart.setHours(hour, 0, 0, 0);
@@ -108,10 +118,21 @@ export class DayComponent implements OnChanges {
 		);
 	}
 
+	//more filters
+	allDay(event: CalendarEvent): boolean {
+		return event.startDate.toDateString() !== event.endDate.toDateString();
+	}
+	upperEvents(): CalendarEvent[] {
+		if (this.visualize === "month" || this.visualize === "year")
+			return this.filteredEvents;
+		//in week and day show upper only looong events (more than 24 hours)
+		return this.filteredEvents.filter(event => this.allDay(event));
+	}
 	getEventsForHour(hour: number): CalendarEvent[] {
 		return this.hasEventsAtHour(hour).filter(event => !this.allDay(event));
 	}
 
+	//events
 	@Output() saveEvent = new EventEmitter<CalendarEvent>();
 	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
 
@@ -128,6 +149,17 @@ export class DayComponent implements OnChanges {
 
 	onDeleteEvent(eventToDelete: CalendarEvent) {
 		this.deleteEvent.emit(eventToDelete);
+	}
+
+	//activities
+	@Output() saveActivity = new EventEmitter<ActivityModel>();
+	@Output() deleteActivity = new EventEmitter<ActivityModel>();
+
+	onSaveActivity(updatedActivity: ActivityModel) {
+		this.saveActivity.emit(updatedActivity);
+	}
+	onDeleteActivity(activityToDelete: ActivityModel) {
+		this.deleteActivity.emit(activityToDelete);
 	}
 }
 
