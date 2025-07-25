@@ -20,11 +20,8 @@ export class TimeMachineService {
 		localStorage.setItem(this.STORAGE_KEY, date.toISOString());
 	}
 
-	private loadStoredDate(): Date {
-		const raw = localStorage.getItem(this.STORAGE_KEY);
-		if (!raw) return new Date();
-
-		const parsed = new Date(raw);
-		return isNaN(parsed.getTime()) ? new Date() : parsed;
+	loadStoredDate(): Date {
+		const saved = localStorage.getItem(this.STORAGE_KEY);
+		return saved ? new Date(saved) : new Date(); // fallback = now
 	}
 }
