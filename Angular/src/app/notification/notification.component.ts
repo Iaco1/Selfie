@@ -1,11 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {NgIf} from '@angular/common';
+
 
 @Component({
   selector: 'app-notification',
-  imports: [
-    NgIf
-  ],
+  imports: [],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css'
 })

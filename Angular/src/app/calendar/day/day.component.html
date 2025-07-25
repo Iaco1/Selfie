@@ -1,37 +1,39 @@
 <div>
-	@if( visualize == "day" || visualize == "week" ) {
-		<div class="day_of_week has-text-centered">
-			{{ getName() }}
-		</div>
-	}
-	<div class="number_of_month has-text-centered" (click)="createEvent()">
-		{{ day.getDate() }}
-	</div>
-	@if (visualize != "year") {
-		<event
-			*ngFor="let event of (visualize === 'month' ? dayEvents : dayEvents.filter(allDay))"
-			[evento]="event"
-			[cornerMask]="getCornerMask(event)"
-			(save)="onSaveEvent($event)"
-			(delete)="onDeleteEvent($event)">
-		</event>
-	}
-	@if ( visualize == "day" || visualize == "week" ) {
-		<div class="column no-space-between">
-			@for (hour of hours; track hour) {
-				<div class="cell day-cell">
-					<div (click)="createEvent(hour)">
-						{{ hour + ':00' }}
-					</div>
-					<event
-						*ngFor="let event of getEventsForHour(hour)"
-						[evento]="event"
-						[cornerMask]="getCornerMask(event, hour)"
-						(save)="onSaveEvent($event)"
-						(delete)="onDeleteEvent($event)">
-					</event>
-				</div>
-			}
-		</div>
-	}
+  @if( visualize == "day" || visualize == "week" ) {
+    <div class="day_of_week has-text-centered">
+      {{ getName() }}
+    </div>
+  }
+  <div class="number_of_month has-text-centered" (click)="createEvent()">
+    {{ day.getDate() }}
+  </div>
+  @if (visualize != "year") {
+    @for (event of (visualize === 'month' ? dayEvents : dayEvents.filter(allDay)); track event) {
+      <event
+        [evento]="event"
+        [cornerMask]="getCornerMask(event)"
+        (save)="onSaveEvent($event)"
+        (delete)="onDeleteEvent($event)">
+      </event>
+    }
+  }
+  @if ( visualize == "day" || visualize == "week" ) {
+    <div class="column no-space-between">
+      @for (hour of hours; track hour) {
+        <div class="cell day-cell">
+          <div (click)="createEvent(hour)">
+            {{ hour + ':00' }}
+          </div>
+          @for (event of getEventsForHour(hour); track event) {
+            <event
+              [evento]="event"
+              [cornerMask]="getCornerMask(event, hour)"
+              (save)="onSaveEvent($event)"
+              (delete)="onDeleteEvent($event)">
+            </event>
+          }
+        </div>
+      }
+    </div>
+  }
 </div>

@@ -1,7 +1,8 @@
-<div *ngIf="showbox" class="notification corner-box">
-
-  <span>
-    {{text}}
-    <button class="delete" (click)="close()"></button>
-  </span>
-</div>
+@if (showbox) {
+  <div class="notification corner-box">
+    <span>
+      {{text}}
+      <button class="delete" (click)="close()"></button>
+    </span>
+  </div>
+}

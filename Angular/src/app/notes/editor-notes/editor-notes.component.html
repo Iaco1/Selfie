@@ -1,73 +1,77 @@
 <p> editing note with id: {{noteId}} </p>
 <div class="card">
-	<header class="card-header">
-		<p class="card-header-title">
-			<label for="title">Title</label> &nbsp;
-			<input #title [(ngModel)]="me.title" placeholder="Title" class="input is-primary"/>
-		</p>
-		<button class="card-header-icon" (click)="Close()">
+  <header class="card-header">
+    <p class="card-header-title">
+      <label for="title">Title</label> &nbsp;
+      <input #title [(ngModel)]="me.title" placeholder="Title" class="input is-primary"/>
+    </p>
+    <button class="card-header-icon" (click)="Close()">
       <span class="icon">
         <i class="fas fa-rectangle-xmark"></i>
       </span>
     </button>
-	</header>
-	<div class="card-content">
-		<div class="columns">
-			<!-- Left column: textarea -->
-			<div class="column is-half">
-				<label class="label" for="text">text or Markdown</label>
-				<textarea #text [(ngModel)]="me.text" rows="10" class="textarea" placeholder="Your note..."></textarea>
-			</div>
-			<!-- Right column: markdown preview -->
-			<div class="column is-half">
-				<label class="label">Preview</label>
-				<div [innerHTML]="convertedMarkdown"></div>
-			</div>
-		</div>
-		<hr>
-		<div class="columns">
-			<!-- Left column: creation and last modification dates -->
-			<div class="column is-half">
-				<p *ngIf="me.creation">note Creation: {{ me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
-				<p *ngIf="me.lastModification">Last Modified: {{ me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
-			</div>		
-			<!-- Right column: tags input -->
-			<div class="column is-half field">
-				<div class="level">
-					<label class="label" for="tags">
-						Tags &nbsp; <i class="fa-solid fa-tags"></i>
-					</label>					
-					<p class="help">e.g. work, personal, ideas</p>
-				</div>
-				<input #tags class="control"
-					[(ngModel)]="tagsInput"
-					(ngModelChange)="updateTagsFromInput()"
-					placeholder="Enter tags, comma-separated"
-					class="input"
-				/>
-			</div>
-		</div>
-	</div>
-	<footer class="card-footer">
-		<a class="card-footer-item">
-			<button class="button is-info" (click)="Preview()">
-				Preview &nbsp; <i class="fa-solid fa-file-pdf"></i>
-			</button>
-		</a>
-		<a class="card-footer-item">
-			<button class="button is-success" (click)="Save()">
-				Save &nbsp; <i class="fa-solid fa-floppy-disk"></i>
-			</button>
-		</a>
-		<a class="card-footer-item">
-			<button class="button is-warning" (click)="Reset()">
-				Reset &nbsp; <i class="fa-solid fa-arrow-rotate-left"></i>
-			</button>
-		</a>
-		<a class="card-footer-item">
-			<button class="button is-danger" (click)="Clear()">
-				Clear &nbsp; <i class="fa-solid fa-bath"></i>
-			</button>
-		</a>
-	</footer>
-</div>
+  </header>
+  <div class="card-content">
+    <div class="columns">
+      <!-- Left column: textarea -->
+      <div class="column is-half">
+        <label class="label" for="text">text or Markdown</label>
+        <textarea #text [(ngModel)]="me.text" rows="10" class="textarea" placeholder="Your note..."></textarea>
+      </div>
+      <!-- Right column: markdown preview -->
+      <div class="column is-half">
+        <label class="label">Preview</label>
+        <div [innerHTML]="convertedMarkdown"></div>
+      </div>
+    </div>
+    <hr>
+      <div class="columns">
+        <!-- Left column: creation and last modification dates -->
+        <div class="column is-half">
+          @if (me.creation) {
+            <p>note Creation: {{ me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+          }
+          @if (me.lastModification) {
+            <p>Last Modified: {{ me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+          }
+        </div>
+        <!-- Right column: tags input -->
+        <div class="column is-half field">
+          <div class="level">
+            <label class="label" for="tags">
+              Tags &nbsp; <i class="fa-solid fa-tags"></i>
+            </label>
+            <p class="help">e.g. work, personal, ideas</p>
+          </div>
+          <input #tags class="control"
+            [(ngModel)]="tagsInput"
+            (ngModelChange)="updateTagsFromInput()"
+            placeholder="Enter tags, comma-separated"
+            class="input"
+            />
+          </div>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item">
+          <button class="button is-info" (click)="Preview()">
+            Preview &nbsp; <i class="fa-solid fa-file-pdf"></i>
+          </button>
+        </a>
+        <a class="card-footer-item">
+          <button class="button is-success" (click)="Save()">
+            Save &nbsp; <i class="fa-solid fa-floppy-disk"></i>
+          </button>
+        </a>
+        <a class="card-footer-item">
+          <button class="button is-warning" (click)="Reset()">
+            Reset &nbsp; <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
+        </a>
+        <a class="card-footer-item">
+          <button class="button is-danger" (click)="Clear()">
+            Clear &nbsp; <i class="fa-solid fa-bath"></i>
+          </button>
+        </a>
+      </footer>
+    </div>
