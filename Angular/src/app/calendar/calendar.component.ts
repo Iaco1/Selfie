@@ -11,6 +11,7 @@ import { CalendarService } from '../services/calendar.service';
 
 import { ActivityModel } from '../types/activity.model';
 import { ActivityService } from '../services/activity.service';
+import { CrudHelper } from '../utils/crud-helper';
 
 @Component({
 	selector: 'calendar',
@@ -40,70 +41,50 @@ export class CalendarComponent implements OnInit {
 		return Array.from({ length: n }, (_, i) => i + 1);
 	}
 
-	events: CalendarEvent[] = [];
-	activities: ActivityModel[] = [];
-
+	//events and activities uses crudHelper :D
 	constructor(private calendarService: CalendarService,
 		private activityService: ActivityService) {}
 
+	events: CalendarEvent[] = [];
+	activities: ActivityModel[] = [];
+
+	private eventCrud!: CrudHelper<CalendarEvent>;
+	private activityCrud!: CrudHelper<ActivityModel>;
+	
 	ngOnInit(): void {
+		this.eventCrud = new CrudHelper(this.events, (l) => this.events = l);
+		this.activityCrud = new CrudHelper(this.activities, (l) => this.activities = l);
+	
 		this.calendarService.getOnlyMyEvents().subscribe({
-			next: events => this.events = events,
+			next: events => {
+				this.events = events;
+				this.eventCrud = new CrudHelper(this.events, (l) => this.events = l); // re-init if needed
+			},
 			error: err => console.error('Error loading events:', err)
 		});
+	
 		this.activityService.getOnlyMyActivities().subscribe({
-			next: activities => this.activities = activities,
+			next: activities => {
+				this.activities = activities;
+				this.activityCrud = new CrudHelper(this.activities, (l) => this.activities = l);
+			},
 			error: err => console.error('Error loading activities:', err)
 		});
 	}
-
+		
 	//events
-	private noticeEvents(event: CalendarEvent) {
-		const i = this.events.findIndex(e => e._id === event._id);
-		if (i !== -1) {
-			this.events[i] = event;
-		} else {
-			this.events = [...this.events, event]; // ⏎ triggers ngOnChanges in children
-		}
-	}
 	onSaveEvent(event: CalendarEvent) {
-		const op$ = event._id
-			? this.calendarService.update(event._id, event)
-			: this.calendarService.create(event);
-	
-		op$.subscribe(savedEvent => this.noticeEvents(savedEvent)); // ✅ reuseable
+		this.eventCrud.save(event, this.calendarService);
 	}
-	
-	onDeleteEvent(eventToDelete: CalendarEvent) {
-		if (!eventToDelete._id) return;
-	
-		this.calendarService.delete(eventToDelete._id).subscribe(() => {
-			this.events = this.events.filter(event => event._id !== eventToDelete._id);
-		});
+	onDeleteEvent(event: CalendarEvent) {
+		this.eventCrud.delete(event, this.calendarService);
 	}
 
 	//activities
-	private noticeActivities(activity: ActivityModel) {
-		const i = this.activities.findIndex(e => e._id === activity._id);
-		if (i !== -1) {
-			this.activities[i] = activity;
-		} else {
-			this.activities = [...this.activities, activity]; // ⏎ triggers ngOnChanges in children
-		}
-	}
 	onSaveActivity(activity: ActivityModel) {
-		const op$ = activity._id
-			? this.activityService.update(activity._id, activity)
-			: this.activityService.create(activity);
-	
-		op$.subscribe(savedActivity => this.noticeActivities(savedActivity)); // ✅ reuseable
+		this.activityCrud.save(activity, this.activityService);
 	}
-	
-	onDeleteActivity(activityToDelete: ActivityModel) {
-		if (!activityToDelete._id) return;
-	
-		this.activityService.delete(activityToDelete._id).subscribe(() => {
-			this.activities = this.activities.filter(activity => activity._id !== activityToDelete._id);
-		});
+	onDeleteActivity(activity: ActivityModel) {
+		this.activityCrud.delete(activity, this.activityService);
 	}
 }

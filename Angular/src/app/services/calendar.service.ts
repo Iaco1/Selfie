@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { CalendarEvent } from '../types/calendar-event.model';
-import { BaseService } from './base.service';
+import { BaseService } from '../utils/base.service';
 import { StringDate } from '../types/string-date';
 
 @Injectable({

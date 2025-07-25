@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { NoteModel } from '../types/note.model';
 import { environment } from '../../environments/environment';
 import { StringDate } from '../types/string-date';
-import { BaseService } from './base.service';
+import { BaseService } from '../utils/base.service';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService extends BaseService<NoteModel> {

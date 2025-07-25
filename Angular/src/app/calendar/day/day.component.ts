@@ -38,8 +38,8 @@ export class DayComponent implements OnChanges {
 	filteredActivities: ActivityModel[] = [];
 
 	ngOnChanges(changes: SimpleChanges) {
-		//if (changes['day'] || changes['events']) {}
-		this.filterEventsAndActivities();
+		if (changes['events'] || changes['day'] || changes['activities'])
+			this.filterEventsAndActivities();
 	}
 
 	filterEventsAndActivities(): void {

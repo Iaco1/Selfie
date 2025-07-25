@@ -3,8 +3,7 @@ async function Create(model, data, res, text = "document", debug = false) {
 	try {
 		const doc = new model(data);
 		const result = await doc.save();
-		console.log(`Successfully inserted ${text}.`, end="")
-		if(debug) console.log(result);
+		if(debug) console.log(`Successfully inserted ${text}.`, result)		
 		res.status(200).json({ message: `Successfully inserted ${text}`, result });
 	} catch (err) {
 		console.error(`Error inserting ${text}.`, err);
@@ -16,8 +15,7 @@ async function Create(model, data, res, text = "document", debug = false) {
 async function Read(model, res, text = "documents", query = {}, debug = false, projection = null, options = {}) {
 	try {
 		const result = await model.find(query, projection, options);
-		console.log(`Successfully read ${text}.`, end="")
-		if(debug) console.log(result);
+		if(debug) console.log(`Successfully read ${text}.`, result)
 		res.status(200).json({ message: `Successfully read ${text}`, result });
 	} catch (err) {
 		console.error(`Error reading ${text}.`, err);
@@ -33,8 +31,7 @@ async function ReadById(model, id, res, text = "document", debug = false) {
 			res.status(404).json({ message: `${text} not found` });
 			return;
 		}
-		console.log(`Successfully read ${text} by ID:`, end="")
-		if(debug) console.log(result);
+		if(debug) console.log(`Successfully read ${text} by ID:`, result)
 		res.status(200).json({ message: `Successfully read ${text}`, result });
 	} catch (err) {
 		console.error(`Error reading ${text} by ID:`, err);
@@ -50,8 +47,7 @@ async function Update(model, id, updateData, res, text = "document", debug = fal
 			res.status(404).json({ message: `${text} not found for update` });
 			return;
 		}
-		console.log(`Successfully updated ${text}.`, end="")
-		if(debug) console.log(result);
+		if(debug) console.log(`Successfully updated ${text}.`, result)		
 		res.status(200).json({ message: `Successfully updated ${text}`, result });
 	} catch (err) {
 		console.error(`Error updating ${text}.`, err);
@@ -67,8 +63,7 @@ async function Delete(model, id, res, text = "document", debug = false) {
 			res.status(404).json({ message: `${text} not found for deletion` });
 			return;
 		}
-		console.log(`Successfully deleted ${text}.`, end="")
-		if(debug) console.log(result);
+		if(debug) console.log(`Successfully deleted ${text}.`, result)		
 		res.status(200).json({ message: `Successfully deleted ${text}`, result });
 	} catch (err) {
 		console.error(`Error deleting ${text}.`, err);
