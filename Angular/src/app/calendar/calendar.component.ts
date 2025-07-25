@@ -52,13 +52,12 @@ export class CalendarComponent implements OnInit {
 	private activityCrud!: CrudHelper<ActivityModel>;
 	
 	ngOnInit(): void {
-		this.eventCrud = new CrudHelper(this.events, (l) => this.events = l);
-		this.activityCrud = new CrudHelper(this.activities, (l) => this.activities = l);
+		this.eventCrud = new CrudHelper(() => this.events, (l) => this.events = l);
+		this.activityCrud = new CrudHelper(() => this.activities, (l) => this.activities = l);
 	
 		this.calendarService.getOnlyMyEvents().subscribe({
 			next: events => {
 				this.events = events;
-				this.eventCrud = new CrudHelper(this.events, (l) => this.events = l); // re-init if needed
 			},
 			error: err => console.error('Error loading events:', err)
 		});
@@ -66,7 +65,6 @@ export class CalendarComponent implements OnInit {
 		this.activityService.getOnlyMyActivities().subscribe({
 			next: activities => {
 				this.activities = activities;
-				this.activityCrud = new CrudHelper(this.activities, (l) => this.activities = l);
 			},
 			error: err => console.error('Error loading activities:', err)
 		});

@@ -9,6 +9,7 @@ import { ActivityComponent } from './activity/activity.component';
 import { ActivityModel } from '../types/activity.model';
 import { StringDate } from '../types/string-date';
 import { CrudHelper } from '../utils/crud-helper';
+import { TimeMachineService } from '../services/time-machine.service';
 
 @Component({
 	selector: 'list-activities',
@@ -23,16 +24,20 @@ export class ListActivitiesComponent {
 	title = "New Activity";
 	color = "green";
 	description = "";
+	currentDate! : Date;
 
-	constructor(private actService: ActivityService) {}
+	constructor(private actService: ActivityService, private timeMachine: TimeMachineService) {}
 
 	activities: ActivityModel[] = [];
 
 	private activityCrud!: CrudHelper<ActivityModel>;
 
 	ngOnInit() {
+		this.timeMachine.day$.subscribe(date => {
+			this.currentDate = date;
+		});
 		this.fetchActivities();
-		this.activityCrud = new CrudHelper(this.activities, (l) => this.activities = l);
+		this.activityCrud = new CrudHelper(() => this.activities, (l) => this.activities = l);
 	}
 
 	fetchActivities() {
@@ -44,7 +49,7 @@ export class ListActivitiesComponent {
 	}
 
 	createActivity() {
-		let expiration = StringDate.fromDate(new Date());
+		let expiration = StringDate.fromDate(this.currentDate);
 		let newActivity = new ActivityModel(expiration, this.title, this.description, this.color);
 		newActivity._tempID = crypto.randomUUID();
 		this.activities.push(newActivity);
