@@ -47,10 +47,7 @@ export class TimemachineComponent {
 		if (!newDate) return;
 
 		const updated = new Date(newDate);
-		if (this.time) {
-			const [h, m] = this.time.split(":").map(Number);
-			updated.setHours(h, m, 0, 0);
-		}
+		this.time = this.formatTime(updated);
 
 		this.offsetMs = updated.getTime() - Date.now();
 		this.timeMachine.setDay(updated);

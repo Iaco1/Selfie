@@ -30,6 +30,7 @@ export class DateselectComponent {
 
 	//funzioni normali
 	default(): void {
+		this.default_time = new Date();
 		this.today = new Date(this.default_time);
 		this.offsetMs = 0;
 		this.cambiaRiferimento("default button pressed");
