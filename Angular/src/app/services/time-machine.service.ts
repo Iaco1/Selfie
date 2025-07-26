@@ -5,18 +5,23 @@ import { BehaviorSubject } from 'rxjs';
 	providedIn: 'root'
 })
 export class TimeMachineService {
-  private daySubject = new BehaviorSubject<Date>(new Date()); // Initialize with current date
+	private readonly STORAGE_KEY = 'timemachine-date';
 
-  // Expose as Observable
-  day$ = this.daySubject.asObservable();
+	private daySubject = new BehaviorSubject<Date>(this.loadStoredDate());
 
-  // Get current value (non-reactive)
-  get day(): Date {
-    return this.daySubject.value;
-  }
+	day$ = this.daySubject.asObservable();
 
-  // Set a new day
-  setDay(date: Date): void {
-    this.daySubject.next(date);
-  }
+	get day(): Date {
+		return this.daySubject.value;
+	}
+
+	setDay(date: Date): void {
+		this.daySubject.next(date);
+		localStorage.setItem(this.STORAGE_KEY, date.toISOString());
+	}
+
+	loadStoredDate(): Date {
+		const saved = localStorage.getItem(this.STORAGE_KEY);
+		return saved ? new Date(saved) : new Date(); // fallback = now
+	}
 }

@@ -7,7 +7,7 @@
 	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
 	<p>
 		<span *ngIf="cornerMask === 'left'"> {{evento.start.time.slice(0, 2)}} - </span>
-		{{ evento.title }}
+		{{ evento.title }} <span *ngIf="! (evento.title || evento.description)">.</span>
 		<span *ngIf="cornerMask === 'right'"> - {{evento.end.time.slice(0, 2)}} </span>
 	</p>
 	<p>{{ evento.description }}</p>
@@ -26,12 +26,14 @@
 				<!-- title -->
 				<div class="field column is-10">
 					<label class="label" for="title">Title</label>
-					<input #title class="input control" [(ngModel)]="evento.title" placeholder="Titolo evento">
+					<input #title class="input control" type="text"
+						[(ngModel)]="evento.title" placeholder="Titolo evento">
 				</div>
 				<!-- colour -->
 				<div class="field column is-2">
 					<label class="label" for="colour">Colour</label>
-					<input #colour class="input control" type="color" [(ngModel)]="evento.colour">
+					<input #colour class="input control" type="color"
+						[(ngModel)]="evento.colour">
 				</div>
 			</div>
 			<!-- when? -->
@@ -39,24 +41,44 @@
 				<!-- start -->
 				<div class="field column">
 					<label class="label" for="dateStart">Start Date</label>
-					<input #dateStart class="input control" type="date" [(ngModel)]="evento.start.date">
+					<input #dateStart class="input control" type="date"
+						[(ngModel)]="evento.start.date"  (ngModelChange)="evento.calculateEnd()">
 				</div>
 				<div class="field column">
 					<label class="label" for="timeStart">Start Hour</label>
-					<input #timeStart class="input control" type="time" [(ngModel)]="evento.start.time">
+					<input #timeStart class="input control" type="time"
+						[(ngModel)]="evento.start.time" (ngModelChange)="evento.calculateEnd()">
 				</div>
-				<!-- end -->
+				<!-- duration -->
 				<div class="field column">
-					<label class="label" for="dateEnd">End Date</label>
-					<input #dateEnd class="input control" type="date" [(ngModel)]="evento.end.date">
+					<label class="label" for="durationNumber">Duration</label>
+					<input #durationNumber class="input control" type="number" min="1" step="1"
+						[(ngModel)]="evento.duration.number" (ngModelChange)="evento.calculateEnd()">
 				</div>
 				<div class="field column">
-					<label class="label" for="timeEnd">End Time</label>
-					<input #timeEnd class="input control" type="time" [(ngModel)]="evento.end.time">
+					<label class="label" for="durationMeasure">Interval</label>
+					<span class="select is-normal">
+						<select	#durationMeasure name="durationMeasure"
+							[(ngModel)]="evento.duration.measure" (ngModelChange)="evento.calculateEnd()">
+							<option value="15min">15 mins</option>
+							<option value="hours">hours</option>
+							<option value="days">days</option>
+							<option value="weeks">weeks</option>
+						</select>
+					</span>
 				</div>
 			</div>
+			<div> End Date: {{evento.end.date}} {{evento.end.time}} </div>
+			<!-- location ? -->
+			<div class="level">
+				<div class="field level-item">
+					<label class="label" for="location">Location&nbsp;?&nbsp;</label>
+					<input #location class="input control" type="text"
+						[(ngModel)]="evento.location" placeholder="Location">
+				</div>
+			</div>
+			<!-- descrizione -->
 			<div class="field">
-				<!-- descrizione -->
 				<label class="label" for="description">Description</label>
 				<textarea #description class="textarea control" [(ngModel)]="evento.description"
 					placeholder="Description event"></textarea>

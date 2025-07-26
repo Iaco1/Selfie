@@ -47,9 +47,9 @@ export class NoteComponent implements OnChanges {
 	Delete() {
 		if (!this.me._id) return;
 		if (confirm('Are you sure you want to delete this note?')) {
-			this.noteService.deleteNote(this.me._id).subscribe({
+			this.noteService.delete(this.me._id).subscribe({
 				next: () => {
-					console.log('Note deleted successfully.');
+					//console.log('Note deleted successfully.');
 					//emit event to parent to refresh note list
 					this.deleted.emit(this.me._id);
 				},

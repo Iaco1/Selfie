@@ -1,15 +1,27 @@
 <div class="box pb-3 has-background-grey-dark" style="transform: translateX(25%); width: 75%">
-  <div class="has-text-centered pb-3">
-    <i class="fa-solid fa-registered fa-xs"></i>
-    Time Machine
-    <i class="fa-solid fa-copyright fa-xs"></i>
-  </div>
-  <dateselect
-    [liveTime]="true"
-	  (changedDayEvent)="changedDay($event)"
-	  (changeDWMY)="changedDwmy($event)">
-
-  </dateselect>
-  <p>Day: {{day}}, selected: {{dwmy}}</p>
+	<div class="has-text-centered pb-3">
+		<i class="fa-solid fa-registered fa-xs"></i>
+		Time Machine
+		<i class="fa-solid fa-copyright fa-xs"></i>
+	</div>
+	<div class="level">
+		<dateselect
+			class="level-right"
+			[today]="day"
+			[offsetMs]="offsetMs"
+			(changedDayEvent)="changedDay($event)"
+			(changeDWMY)="changedDwmy($event)">
+		</dateselect>
+		<div class="control level-left">
+			<label for="time" class="label"> Time </label>			
+			<input
+				type="time"
+				class="input"
+				step="1"
+				[(ngModel)]="time"
+				(ngModelChange)="onTimeChange(time)" />
+  			<!-- step="1" 👈 this enables seconds -->
+		</div>
+	</div>
+	<p>Day: {{day}}, selected: {{dwmy}}</p>
 </div>
-

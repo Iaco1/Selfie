@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { CalendarEvent } from "../../types/calendar-event.model";
 
+
 @Component({
 	selector: "event",
 	imports: [CommonModule, FormsModule],

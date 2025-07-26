@@ -5,9 +5,14 @@
 			<day
 				[day]="i.date"
 				[visualize]="'week'"
+				
 				[events]="events"
 				(saveEvent)="onSaveEvent($event)"
-				(deleteEvent)="onDeleteEvent($event)">
+				(deleteEvent)="onDeleteEvent($event)"
+						
+				[activities]="activities"
+				(saveActivity)="onSaveActivity($event)"
+				(deleteActivity)="onDeleteActivity($event)">
 			</day>
 		</div>
 	}

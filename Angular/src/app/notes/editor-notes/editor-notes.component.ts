@@ -24,7 +24,7 @@ import { NoteService } from '../../services/note.service';
 export class EditorNotesComponent implements OnInit {
 	currentDate!: Date;
 	noteId: string | null = null;
-	me: NoteModel = new NoteModel();
+	me!: NoteModel;
 	originalNote: NoteModel | null = null;
 	tagsInput: string = '';
 	convertedMarkdown: string = '';
@@ -43,10 +43,10 @@ export class EditorNotesComponent implements OnInit {
 		this.noteId = this.route.snapshot.paramMap.get('id');
 		if (!this.noteId) {
 			// Create mode
-			this.me = new NoteModel();
+			this.me = new NoteModel(this.currentDate);
 		} else {
 			// Edit mode - fetch note from server
-			this.noteService.getNote(this.noteId).subscribe({
+			this.noteService.getById(this.noteId).subscribe({
 				next: (date) => {
 					//console.log('note id: ', this.noteId , ' note:', date);
 					this.me = date;
@@ -56,13 +56,13 @@ export class EditorNotesComponent implements OnInit {
 				},
 				error: (err) => {
 					console.error('Failed to load note:', err);
-					this.me = new NoteModel();
+					this.me = new NoteModel(this.currentDate);
 				}
 			});			
 		}
 	}
 	ngOnDestroy() {
-		this.me = new NoteModel(); // Clean up
+		this.me = new NoteModel(this.currentDate); // Clean up
 	}
 
 	async convertMarkdown() {
@@ -87,10 +87,10 @@ export class EditorNotesComponent implements OnInit {
 
 	Save() {
 		this.updateTagsFromInput();
-		this.me.lastModification = StringDate.fromDate(new Date());
+		this.me.lastModification = StringDate.fromDate(this.currentDate);
 		if (this.me._id) {
 			// Update existing note
-			this.noteService.updateNote(this.me).subscribe({
+			this.noteService.update(this.me._id, this.me).subscribe({
 				next: (updatedNote) => {
 					this.me = updatedNote;
 					this.goBackToSearch();
@@ -101,8 +101,7 @@ export class EditorNotesComponent implements OnInit {
 			});
 		} else {
 			// Create new note
-			//TODO this.me.author = "...";
-			this.noteService.saveNote(this.me).subscribe({
+			this.noteService.create(this.me).subscribe({
 				next: (newNote) => {
 					this.me = newNote;
 					this.goBackToSearch();

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DayComponent } from '../day/day.component';
 import { CalendarEvent } from '../../types/calendar-event.model';
 import { } from '@angular/core';
+import { ActivityModel } from '../../types/activity.model';
 
 @Component({
 	selector: 'month',
@@ -91,17 +92,7 @@ export class MonthComponent {
 
 	//events
 	@Input() events: CalendarEvent[] = [];
-	get monthEvents(): CalendarEvent[] {
-		const startOfMonth = new Date(this.year, this.month, 1);
-		startOfMonth.setHours(0, 0, 0, 0);
 	
-		const endOfMonth = new Date(this.year, this.month + 1, 0);
-		endOfMonth.setHours(23, 59, 59, 999);
-	
-		return this.events.filter(event =>
-			event.startDate >= startOfMonth && event.startDate <= endOfMonth
-		);
-	}
 	@Output() saveEvent = new EventEmitter<CalendarEvent>();
 	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
 	onSaveEvent(updatedEvent: CalendarEvent) {
@@ -109,5 +100,17 @@ export class MonthComponent {
 	}
 	onDeleteEvent(eventToDelete: CalendarEvent) {
 		this.deleteEvent.emit(eventToDelete);
+	}
+
+	//activities
+	@Input() activities: ActivityModel[] = [];
+	
+	@Output() saveActivity = new EventEmitter<ActivityModel>();
+	@Output() deleteActivity = new EventEmitter<ActivityModel>();
+	onSaveActivity(updatedActivity: ActivityModel) {
+		this.saveActivity.emit(updatedActivity);
+	}
+	onDeleteActivity(activityToDelete: ActivityModel) {
+		this.deleteActivity.emit(activityToDelete);
 	}
 }

@@ -16,6 +16,7 @@ app.use("/user", require("./routes/user"));
 app.use("/note", require("./routes/note"));
 app.use("/event", require("./routes/event"));
 app.use("/pomodoro", require("./routes/pomodoro"));
+app.use("/activity", require('./routes/activity'));
 
 mongoose.connect(config.mongoURI, {
       useNewUrlParser: true,

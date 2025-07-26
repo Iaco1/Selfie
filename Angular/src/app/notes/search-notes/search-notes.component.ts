@@ -28,8 +28,8 @@ export class SearchNotesComponent {
 	}
 
 	fetchNotes() {
-		//TODO filter notes by author
-		this.noteService.getAllNotes().subscribe({
+		//filter notes by author
+		this.noteService.getOnlyMyNotes().subscribe({
 			next: (data) => {
 				//console.log('Fetched notes:', data);
 				this.notes = data;

@@ -1,0 +1,22 @@
+<p>list-activities works! [ Edit expiration time (and other stuff) after creation! ]</p>
+<form>
+	<label>Title</label>&nbsp;
+	<input name="title" type="text" [(ngModel)]="title">&nbsp;
+	<label>Colour</label>&nbsp;
+	<input name="color" type="color" [(ngModel)]="color">&nbsp;
+	<label>Description</label>&nbsp;
+	<textarea name="description" type="description" [(ngModel)]="description"></textarea>
+</form>
+
+<button class="button is-primary" (click)="createActivity()">Create New Activity</button>
+
+<div class="is-multiline">
+	<div *ngFor="let a of activities">
+		<span *ngIf='a._id === ""' class="unsaved-badge">Unsaved</span>
+		<activity [me]="a"
+			[visualize]="'list'"
+			(save)="onSaveActivity($event)"
+			(delete)="onDeleteActivity($event)">
+		</activity>
+	</div>
+</div>
