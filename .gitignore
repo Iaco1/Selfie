@@ -5,3 +5,5 @@ node_modules/
 /.idea/Selfie.iml
 
 *.idea
+/Angular/192.168.1.4.pem
+/Angular/192.168.1.4-key.pem

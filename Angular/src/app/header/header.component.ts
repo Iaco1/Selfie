@@ -30,4 +30,11 @@ export class HeaderComponent {
     }
     this.navbarMenuOpen = !this.navbarMenuOpen;
   }
+  requestPermission(){
+    Notification.requestPermission().then(result => {
+      console.log("pemission request result: ", result);
+    }).catch(error => { console.log("permission request error: ", error);})
+    new Notification("Notification test with NotificationAPI");
+
+  }
 }
