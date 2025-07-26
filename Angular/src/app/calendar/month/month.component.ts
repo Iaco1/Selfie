@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { DayComponent } from '../day/day.component';
 import { CalendarEvent } from '../../types/calendar-event.model';
 import { } from '@angular/core';
 
 @Component({
 	selector: 'month',
-	imports: [DayComponent],
+	imports: [DayComponent, CommonModule],
 	templateUrl: './month.component.html',
 	styleUrl: './month.component.css'
 })

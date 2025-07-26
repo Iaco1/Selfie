@@ -1,27 +1,26 @@
 <div class="container">
-  <strong>{{ getName(month) }} {{ year }}</strong>
-  <div class="date-grid">
-    @for (d of week_days; track d.id) {
-      @if( visualize == 'month' ) {
-        <div>{{ d.name }}</div>
-      } @else {
-        <div>{{ d.name[0] }}</div>
-      }
-    }
-    @for (i of createRange(prev_days); track i) {
-      <div>{{ i + min }}</div>
-    }
-    @for (day of days; track day) {
-      <day
-        [day]="day.date"
-        [visualize]="visualize"
-        [events]="events"
-        (saveEvent)="onSaveEvent($event)"
-        (deleteEvent)="onDeleteEvent($event)">
-      </day>
-    }
-    @for (i of createRange(next_days); track i) {
-      <div>{{ i }}</div>
-    }
-  </div>
+	<strong>{{ getName(month) }} {{ year }}</strong>
+	<div class="date-grid">
+	@for (d of week_days; track d.id) {
+		@if( visualize == 'month' ) {
+			<div>{{ d.name }}</div>
+		} @else {
+			<div>{{ d.name[0] }}</div>
+		}
+	}
+	@for (i of createRange(prev_days); track i) {
+		<div>{{ i + min }}</div>
+	}
+	<day
+		*ngFor="let day of days"
+		[day]="day.date"
+		[visualize]="visualize"
+		[events]="events"
+		(saveEvent)="onSaveEvent($event)"
+		(deleteEvent)="onDeleteEvent($event)">
+	</day>
+	@for (i of createRange(next_days); track i) {
+		<div>{{ i }}</div>
+	}
+	</div>
 </div>

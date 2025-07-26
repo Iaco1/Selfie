@@ -1,35 +1,31 @@
 <div class="card">
-  <header class="card-header">
-    <p class="card-header-title">
-      {{me.title}}
-    </p>
-    <p class="card-header-icon">
-      <span class="tag is-info is-light is-rounded">#{{ me._id }}</span>
-    </p>
-  </header>
-  <div class="card-content">
-    <div class="my-scroll" [innerHTML]="convertedMarkdown"></div>
-    <hr>
-      <p> creation: {{me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
-      <p> last mod: {{me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
-      <!-- Tags section -->
-      @if (me.tags && me.tags.length) {
-        <div class="tags">
-          @for (tag of me.tags; track tag) {
-            <span
-              class="tag is-blue is-info is-rounded">
-              {{ tag }}
-            </span>
-          }
-        </div>
-      }
-    </div>
-    <footer class="card-footer">
-      <a class="card-footer-item">
-        <button class="button is-success" (click)="EditNote(me._id)">Edit</button>
-      </a>
-      <a class="card-footer-item">
-        <button class="button is-danger" (click)="Delete()">Delete</button>
-      </a>
-    </footer>
-  </div>
+	<header class="card-header">
+		<p class="card-header-title">
+			{{me.title}}
+		</p>
+		<p class="card-header-icon">
+			<span class="tag is-info is-light is-rounded">#{{ me._id }}</span>
+		</p>
+	</header>
+	<div class="card-content">
+		<div class="my-scroll" [innerHTML]="convertedMarkdown"></div>
+		<hr>
+		<p> creation: {{me.creation.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+		<p> last mod: {{me.lastModification.getDate() | date: 'yyyy/MM/dd HH:mm:ss' }}</p>
+		<!-- Tags section -->
+		<div class="tags" *ngIf="me.tags && me.tags.length">
+			<span *ngFor="let tag of me.tags"
+				class="tag is-blue is-info is-rounded">
+				{{ tag }}
+			</span>
+		</div>
+	</div>
+	<footer class="card-footer">
+		<a class="card-footer-item">
+			<button class="button is-success" (click)="EditNote(me._id)">Edit</button>
+		</a>
+		<a class="card-footer-item">
+			<button class="button is-danger" (click)="Delete()">Delete</button>
+		</a>
+	</footer>
+</div>

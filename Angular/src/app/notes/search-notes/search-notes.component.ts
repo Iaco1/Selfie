@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { NoteModel } from '../../types/note.model';
 
 @Component({
 	selector: 'search-notes',
-	imports: [FormsModule, NoteComponent, HttpClientModule], 
+	imports: [CommonModule, FormsModule, NoteComponent, HttpClientModule], 
 	providers: [NoteService],
 	templateUrl: './search-notes.component.html',
 	styleUrl: './search-notes.component.css',

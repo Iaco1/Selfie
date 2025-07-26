@@ -1,5 +1,3 @@
 ./node_modules/*
 .code
 .idea
-serviceAccountKey.json
-*.pem

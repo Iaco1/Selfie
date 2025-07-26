@@ -50,7 +50,7 @@ export class DayComponent {
 		if (isStart && isEnd) return "all";
 		if (isStart) return "left";
 		if (isEnd) return "right";
-
+	
 		return "none";
 	}
 

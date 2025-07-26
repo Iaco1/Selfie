@@ -11,7 +11,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/angular",
             "index": "src/index.html",
@@ -24,8 +24,7 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              "src/firebase-messaging-sw.js"
+              }
             ],
             "styles": [
               "src/styles.css",
@@ -59,31 +58,24 @@
         },
         "serve": {
           "options": {
-            "proxyConfig": "proxy.conf.json",
-            "headers": {
-              "Content-Security-Policy-Report-Only": "default-src 'self'; media-src 'self' http://localhost:4200; style-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self' https://www.gstatic.com; connect-src 'self' https://fcm.googleapis.com"
-            }
+            "proxyConfig": "proxy.conf.json"
           },
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "Angular:build:production"
             },
             "development": {
-              "buildTarget": "Angular:build:development",
-              "ssl": true,
-              "sslCert": "ssl/cert.pem",
-              "sslKey": "ssl/key.pem",
-              "host": "0.0.0.0",
+              "buildTarget": "Angular:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
               "zone.js",
@@ -103,32 +95,6 @@
           }
         }
       }
-    }
-  },
-  "schematics": {
-    "@schematics/angular:component": {
-      "type": "component"
-    },
-    "@schematics/angular:directive": {
-      "type": "directive"
-    },
-    "@schematics/angular:service": {
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:pipe": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
     }
   }
 }

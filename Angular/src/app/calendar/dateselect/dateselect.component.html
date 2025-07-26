@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 
 <div class="field is-grouped is-align-items-center is-flex-wrap-wrap">
-  <button class="button" (click)="default()"> Today </button>
-  <button class="button" (click)="aggiornaData('prev', dwmy, today)" >
-  &lt; </button>
-  <span class="is-size-4"> {{ today | date: 'yyyy/MM/dd' }} </span>
-  <button class="button" (click)="aggiornaData('next', dwmy, today)" >
-  &gt; </button>
-  <span class="select is-normal">
-    <select [(ngModel)]="dwmy" (ngModelChange)="onDwmyChange($event)" name="dwmy">
-      <option value="d">day   D</option>
-      <option value="w">week  W</option>
-      <option value="m" selected>month M</option>
-      <option value="y">year  Y</option>
-    </select>
-  </span>
-  <span class="is-size-4"> {{ today | date: 'fullDate' }} </span>
-  @if (liveTime) {
-    <div class="control">
-      <label for="time" class="label" style="margin-bottom: 0; padding-right: 0.5rem;">Time</label>
-    </div>
-    <div class="control">
-      <input type="time"
-        class="input"
-        [value]="time ?? ''"
-        (input)="onTimeInput($event)" />
-      </div>
-    }
-  </div>
+	<button class="button" (click)="default()"> Today </button>
+	<button class="button" (click)="aggiornaData('prev', dwmy, today)" >
+		&lt; </button>
+	<span class="is-size-4"> {{ today | date: 'yyyy/MM/dd' }} </span>
+	<button class="button" (click)="aggiornaData('next', dwmy, today)" >
+		&gt; </button>
+	<span class="select is-normal">
+		<select [(ngModel)]="dwmy" (ngModelChange)="onDwmyChange($event)" name="dwmy">
+			<option value="d">day   D</option>
+			<option value="w">week  W</option>
+			<option value="m" selected>month M</option>
+			<option value="y">year  Y</option>
+		</select>
+	</span>
+	<span class="is-size-4"> {{ today | date: 'fullDate' }} </span>
+	<ng-container *ngIf="liveTime">
+		<div class="control">
+			<label for="time" class="label" style="margin-bottom: 0; padding-right: 0.5rem;">Time</label>
+		</div>
+		<div class="control">
+			<input type="time"
+				class="input"
+				[value]="time ?? ''"
+				(input)="onTimeInput($event)" />
+		</div>
+	</ng-container>
+</div>
