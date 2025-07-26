@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/angular/*,express-app/*"
-          target: "/home/web/site242536/html"
+          target: "/home/${{ secrets.REMOTE_USER }}/app"
           strip_components: 1
 
       - name: Execute deployment commands
