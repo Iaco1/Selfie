@@ -1,4 +1,4 @@
-import { ApplicationConfig, NgModule, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, NgModule, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './login/login.component';
@@ -16,6 +16,7 @@ import {PomodoroComponent} from './pomodoro/pomodoro.component';
 import {SearchNotesComponent} from './notes/search-notes/search-notes.component';
 import {EditorNotesComponent} from './notes/editor-notes/editor-notes.component';
 import { ListActivitiesComponent } from './list-activities/list-activities.component';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const routes: Routes = [
 	{path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -38,7 +39,10 @@ export const routes: Routes = [
 ];
 
 export const appConfig: ApplicationConfig = {
-	providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
+	providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })]
 };
 
 @NgModule({
