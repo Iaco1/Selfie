@@ -34,6 +34,7 @@ export class HeaderComponent {
   }
 
   notify(){
-    this.notificationService.showNotification("i'm sending this from...", "the header component");
+    this.notificationService.runOnSnooze();
+    this.notificationService.showNotification("i'm sending this from...", "the header component", true, 1);
   }
 }
