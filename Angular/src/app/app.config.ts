@@ -40,7 +40,7 @@ export const routes: Routes = [
 
 export const appConfig: ApplicationConfig = {
 	providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
+            enabled: true,
             registrationStrategy: 'registerWhenStable:30000'
           })]
 };
