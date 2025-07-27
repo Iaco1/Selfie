@@ -25,6 +25,6 @@ export class NotificationContainerComponent {
   }
 
   ngAfterContentInit() {
-    this.addNotification("LA GARRA CHARRUAAA");
+    //this.addNotification("LA GARRA CHARRUAAA");
   }
 }

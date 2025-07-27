@@ -30,7 +30,8 @@
               "src/styles.css",
               "node_modules/bulma/css/bulma.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -38,7 +39,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -62,8 +63,8 @@
           "options": {
             "proxyConfig": "proxy.conf.json",
             "ssl": true,
-            "sslCert": "192.168.1.4.pem",
-            "sslKey": "192.168.1.4-key.pem"
+            "sslCert": "cert.pem",
+            "sslKey": "cert-key.pem"
           },
           "builder": "@angular/build:dev-server",
           "configurations": {
