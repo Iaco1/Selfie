@@ -15,7 +15,7 @@ declare type NotificationAction = {
 })
 export class NotificationService {
 	private swPush = inject(SwPush);
-	readonly VAPID_PUBLIC_KEY = keys.VALID_PUBLIC_KEY;
+	readonly VAPID_PUBLIC_KEY = keys.VAPID_PUBLIC_KEY;
 
   constructor() {
     this.requestPermission()
