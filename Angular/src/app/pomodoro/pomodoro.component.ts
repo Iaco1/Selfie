@@ -6,6 +6,7 @@ import {TimeMachineService} from '../services/time-machine.service';
 import {finalize, take, takeWhile} from 'rxjs';
 import {PomodoroService} from '../services/pomodoro.service';
 import {DecimalPipe} from '@angular/common';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-pomodoro',
@@ -39,7 +40,7 @@ export class PomodoroComponent {
   pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
   pomodoroLog: any;
 
-  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService) {
+  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService, private notificationService: NotificationService) {
     this.setPomodoroLog();
   }
 
@@ -118,10 +119,12 @@ export class PomodoroComponent {
   resumeCycle(){
     this.cyclephase = CyclePhase.STUDYING;
     this.setCycleButton();
+    this.notificationService.showNotification("session started");
   }
 
 
   pauseCycle(){
+    this.notificationService.showNotification("session paused");
     this.resumePause();
     this.logEndTime();
     if( this.breakSecondsLeft > 0) {
@@ -144,11 +147,13 @@ export class PomodoroComponent {
   endSession() {
     this.cyclephase = CyclePhase.IDLE;
     this.resetDefaultCountdowns();
+    this.notificationService.showNotification("session ended");
   }
 
 
   skipToNextCycle(){
     if(this.repetitions > 0){
+      this.notificationService.showNotification("repetition completed");
       this.repetitions--;
       this.readyCycle();
     }else{

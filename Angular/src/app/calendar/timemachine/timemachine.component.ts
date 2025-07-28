@@ -21,7 +21,7 @@ export class TimemachineComponent {
 
 	private pad(n: number): string {
 		return n.toString().padStart(2, '0');
-	}	
+	}
 	private formatTime(date: Date): string {
 		const h = this.pad(date.getHours());
 		const m = this.pad(date.getMinutes());
@@ -36,6 +36,7 @@ export class TimemachineComponent {
 		// Start ticking virtual clock
 		this.timer = setInterval(() => {
 			this.day = new Date(Date.now() + this.offsetMs);
+      this.timeMachine.setDay(this.day);
 		}, 1000);
 		this.time = this.formatTime(referenceDate); // 👈 init time
 	}
@@ -60,14 +61,14 @@ export class TimemachineComponent {
 	onTimeChange(newTime: string) {
 		if (!newTime) return;
 		this.time = newTime;
-	
+
 		const [h, m, s] = newTime.split(":").map(Number);
 		const updated = new Date(this.timeMachine.day);
 		updated.setHours(h, m, s ?? 0, 0);
-	
+
 		this.offsetMs = updated.getTime() - Date.now();
 		this.timeMachine.setDay(updated);
-	}	
+	}
 	onTimeInput(event: Event) {
 		const input = event.target as HTMLInputElement;
 		this.onTimeChange(input.value);

@@ -55,17 +55,17 @@ export class NotificationService {
     })
   }
 
-  showNotification(title: string, body: string, snoozeButton = true, urgency: number = 2) {
+  showNotification(title: string, body = "", snoozeButton = true, urgency: number = 0) {
     let icon: string;
     switch (urgency) {
       case 1:
-        icon = "https://images.emojiterra.com/google/android-12l/512px/203c.png";
+        icon = "/icons/danger.png";
         break;
       case 2:
-        icon = "https://www.shutterstock.com/shutterstock/photos/2629393653/display_1500/stock-vector-pixel-triple-exclamation-marks-vector-for-dramatic-alert-loud-comic-or-strong-retro-message-2629393653.jpg"
+        icon = "/icons/death.png"
         break;
       default:
-        icon = 'https://img.freepik.com/free-psd/3d-red-exclamation-mark-bold-shiny-attentiongrabbing_191095-87778.jpg?t=st=1749875914~exp=1749879514~hmac=f145b00b99a11692b6fbbbadb39a51b20cc70f9b1fa30fbd94f9b84889c218b1';
+        icon = '/icons/hourglass.png';
 
     }
 
