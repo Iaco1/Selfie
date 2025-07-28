@@ -36,6 +36,7 @@ export class TimemachineComponent {
 		// Start ticking virtual clock
 		this.timer = setInterval(() => {
 			this.day = new Date(Date.now() + this.offsetMs);
+			this.timeMachine.setDay(this.day);
 		}, 1000);
 		this.time = this.formatTime(referenceDate); // 👈 init time
 	}
