@@ -16,7 +16,6 @@
     "express-session": "^1.18.1",
     "faker": "^5.5.3",
     "mongoose": "^8.16.2",
-    "path": "^0.12.7",
     "pbkdf2-password": "^1.2.1"
   }
 }
