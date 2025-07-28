@@ -1,8 +1,8 @@
+const environment = require('./environment');
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
-const config = require('./config');
-const port = config.port;
+const {mongoURI, options, port} = require('./config')(environment.remote);
 mongoose.set('strictQuery', false);
 
 
@@ -18,10 +18,10 @@ app.use("/event", require("./routes/event"));
 app.use("/pomodoro", require("./routes/pomodoro"));
 app.use("/activity", require('./routes/activity'));
 
-mongoose.connect(config.mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-}).then(() => {
+
+
+
+mongoose.connect(mongoURI, options).then(() => {
   console.log('Connected to MongoDB');
 }).catch(err => {
   console.log('Error connecting to MongoDB:', err);
