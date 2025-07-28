@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {SwPush} from '@angular/service-worker';
 import {Observable} from 'rxjs';
+import { keys } from '../../environments/keys';
 
 declare type NotificationAction = {
   action: string;
@@ -13,8 +14,8 @@ declare type NotificationAction = {
   providedIn: 'root'
 })
 export class NotificationService {
-  private swPush = inject(SwPush);
-  readonly VAPID_PUBLIC_KEY = "BH-EyqqZPrkQVCKY5w0CWkO6X8cu6D9cR31Z-fqk61mdyAQSCrTLqzVYPxnk5rxys51VO2c5MTryeEeNOXfXiek";
+	private swPush = inject(SwPush);
+	readonly VAPID_PUBLIC_KEY = keys.VALID_PUBLIC_KEY;
 
   constructor() {
     this.requestPermission()

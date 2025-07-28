@@ -24,7 +24,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/manifest.webmanifest",
+              "src/ngsw-worker.js",
+              "src/ngsw.json"
             ],
             "styles": [
               "src/styles.css",
