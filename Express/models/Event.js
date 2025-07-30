@@ -20,7 +20,9 @@ const EventSchema = new mongoose.Schema({
 	repeat: {
 		bool: {type: Boolean, required: false},
 		frequency: {type: String, required: false},
-		interval: {type: Number, required: false}
+		interval: {type: Number, required: false},
+		count: {type: Number, required: false},
+		until: {type: String, required: false}
 	},
 	notification: [{type: String, required: false}],
 	pomodoro: {

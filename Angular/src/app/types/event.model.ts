@@ -1,29 +1,39 @@
 import { StringDate } from "./string-date";
 
-export class CalendarEvent {
-	//setted by the program
+export class EventModel {
+//setted by the program
 	_id : string = "";
 	user : string;
-	//required true
+//required true
 	title : string;
 	start : StringDate; // e.g., {date: '2025-05-07', time: '09:00:00'}
 	end   : StringDate; // e.g., {date: '2025-05-08', time: '12:00:00'}
-	//often used but required false
+//  often used but required false
 	duration : {number: number, measure: string};
 	colour : string;
-	//required false
+//required false
 	description? : string;
-	//TODO
 	location? : string;
-	repeat? : {bool: boolean, frequency:string, interval: number};
+	//repeats
+	repeat : {
+		bool: boolean,
+		frequency: string,
+		interval: number,
+		count: number | undefined,
+		until: string | undefined
+	};
+	originalStartDate? : StringDate;
+	isRecurringInstance? : boolean;
+	//TODO
 	notification? : string[];
 	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
 
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
-		title: string = "New Event", description:string="", colour: string = "blue",
-		user: string = ""
+		title: string = "New Event", description:string="", colour: string = "blue", user: string = "",
+		repeat: {bool: boolean,	frequency:string, interval: number, count: number|undefined, until: string|undefined }
+			= {bool: false, frequency: 'weekly', interval: 1, count: undefined, until: undefined }
 	) {
 		this.title = title;
 		this.colour = colour;
@@ -34,6 +44,8 @@ export class CalendarEvent {
 			this.user = localStorage.getItem("authToken") || "user";
 		}
 		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
+		//repeat
+		this.repeat = repeat;
 	}
 
 	get startDate() { return this.start.getDate() }
@@ -61,5 +73,29 @@ export class CalendarEvent {
 	setNotification (notification: string[]) { this.notification = notification; }
 	setPomodoro     (b: boolean, study:string, rest:string) {
 		this.pomodoro = { bool: b, studyFor: study, restFor: rest }
+	}
+
+	//repeats
+	static fromRecurringInstance( master: EventModel,
+		instanceStart: Date, instanceEnd: Date): EventModel {
+
+		const start = StringDate.fromDate(instanceStart);
+		const end = StringDate.fromDate(instanceEnd);
+		
+		const clone = new EventModel( start, end, master.duration,
+			master.title, master.description ?? "",	master.colour, master.user);
+		
+		// Optional fields
+		clone._id = master._id;
+		clone.location = master.location;
+		clone.repeat = master.repeat;
+		clone.notification = master.notification;
+		clone.pomodoro = master.pomodoro;
+		
+		// Recurrence tracking
+		clone.originalStartDate = master.start.clone();
+		clone.isRecurringInstance = true;
+		
+		return clone;
 	}
 }

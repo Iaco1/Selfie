@@ -70,6 +70,80 @@
 				</div>
 			</div>
 			<div> End Date: {{evento.end.date}} {{evento.end.time}} </div>
+
+			<!-- Repeat toggle -->
+			<div class="field is-grouped is-align-items-center">
+				<label for="repeatEvent" class="label is-small mr-2">Repeat event?</label>
+				<input id="repeatEvent" type="checkbox" [(ngModel)]="evento.repeat.bool" />
+			</div>
+			<!-- Show repeat details only if enabled -->
+			<div *ngIf="evento.repeat.bool">
+				<!-- Every 1 week -->
+				<div class="field is-grouped is-align-items-center">
+					<label for="repeatInterval" class="label is-small mr-2">Every</label>
+					<input
+						id="repeatInterval"
+						class="input is-small mr-2"
+						type="number"
+						min="1"
+						[(ngModel)]="evento.repeat.interval"
+						style="width: 5rem" />
+					<div class="select is-small">
+						<select id="repeatFrequency" [(ngModel)]="evento.repeat.frequency">
+							<option value="daily">  day  </option>
+							<option value="weekly"> week </option>
+							<option value="monthly">month</option>
+							<option value="yearly"> year </option>
+						</select>
+					</div>
+				</div>
+				<!-- End label + Never -->
+				<div class="field is-grouped is-align-items-center">
+					<label class="label is-small mr-4" style="width: 4rem;">End</label>
+					<input
+						id="endNever"
+						type="radio"
+						name="repeatEnd"
+						(change)="repeatEndMode = 'never'"
+						[checked]="repeatEndMode === 'never'" />
+					<label for="endNever" class="ml-1">Never</label>
+				</div>
+				<!-- After N occurrences -->
+				<div class="field is-grouped is-align-items-center">
+					<span style="width: 4rem;"></span>
+					<input
+						id="endAfter"
+						type="radio"
+						name="repeatEnd"
+						(change)="repeatEndMode = 'after'" />
+					<label for="endAfter" class="ml-1 mr-1">After</label>
+					<input
+						class="input is-small"
+						type="number"
+						min="1"
+						[(ngModel)]="evento.repeat.count"
+						[disabled]="repeatEndMode !== 'after'"
+						style="width: 5rem" />
+					<span class="ml-1">occurrences</span>
+				</div>
+				<!-- Until date -->
+				<div class="field is-grouped is-align-items-center">
+					<span style="width: 4rem;"></span>
+					<input
+						id="endUntil"
+						type="radio"
+						name="repeatEnd"
+						(change)="repeatEndMode = 'until'" />
+					<label for="endUntil" class="ml-1 mr-2">Until</label>
+					<input
+						class="input is-small"
+						type="date"
+						[(ngModel)]="evento.repeat.until"
+						[disabled]="repeatEndMode !== 'until'"
+						style="width: 11rem" />
+				</div>
+			</div>
+
 			<!-- location ? -->
 			<div class="level">
 				<div class="field level-item">
