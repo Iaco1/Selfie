@@ -28,18 +28,19 @@ export class EventModel {
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
-		title: string = "New Event", description:string="", colour: string = "blue", user: string = "",
+		title: string = "New Event", description:string="", colour: string = "blue", location="", user: string = "",
 		repeat: {bool: boolean,	rrule: string | undefined } = {bool: false, rrule: undefined }
 	) {
-		this.title = title;
-		this.colour = colour;
-		this.description = description;
-		this.start = start;
-		this.duration = duration;
 		if (user) { this.user = user; } else {
 			this.user = localStorage.getItem("authToken") || "user";
 		}
+		this.title = title;
+		this.start = start;
+		this.duration = duration;
 		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
+		this.colour = colour;
+		this.description = description;
+		this.location = location;
 		//repeat
 		this.repeat = repeat;
 	}
@@ -80,14 +81,14 @@ export class EventModel {
 		
 		const clone = new EventModel( start, end, master.duration,
 			master.title, master.description ?? "",	master.colour, master.user);
-		
+
 		// Optional fields
 		clone._id = master._id;
 		clone.location = master.location;
 		clone.repeat = master.repeat;
 		clone.notification = master.notification;
 		clone.pomodoro = master.pomodoro;
-		
+
 		// Recurrence tracking
 		clone.originalStartDate = master.start.clone();
 		clone.isRecurringInstance = true;
