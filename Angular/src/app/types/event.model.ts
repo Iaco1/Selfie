@@ -17,10 +17,7 @@ export class EventModel {
 	//repeats
 	repeat : {
 		bool: boolean,
-		frequency: string,
-		interval: number,
-		count: number | undefined,
-		until: string | undefined
+		rrule?: string // uses RRule library, e.g. "FREQ=WEEKLY;INTERVAL=1;COUNT=5"
 	};
 	originalStartDate? : StringDate;
 	isRecurringInstance? : boolean;
@@ -32,8 +29,7 @@ export class EventModel {
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
 		title: string = "New Event", description:string="", colour: string = "blue", user: string = "",
-		repeat: {bool: boolean,	frequency:string, interval: number, count: number|undefined, until: string|undefined }
-			= {bool: false, frequency: 'weekly', interval: 1, count: undefined, until: undefined }
+		repeat: {bool: boolean,	rrule: string | undefined } = {bool: false, rrule: undefined }
 	) {
 		this.title = title;
 		this.colour = colour;

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
+import { RRule } from 'rrule';
+
 import { DateselectComponent } from './dateselect/dateselect.component';
 import { MonthComponent } from './month/month.component';
 import { DayComponent } from './day/day.component';
@@ -129,54 +131,17 @@ export class CalendarComponent implements OnInit {
 
 	//repeats is true
 	generateRecurringInstances(event: EventModel, viewFrom?: Date, viewTo?: Date): EventModel[] {
-		const instances: EventModel[] = [];
-	
-		const startDate = new Date(event.start.date + 'T' + event.start.time);
-		const endDate = new Date(event.end.date + 'T' + event.end.time);
-		const interval = event.repeat?.interval ?? 1;
-		const frequency = event.repeat?.frequency ?? 'weekly';
-		const countLimit = event.repeat?.count;
-		const untilDate = event.repeat?.until ? new Date(event.repeat.until) : undefined;
-	
-		let current = new Date(startDate);
-		let instanceCount = 0;
-	
-		while (true) {
-			// Stop if 'count' reached
-			if (countLimit !== undefined && instanceCount >= countLimit) break;
-			// Stop if 'until' date passed
-			if (untilDate !== undefined && current > untilDate) break;
-			// Stop if current exceeds visible range
-			if (viewTo && current > viewTo) break;
-	
-			// Include only if inside visible range
-			if (!viewFrom || current >= viewFrom) {
-				const instanceStart = new Date(current);
-				const instanceEnd = new Date(instanceStart.getTime() + (endDate.getTime() - startDate.getTime()));
-				instances.push(EventModel.fromRecurringInstance(event, instanceStart, instanceEnd));
-			}
-	
-			// Advance
-			switch (frequency) {
-				case "daily":
-					current.setDate(current.getDate() + interval);
-					break;
-				case "weekly":
-					current.setDate(current.getDate() + 7 * interval);
-					break;
-				case "monthly":
-					current.setMonth(current.getMonth() + interval);
-					break;
-				case "yearly":
-					current.setFullYear(current.getFullYear() + interval);
-					break;
-				default:
-					break;
-			}
-	
-			instanceCount++;
-		}
-	
-		return instances;
+		if (!event.repeat.rrule) return [event];
+
+		const rule = RRule.fromString(event.repeat.rrule);
+
+		const between = rule.between(viewFrom ?? new Date(0), viewTo ?? new Date(8640000000000000));
+		const duration = new Date(`${event.end.date}T${event.end.time}`).getTime() -
+						new Date(`${event.start.date}T${event.start.time}`).getTime();
+
+		return between.map(start => {
+			const end = new Date(start.getTime() + duration);
+			return EventModel.fromRecurringInstance(event, start, end);
+		});
 	}	
 }
