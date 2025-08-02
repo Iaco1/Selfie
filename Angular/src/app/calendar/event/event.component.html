@@ -6,10 +6,12 @@
 	[ngStyle]="{ 'background-color': evento.colour }">
 	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
 	<p>
-		<span *ngIf="cornerMask === 'left'"> {{evento.start.time.slice(0, 2)}} - </span>
-		{{ evento.title }} <span *ngIf="! (evento.title || evento.description)">.</span>
-		<span *ngIf="cornerMask === 'right'"> - {{evento.end.time.slice(0, 2)}} </span>
+		<span *ngIf="cornerMask === 'left' || 'top' || 'none' "> {{evento.start.time.slice(0, 2)}} - </span>
+		{{ evento.title }} <span *ngIf="! (evento.title || evento.location || evento.description)">.</span>
+		<span *ngIf="cornerMask === 'right' || 'bottom' || 'none' "> - {{evento.end.time.slice(0, 2)}} </span>
 	</p>
+	<p>{{ getCornerClasses() }}</p>
+	<p>{{ evento.location }}</p>
 	<p>{{ evento.description }}</p>
 </div>
 

@@ -70,7 +70,7 @@ export class DayComponent implements OnChanges {
 			const eventEndHour = event.endDate.getHours();
 
 			const isTop = isStart && hour === eventStartHour;
-			const isBottom = isEnd && hour === eventEndHour - 1;
+			const isBottom = isEnd && hour === eventEndHour;
 
 			if (isTop && isBottom) return "all";
 			if (isTop) return "top";

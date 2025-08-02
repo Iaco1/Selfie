@@ -69,14 +69,8 @@ export class EventComponent implements OnInit {
 		// console.log(this.repeatEndMode + " end mode");
 	}
 
-	ngOnInit(): void {
-		this.setMode();
-	}
+	parseRRule() {
 
-	//open and close modal
-	showModal = false;
-	openModal() {
-		this.showModal = true;
 
 		if (this.evento.repeat?.rrule) {
 			try {
@@ -133,6 +127,16 @@ export class EventComponent implements OnInit {
 				console.error("Failed to parse saved rrule:", e);
 			}
 		}
+	}
+
+	ngOnInit(): void {
+		this.parseRRule();
+	}
+
+	//open and close modal
+	showModal = false;
+	openModal() {
+		this.showModal = true;
 	}
 
 	closeModal() {
