@@ -19,9 +19,9 @@ export class StringDate {
 		//time
 		const hours = pad(dateObj.getHours());
 		const minutes = pad(dateObj.getMinutes());
-		const seconds = pad(dateObj.getSeconds());
+		//no seconds otherwise const seconds = pad(dateObj.getSeconds());
 	
-		return new StringDate(`${year}-${month}-${day}`, `${hours}:${minutes}:${seconds}`);
+		return new StringDate(`${year}-${month}-${day}`, `${hours}:${minutes}`);
 	}
 
 	clone(): StringDate {

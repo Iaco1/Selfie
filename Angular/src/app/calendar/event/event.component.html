@@ -3,14 +3,17 @@
 	(click)="openModal()"
 	class="has-text-centered"
 	[ngClass]="getCornerClasses()"
-	[ngStyle]="{ 'background-color': evento.colour }">
+	[ngStyle]="{
+		'background-color': evento.colour,
+		'color': evento.colour | contrastColour }">
 	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
 	<p>
-		<span *ngIf="cornerMask === 'left'"> {{evento.start.time.slice(0, 2)}} - </span>
+		<span *ngIf="cornerMask === 'all'">{{ evento.start.time }}-{{ formatTime(evento.end.time) }} <br></span>
+		<span *ngIf="cornerMask === 'left' || cornerMask === 'top'"> {{evento.start.time}} - </span>
 		{{ evento.title }} <span *ngIf="! (evento.title || evento.description)">.</span>
-		<span *ngIf="cornerMask === 'right'"> - {{evento.end.time.slice(0, 2)}} </span>
+		<span *ngIf="cornerMask === 'right' || cornerMask === 'bottom'"> - {{formatTime(evento.end.time)}} </span>
 	</p>
-	<p>{{ evento.description }}</p>
+	<!-- <p>{{ evento.description }}</p> -->
 </div>
 
 <!-- Modale con Bulma -->
@@ -62,6 +65,7 @@
 							[(ngModel)]="evento.duration.measure" (ngModelChange)="evento.calculateEnd()">
 							<option value="min">  minutes</option>
 							<option value="15min">15 mins</option>
+							<option value="30min">30 mins</option>
 							<option value="hours">  hours</option>
 							<option value="days">    days</option>
 							<option value="weeks">  weeks</option>

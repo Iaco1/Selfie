@@ -6,8 +6,8 @@ import { MonthComponent } from './month/month.component';
 import { DayComponent } from './day/day.component';
 import { WeekComponent } from './week/week.component';
 
-import { CalendarEvent } from '../types/calendar-event.model';
-import { CalendarService } from '../services/calendar.service';
+import { EventModel } from '../types/event.model';
+import { EventService } from '../services/event.service';
 
 import { ActivityModel } from '../types/activity.model';
 import { ActivityService } from '../services/activity.service';
@@ -22,7 +22,7 @@ import { CrudHelper } from '../utils/crud-helper';
 		WeekComponent,
 		HttpClientModule
 	],
-	providers: [CalendarService, ActivityService],
+	providers: [EventService, ActivityService],
 	templateUrl: './calendar.component.html',
 	styleUrl: './calendar.component.css'
 })
@@ -42,13 +42,13 @@ export class CalendarComponent implements OnInit {
 	}
 
 	//events and activities uses crudHelper :D
-	constructor(private calendarService: CalendarService,
+	constructor(private calendarService: EventService,
 		private activityService: ActivityService) {}
 
-	events: CalendarEvent[] = [];
+	events: EventModel[] = [];
 	activities: ActivityModel[] = [];
 
-	private eventCrud!: CrudHelper<CalendarEvent>;
+	private eventCrud!: CrudHelper<EventModel>;
 	private activityCrud!: CrudHelper<ActivityModel>;
 	
 	ngOnInit(): void {
@@ -71,10 +71,10 @@ export class CalendarComponent implements OnInit {
 	}
 		
 	//events
-	onSaveEvent(event: CalendarEvent) {
+	onSaveEvent(event: EventModel) {
 		this.eventCrud.save(event, this.calendarService);
 	}
-	onDeleteEvent(event: CalendarEvent) {
+	onDeleteEvent(event: EventModel) {
 		this.eventCrud.delete(event, this.calendarService);
 	}
 

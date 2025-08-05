@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DayComponent } from '../day/day.component';
-import { CalendarEvent } from '../../types/calendar-event.model';
+import { EventModel } from '../../types/event.model';
 import { } from '@angular/core';
 import { ActivityModel } from '../../types/activity.model';
 
@@ -91,14 +91,14 @@ export class MonthComponent {
 	}
 
 	//events
-	@Input() events: CalendarEvent[] = [];
+	@Input() events: EventModel[] = [];
 	
-	@Output() saveEvent = new EventEmitter<CalendarEvent>();
-	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
-	onSaveEvent(updatedEvent: CalendarEvent) {
+	@Output() saveEvent = new EventEmitter<EventModel>();
+	@Output() deleteEvent = new EventEmitter<EventModel>();
+	onSaveEvent(updatedEvent: EventModel) {
 		this.saveEvent.emit(updatedEvent);
 	}
-	onDeleteEvent(eventToDelete: CalendarEvent) {
+	onDeleteEvent(eventToDelete: EventModel) {
 		this.deleteEvent.emit(eventToDelete);
 	}
 

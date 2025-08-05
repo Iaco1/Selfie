@@ -1,20 +1,19 @@
 import { StringDate } from "./string-date";
 
-export class CalendarEvent {
+export class EventModel {
 	//setted by the program
 	_id : string = "";
 	user : string;
-	//required true
-	title : string;
-	start : StringDate; // e.g., {date: '2025-05-07', time: '09:00:00'}
-	end   : StringDate; // e.g., {date: '2025-05-08', time: '12:00:00'}
-	//often used but required false
+	//start - duration - end
+	start : StringDate; // e.g., {date: '2025-05-07', time: '09:00'}
+	end   : StringDate; // e.g., {date: '2025-05-08', time: '12:00'}
 	duration : {number: number, measure: string};
+	//fields
+	title : string;
 	colour : string;
-	//required false
 	description? : string;
-	//TODO
 	location? : string;
+	//TODO
 	repeat? : {bool: boolean, frequency:string, interval: number};
 	notification? : string[];
 	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
@@ -22,18 +21,19 @@ export class CalendarEvent {
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
-		title: string = "New Event", description:string="", colour: string = "blue",
-		user: string = ""
+		title: string = "New Event", colour: string = "blue", description:string="",
+		location: string = "", user: string = ""
 	) {
+		this.start = start;
+		this.duration = duration;
+		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
 		this.title = title;
 		this.colour = colour;
 		this.description = description;
-		this.start = start;
-		this.duration = duration;
+		this.location = location;
 		if (user) { this.user = user; } else {
 			this.user = localStorage.getItem("authToken") || "user";
 		}
-		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
 	}
 
 	get startDate() { return this.start.getDate() }
@@ -45,6 +45,7 @@ export class CalendarEvent {
 		switch(this.duration.measure) {
 			case "min":   duration = a_min;      break;
 			case "15min": duration = 15 * a_min; break;
+			case "30min": duration = 30 * a_min; break;
 			case "hours": duration = a_hour;     break;
 			case "days":  duration = a_day;      break;
 			case "weeks": duration = a_week;     break;
