@@ -5,6 +5,12 @@ const mongoose = require("mongoose");
 const {mongoURI, options, port} = require('./config')(environment.remote);
 mongoose.set('strictQuery', false);
 
+const cors = require('cors');
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  credentials: true,
+}
+app.use(cors(corsOptions));
 
 
 

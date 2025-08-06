@@ -1,5 +1,4 @@
 export const environment = {
-  production: false,
-  baseURL: "/api",
+  baseURL: "http://localhost:3002",
   timeout: 1000,
 }

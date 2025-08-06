@@ -64,7 +64,6 @@
         },
         "serve": {
           "options": {
-            "proxyConfig": "proxy.conf.json",
             "ssl": true,
             "sslCert": "cert.pem",
             "sslKey": "cert-key.pem"
