@@ -7,8 +7,8 @@ const mongoCredentials = {
 module.exports = function(remote){
   if(remote) {
     return {
-      mongoURI: `mongodb://${mongoCredentials.site}`,
-      port: 8000,
+      mongoURI: `mongodb://${mongoCredentials.user}:${mongoCredentials.pwd}@${mongoCredentials.site}:${27017}/admin`,
+      port: 27017,
       options: {}
     };
   }else{

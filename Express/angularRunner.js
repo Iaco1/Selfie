@@ -5,7 +5,6 @@ const app = express();
 
 
 // Serve static files from the Angular build directory
-// Assuming your Angular build output is in the 'dist' folder
 const staticPath = path.join(__dirname, '../Angular/dist/angular/browser');
 console.log('Serving static files from:', staticPath);
 

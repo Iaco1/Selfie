@@ -1,5 +1,6 @@
 const environment = require('./environment');
 const express = require('express');
+const path = require('path');
 const app = express();
 const mongoose = require("mongoose");
 const {mongoURI, options, port} = require('./config')(environment.remote);
@@ -25,7 +26,17 @@ app.use("/pomodoro", require("./routes/pomodoro"));
 app.use("/activity", require('./routes/activity'));
 
 
+// Serve static files from the Angular build directory
+const staticPath = path.join(__dirname, '/dist/angular/browser');
+console.log('Serving static files from:', staticPath);
 
+// Serve static files
+app.use(express.static(path.join(staticPath)));
+
+// Handle all other routes and return the Angular index.html file
+app.use((req, res) => {
+    res.sendFile(path.join(staticPath, 'index.html'));
+});
 
 mongoose.connect(mongoURI, options).then(() => {
   console.log('Connected to MongoDB');
