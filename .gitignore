@@ -7,3 +7,4 @@ node_modules/
 *.idea
 /Angular/*.pem
 /Express/environment.js
+/Angular/src/environments/environment.ts
