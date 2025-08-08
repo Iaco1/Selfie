@@ -1,0 +1,12 @@
+.columns {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.field {
+	margin-bottom: 0;
+}
+
+textarea.textarea {
+	min-height: 100px; /* Optional: maintain height if you reduce spacing */
+}

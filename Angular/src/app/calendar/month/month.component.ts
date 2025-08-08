@@ -92,15 +92,6 @@ export class MonthComponent {
 
 	//events
 	@Input() events: EventModel[] = [];
-	
-	@Output() saveEvent = new EventEmitter<EventModel>();
-	@Output() deleteEvent = new EventEmitter<EventModel>();
-	onSaveEvent(updatedEvent: EventModel) {
-		this.saveEvent.emit(updatedEvent);
-	}
-	onDeleteEvent(eventToDelete: EventModel) {
-		this.deleteEvent.emit(eventToDelete);
-	}
 
 	//activities
 	@Input() activities: ActivityModel[] = [];

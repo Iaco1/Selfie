@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 import { DateselectComponent } from './dateselect/dateselect.component';
 import { MonthComponent } from './month/month.component';
@@ -48,11 +49,9 @@ export class CalendarComponent implements OnInit {
 	events: EventModel[] = [];
 	activities: ActivityModel[] = [];
 
-	private eventCrud!: CrudHelper<EventModel>;
 	private activityCrud!: CrudHelper<ActivityModel>;
 	
 	ngOnInit(): void {
-		this.eventCrud = new CrudHelper(() => this.events, (l) => this.events = l);
 		this.activityCrud = new CrudHelper(() => this.activities, (l) => this.activities = l);
 	
 		this.calendarService.getOnlyMyEvents().subscribe({
@@ -68,14 +67,6 @@ export class CalendarComponent implements OnInit {
 			},
 			error: err => console.error('Error loading activities:', err)
 		});
-	}
-		
-	//events
-	onSaveEvent(event: EventModel) {
-		this.eventCrud.save(event, this.calendarService);
-	}
-	onDeleteEvent(event: EventModel) {
-		this.eventCrud.delete(event, this.calendarService);
 	}
 
 	//activities

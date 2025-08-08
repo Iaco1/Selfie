@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { EventModel } from "../../types/event.model";
 import { ContrastColourPipe } from "../../utils/contrast-colour.pipe";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: "event",
@@ -13,24 +14,14 @@ import { ContrastColourPipe } from "../../utils/contrast-colour.pipe";
 export class EventComponent {
 	@Input() evento!: EventModel;
 	@Input() cornerMask: string ="none";
-	@Output() save = new EventEmitter<EventModel>();
-	@Output() delete = new EventEmitter<EventModel>();
+	@Input() visualize: string = "";
 
-	showModal = false;
-	openModal() {
-		this.showModal = true;
-	}
-	closeModal() {
-		this.showModal = false;
-	}
+	constructor(private router: Router) {}
 
-	saveEvent() {
-		this.save.emit(this.evento);
-		this.closeModal();
-	}
-	deleteEvent() {
-		this.delete.emit(this.evento);
-		this.closeModal();
+	editEvent(id: string) {
+		this.router.navigate(['editor-event', id], {
+			queryParams: { view: this.visualize }
+		});
 	}
 
 	//round time

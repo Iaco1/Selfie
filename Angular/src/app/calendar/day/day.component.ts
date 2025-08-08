@@ -7,10 +7,11 @@ import {
 	SimpleChanges
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
 
 import { EventModel } from "../../types/event.model";
 import { StringDate } from "../../types/string-date";
-import { EventComponent } from "../event/event.component";
+import { EventComponent } from "../../events/event/event.component";
 import { ActivityComponent } from '../../list-activities/activity/activity.component';
 import { ActivityModel } from "../../types/activity.model";
 
@@ -22,7 +23,6 @@ import { ActivityModel } from "../../types/activity.model";
 	standalone: true
 })
 export class DayComponent implements OnChanges {
-	constructor() {}
 
 	//my datas
 	@Input() day!: Date;
@@ -36,6 +36,8 @@ export class DayComponent implements OnChanges {
 
 	@Input() activities: ActivityModel[] = []
 	filteredActivities: ActivityModel[] = [];
+
+	constructor(private router: Router) {}
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['events'] || changes['day'] || changes['activities'])
@@ -133,22 +135,14 @@ export class DayComponent implements OnChanges {
 	}
 
 	//events
-	@Output() saveEvent = new EventEmitter<EventModel>();
-	@Output() deleteEvent = new EventEmitter<EventModel>();
-
 	createEvent(hour: number = 0) {
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
-		const newEvent = new EventModel(StringDate.fromDate(dateHour));
-		this.saveEvent.emit(newEvent);
-	}
-
-	onSaveEvent(updatedEvent: EventModel) {
-		this.saveEvent.emit(updatedEvent);
-	}
-
-	onDeleteEvent(eventToDelete: EventModel) {
-		this.deleteEvent.emit(eventToDelete);
+		const isoString = dateHour.toISOString();
+		// Navigate without ID (to create new event)
+		this.router.navigate(['editor-event'], {
+			queryParams: { date: isoString, view: this.visualize }
+		});
 	}
 
 	//activities
@@ -162,4 +156,3 @@ export class DayComponent implements OnChanges {
 		this.deleteActivity.emit(activityToDelete);
 	}
 }
-

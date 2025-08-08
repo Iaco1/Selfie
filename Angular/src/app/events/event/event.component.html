@@ -1,0 +1,17 @@
+<!-- Evento cliccabile -->
+<div #content
+	(click)="editEvent(evento._id)"
+	class="has-text-centered"
+	[ngClass]="getCornerClasses()"
+	[ngStyle]="{
+		'background-color': evento.colour,
+		'color': evento.colour | contrastColour }">
+	<!-- {{ evento.start.time }}-{{ evento.end.time }} -->
+	<p>
+		<span *ngIf="cornerMask === 'all'">{{ evento.start.time }}-{{ formatTime(evento.end.time) }} <br></span>
+		<span *ngIf="cornerMask === 'left' || cornerMask === 'top'"> {{evento.start.time}} - </span>
+		{{ evento.title }} <span *ngIf="! (evento.title || evento.description)">.</span>
+		<span *ngIf="cornerMask === 'right' || cornerMask === 'bottom'"> - {{formatTime(evento.end.time)}} </span>
+	</p>
+	<!-- <p>{{ evento.description }}</p> -->
+</div>

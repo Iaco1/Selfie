@@ -41,7 +41,7 @@ export class NoteComponent implements OnChanges {
 	}
 
 	EditNote(id: string) {
-		this.router.navigate(['/editor', id]);
+		this.router.navigate(['/editor-note', id]);
 	}
 
 	Delete() {
