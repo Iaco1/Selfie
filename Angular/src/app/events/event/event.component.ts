@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { EventModel } from "../../types/event.model";
 import { ContrastColourPipe } from "../../utils/contrast-colour.pipe";
 import { Router } from "@angular/router";
+import { toLocalDateString } from "../../utils/date";
 
 @Component({
 	selector: "event",
@@ -15,12 +16,15 @@ export class EventComponent {
 	@Input() evento!: EventModel;
 	@Input() cornerMask: string ="none";
 	@Input() visualize: string = "";
+	@Input() day!: Date;
 
 	constructor(private router: Router) {}
 
-	editEvent(id: string) {
+	editEvent(id: string, clickedDay: Date) {
 		this.router.navigate(['editor-event', id], {
-			queryParams: { view: this.visualize }
+			queryParams: {
+				date: toLocalDateString(clickedDay),
+				view: this.visualize }
 		});
 	}
 

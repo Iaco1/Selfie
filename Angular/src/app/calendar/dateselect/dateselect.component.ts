@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { toLocalDateString } from '../../utils/date';
 
 @Component({
 	selector: 'dateselect',standalone: true,
@@ -24,7 +25,7 @@ export class DateselectComponent implements OnInit {
 		this.router.navigate([], {
 			queryParams: {
 				view: this.dwmyToString(this.dwmy),
-				date: this.today.toISOString().split('T')[0]
+				date: toLocalDateString(this.today)
 			},
 			queryParamsHandling: 'merge'
 		});

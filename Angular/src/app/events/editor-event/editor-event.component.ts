@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { EventModel } from "../../types/event.model";
 import { EventService } from "../../services/event.service";
 import { StringDate } from "../../types/string-date";
+import { fromLocalDateString, toLocalDateString } from "../../utils/date";
 
 @Component({
 	selector: "editor-event",
@@ -32,8 +33,7 @@ export class EditorEventComponent implements OnInit {
 		if (!this.eventId) {
 			// Creation mode
 			const dateParam = this.route.snapshot.queryParamMap.get('date');
-			const startDate = dateParam ? new Date(dateParam) : new Date();
-
+			const startDate = dateParam ? fromLocalDateString(dateParam) : new Date();
 			this.me = new EventModel(StringDate.fromDate(startDate));
 			return;
 		}
@@ -50,10 +50,13 @@ export class EditorEventComponent implements OnInit {
 	}
 
 	goBackToCalendar() {
-		this.router.navigate(['calendar'], {
+		const view = this.viewMode;
+		const date = this.route.snapshot.queryParamMap.get('date') || toLocalDateString(new Date)
+	
+		this.router.navigate(['/calendar'], {
 			queryParams: {
-				view: this.viewMode,
-				date: this.me.start.date
+				view,
+				date
 			}
 		});
 	}

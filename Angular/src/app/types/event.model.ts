@@ -21,7 +21,7 @@ export class EventModel {
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
-		title: string = "New Event", colour: string = "blue", description:string="",
+		title: string = "", colour: string = "blue", description:string="",
 		location: string = "", user: string = ""
 	) {
 		this.start = start;

@@ -12,6 +12,7 @@
 	<event
 		*ngFor="let event of upperEvents()"
 		[evento]="event"
+		[day]="day"
 		[cornerMask]="getCornerMask(event)"
 		[visualize]="visualize">
 	</event>
@@ -31,6 +32,7 @@
 					<event
 						*ngFor="let event of getEventsForHour(hour)"
 						[evento]="event"
+						[day]="day"
 						[cornerMask]="getCornerMask(event, hour)"
 						[visualize]="visualize">
 					</event>
