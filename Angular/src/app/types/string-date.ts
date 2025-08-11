@@ -22,8 +22,8 @@ export class StringDate {
 
 	static fromDate(d: Date): StringDate {
 		return new StringDate(
-			d.toISOString().split('T')[0],
-			d.toTimeString().slice(0, 5)
+			toLocalDateString(d),          // ✅ local-safe date
+			d.toTimeString().slice(0, 5)   // ✅ local-safe time
 		);
 	}
 

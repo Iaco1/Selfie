@@ -78,9 +78,7 @@ export class CalendarComponent implements OnInit {
 		switch (this.dwmy) {
 			case 'd':
 				viewStart = new Date(day);
-				viewStart.setHours(0, 0, 0, 0);
 				viewEnd = new Date(day);
-				viewEnd.setHours(23, 59, 59, 999);
 				break;
 			case 'w': {
 				viewStart = getStartOfWeek(day);
@@ -100,7 +98,10 @@ export class CalendarComponent implements OnInit {
 				viewStart = new Date(day);
 				viewEnd = new Date(day);
 		}
-	
+
+		viewStart.setHours(0, 0, 0, 0);
+		viewEnd.setHours(23, 59, 59, 999);
+
 		this.eventService.getOnlyMyEvents().subscribe({
 			next: events => {
 				this.events = events.flatMap(event =>

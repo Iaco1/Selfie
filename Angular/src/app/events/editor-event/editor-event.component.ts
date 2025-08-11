@@ -53,6 +53,7 @@ export class EditorEventComponent implements OnInit {
 			// Creation mode
 			const dateParam = this.route.snapshot.queryParamMap.get('date');
 			const startDate = dateParam ? fromLocalDateString(dateParam) : new Date();
+			startDate.setHours(0, 0, 0, 0);
 			this.me = new EventModel(StringDate.fromDate(startDate));
 			return;
 		}
