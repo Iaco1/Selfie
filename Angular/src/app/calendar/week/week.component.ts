@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DayComponent } from '../day/day.component';
 import { EventModel } from '../../types/event.model';
 import { ActivityModel } from '../../types/activity.model';
+import { getStartOfWeek } from '../../utils/date';
 
 @Component({
 	selector: 'week',
@@ -19,23 +20,8 @@ export class WeekComponent {
 		}));
 		//console.log(this.days);
 	}
-	private getStartOfWeek(): Date {
-		const today = new Date(this.day);
-		const startOfWeek = new Date(today);
-		const dayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, etc.
-		// If today is Sunday (0), we need to calculate the Monday of the *previous* week
-		if (dayOfWeek === 0) {
-			// Subtract 6 days from Sunday to get the previous Monday
-			startOfWeek.setDate(today.getDate() - 6 );
-		} else {
-			// Otherwise, subtract the days to get the current week's Monday
-			startOfWeek.setDate(today.getDate() - dayOfWeek);
-		}
-		//console.log('Today:', today.getDate(), 'Start of Week:', startOfWeek.getDate());
-		return startOfWeek;
-	}
 	createWeek() {
-		const start = this.getStartOfWeek()
+		const start = getStartOfWeek(this.day);
 		this.createDayArray(7, start.getFullYear(), start.getMonth(), start.getDate());
 		return this.days;
 	}

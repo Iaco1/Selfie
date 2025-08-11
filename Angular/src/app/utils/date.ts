@@ -8,4 +8,10 @@ function fromLocalDateString(dateStr: string): Date {
 	const [y, m, d] = dateStr.split('-').map(Number);
 	return new Date(y, m - 1, d); // local midnight
 }
-export {toLocalDateString, fromLocalDateString};
+function getStartOfWeek(day: Date): Date {
+	const d = new Date(day);
+	const dayOfWeek = d.getDay();
+	d.setDate(d.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek));
+	return d;
+}
+export {toLocalDateString, fromLocalDateString, getStartOfWeek};

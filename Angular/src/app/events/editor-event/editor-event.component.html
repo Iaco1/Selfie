@@ -68,6 +68,105 @@
 			<textarea #description class="textarea control" [(ngModel)]="me.description"
 				placeholder="Description event"></textarea>
 		</div>
+
+		<!-- REPEAT? -->
+		<!-- Repeat toggle -->
+		<div class="field is-grouped is-align-items-center">
+			<label for="repeatEvent" class="label is-small mr-2">Repeat event?</label>
+			<input id="repeatEvent" type="checkbox" [(ngModel)]="me.repeat.bool" />
+		</div>
+		<!-- Show repeat details only if enabled -->
+		<div *ngIf="me.repeat.bool">
+			<!-- Every 1 week -->
+			<div class="field is-grouped is-align-items-center">
+				<label for="repeatInterval" class="label is-small mr-2">Every</label>
+				<input
+					id="repeatInterval"
+					class="input is-small mr-2"
+					type="number"
+					min="1"
+					[(ngModel)]="interval"
+					style="width: 5rem" />
+				<div class="select is-small">
+					<select id="repeatFrequency" [(ngModel)]="frequency">
+						<option value="daily">  day  </option>
+						<option value="weekly"> week </option>
+						<option value="monthly">month</option>
+						<option value="yearly"> year </option>
+					</select>
+				</div>
+			</div>
+			<!-- End label + Never -->
+			<div class="field is-grouped is-align-items-center">
+				<label class="label is-small mr-4" style="width: 4rem;">End</label>
+				<input id="endNever" type="radio" name="repeatEnd"
+					[(ngModel)]="repeatEndMode" [value]="'never'"/>
+				<label for="endNever" class="ml-1">Never</label>
+			</div>
+			<!-- After N occurrences -->
+			<div class="field is-grouped is-align-items-center">
+				<span style="width: 4rem;"></span>
+				<input id="endAfter" type="radio" name="repeatEnd"
+					[(ngModel)]="repeatEndMode" [value]="'after'" />
+				<label for="endAfter" class="ml-1 mr-1">After</label>
+				<input
+					class="input is-small"
+					type="number"
+					min="1"
+					[(ngModel)]="count"
+					[disabled]="repeatEndMode !== 'after'"
+					style="width: 5rem" />
+				<span class="ml-1">occurrences</span>
+			</div>
+			<!-- Until date -->
+			<div class="field is-grouped is-align-items-center">
+				<span style="width: 4rem;"></span>
+				<input id="endUntil" type="radio" name="repeatEnd"
+					[(ngModel)]="repeatEndMode" [value]="'until'" />
+				<label for="endUntil" class="ml-1 mr-2">Until</label>
+				<input
+					class="input is-small"
+					type="date"
+					[(ngModel)]="untilValue"
+					[disabled]="repeatEndMode !== 'until'"
+					[min]="me.start.date"
+					style="width: 11rem" />
+			</div>
+
+			<!-- Only show if frequency is monthly -->
+			<div *ngIf="frequency === 'monthly'">
+				<label class="label">Monthly Pattern</label>
+				<!-- WEEKDAYS -->
+				<div class="field is-grouped">
+					<label class="label is-small mr-2">Weekdays:</label>
+					<div class="control mr-2" *ngFor="let day of ['MO','TU','WE','TH','FR','SA','SU']; let i = index">
+						<label class="checkbox">
+							<input
+							type="checkbox"
+							name="weekday{{i}}"
+							[ngModel]="byweekday.includes(day)"
+							(ngModelChange)="onWeekdayChange(day, $event)"
+							[ngModelOptions]="{standalone: true}"
+							/>
+							{{ day }}
+						</label>
+					</div>
+				</div>
+				<!-- POSITIONS -->
+				<div class="field is-grouped">
+					<label class="label is-small mr-2">Positions:</label>
+					<label *ngFor="let pos of [1,2,3,4,-1]">
+						<input
+							type="checkbox"
+							[checked]="bysetpos.includes(pos)"
+							(change)="onPosChange(pos, $event.target.checked)" />
+						{{ pos === -1 ? 'last' : pos + '°' }}
+					</label>
+				</div>
+			</div>
+			<!-- Readable repeat -->
+			<p *ngIf="me.repeat?.rrule"> Repeat: {{ getReadableRepeat() }} </p>
+		</div>
 	</section>
 	<footer class="card-foot level">
 		<!-- buttons -->

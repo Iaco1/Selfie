@@ -19,7 +19,7 @@ export class EventService extends BaseService<EventModel> {
 		let start = new StringDate(json.start.date, json.start.time);
 		let end   = new StringDate(json.end.date,   json.end.time);
 		let evento = new EventModel(start, end, json.duration,
-			json.title, json.colour, json.description, json.location, json.user);
+			json.title, json.colour, json.description, json.location, json.user, json.repeat);
 		evento.setId(json._id);
 		return evento;
 	}

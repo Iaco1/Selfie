@@ -14,7 +14,7 @@ export class EventModel {
 	description? : string;
 	location? : string;
 	//TODO
-	repeat? : {bool: boolean, frequency:string, interval: number};
+	repeat : {bool: boolean, rrule?: string};
 	notification? : string[];
 	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
 
@@ -22,7 +22,8 @@ export class EventModel {
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
 		title: string = "", colour: string = "blue", description:string="",
-		location: string = "", user: string = ""
+		location: string = "", user: string = "",
+		repeat: {bool: boolean,	rrule: string | undefined } = {bool: false, rrule: undefined }
 	) {
 		this.start = start;
 		this.duration = duration;
@@ -31,6 +32,7 @@ export class EventModel {
 		this.colour = colour;
 		this.description = description;
 		this.location = location;
+		this.repeat = repeat;
 		if (user) { this.user = user; } else {
 			this.user = localStorage.getItem("authToken") || "user";
 		}
@@ -62,5 +64,28 @@ export class EventModel {
 	setNotification (notification: string[]) { this.notification = notification; }
 	setPomodoro     (b: boolean, study:string, rest:string) {
 		this.pomodoro = { bool: b, studyFor: study, restFor: rest }
+	}
+
+	//in order to handle repeatable events
+	isRecurringInstance: any;
+	originalStartDate: any;
+	//repeats
+	static fromRecurringInstance( master: EventModel,
+		start: StringDate, end: StringDate): EventModel {
+		
+		const clone = new EventModel( start, end, master.duration,
+			master.title, master.colour,master.description ?? "", master.location, master.user);
+
+		// Optional fields
+		clone._id = master._id;
+		clone.repeat = master.repeat;
+		clone.notification = master.notification;
+		clone.pomodoro = master.pomodoro;
+
+		// Recurrence tracking
+		clone.originalStartDate = master.start.clone();
+		clone.isRecurringInstance = true;
+		
+		return clone;
 	}
 }

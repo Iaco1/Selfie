@@ -20,11 +20,19 @@ export class StringDate {
 		return this.getDate().getTime();
 	}
 
-	static fromDate(dateObj: Date): StringDate {
-		const pad = (n: number) => n.toString().padStart(2, '0');
-		const date = toLocalDateString(dateObj); // use your utility function 🎯
-		const time = `${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
-		return new StringDate(date, time);
+	static fromDate(d: Date): StringDate {
+		return new StringDate(
+			d.toISOString().split('T')[0],
+			d.toTimeString().slice(0, 5)
+		);
+	}
+
+	static fromRRuleUtcDate(d: Date): StringDate {
+		const local = new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+		return new StringDate(
+			local.toISOString().split('T')[0],
+			local.toTimeString().slice(0, 5)
+		);
 	}
 
 	clone(): StringDate {
