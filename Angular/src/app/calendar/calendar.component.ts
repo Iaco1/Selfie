@@ -59,6 +59,12 @@ export class CalendarComponent implements OnInit {
 		//console.log('CalendarComponent initialized');
 		this.activityCrud = new CrudHelper(() => this.activities, (l) => this.activities = l);
 		this.refreshEvents(); // 👈 Already here, and it runs every time calendar is loaded
+		this.activityService.getOnlyMyActivities().subscribe({
+			next: activities => {
+				this.activities = activities;
+			},
+			error: err => console.error('Error loading activities:', err)
+		});
 	}
 
 	//activities
