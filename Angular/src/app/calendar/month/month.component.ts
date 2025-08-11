@@ -17,21 +17,21 @@ export class MonthComponent {
 	min: number = 0;
 	month_days: number = 0;
 	next_days: number = 0;
-	
+
 	private _year! : number;
 	private _month! : number;
 	private _day! : Date;
 
 	@Input() visualize: string = "";
-	@Input() 
+	@Input()
 	set year(value: number) { this._year = value; this.recalculate(); }
 	get year() {return this._year}
-		
+
 	@Input()
 	set month(value: number) { this._month = value; this.recalculate(); }
 	get month() { return this._month; }
 
-	@Input() 
+	@Input()
 	set day(value: Date) {
 		this._day = value;
 		this._year = this._day.getFullYear();
@@ -74,11 +74,11 @@ export class MonthComponent {
 		{id:0, name:"Monday"},
 		{id:1, name:"Tuesday"},
 		{id:2, name:"Wednesday"},
-		{id:3, name:"Thurstday"},
+		{id:3, name:"Thursday"},
 		{id:4, name:"Friday"},
 		{id:5, name:"Saturday"},
 		{id:6, name:"Sunday"}];
-	
+
 	recalculate() {
 		if(this.month != undefined && this.year != undefined ) {
 			this.prev_days = ((new Date(this._year, this._month, 1)).getDay() + 6) % 7;
@@ -95,7 +95,7 @@ export class MonthComponent {
 
 	//activities
 	@Input() activities: ActivityModel[] = [];
-	
+
 	@Output() saveActivity = new EventEmitter<ActivityModel>();
 	@Output() deleteActivity = new EventEmitter<ActivityModel>();
 	onSaveActivity(updatedActivity: ActivityModel) {

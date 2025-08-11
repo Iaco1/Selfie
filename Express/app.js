@@ -8,7 +8,7 @@ mongoose.set('strictQuery', false);
 
 const cors = require('cors');
 const corsOptions = {
-  origin: 'http://localhost:4200',
+  origin: 'https://localhost:4200',
   credentials: true,
 }
 app.use(cors(corsOptions));
