@@ -42,7 +42,7 @@ export class SearchNotesComponent {
 	}
 
 	createNote() {
-		this.router.navigate(['/editor']);
+		this.router.navigate(['/editor-note']);
 	}
 	onNoteDeleted(noteId: string) {
 		this.notes = this.notes.filter(note => note._id !== noteId);

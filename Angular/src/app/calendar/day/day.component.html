@@ -12,9 +12,9 @@
 	<event
 		*ngFor="let event of upperEvents()"
 		[evento]="event"
+		[day]="day"
 		[cornerMask]="getCornerMask(event)"
-		(save)="onSaveEvent($event)"
-		(delete)="onDeleteEvent($event)">
+		[visualize]="visualize">
 	</event>
 	<activity
 		*ngFor = "let activity of filteredActivities"
@@ -32,9 +32,9 @@
 					<event
 						*ngFor="let event of getEventsForHour(hour)"
 						[evento]="event"
+						[day]="day"
 						[cornerMask]="getCornerMask(event, hour)"
-						(save)="onSaveEvent($event)"
-						(delete)="onDeleteEvent($event)">
+						[visualize]="visualize">
 					</event>
 				</div>
 			}

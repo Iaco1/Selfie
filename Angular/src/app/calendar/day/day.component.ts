@@ -7,10 +7,11 @@ import {
 	SimpleChanges
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
 
-import { CalendarEvent } from "../../types/calendar-event.model";
+import { EventModel } from "../../types/event.model";
 import { StringDate } from "../../types/string-date";
-import { EventComponent } from "../event/event.component";
+import { EventComponent } from "../../events/event/event.component";
 import { ActivityComponent } from '../../list-activities/activity/activity.component';
 import { ActivityModel } from "../../types/activity.model";
 
@@ -22,7 +23,6 @@ import { ActivityModel } from "../../types/activity.model";
 	standalone: true
 })
 export class DayComponent implements OnChanges {
-	constructor() {}
 
 	//my datas
 	@Input() day!: Date;
@@ -31,11 +31,13 @@ export class DayComponent implements OnChanges {
 	@Input() endHour: number = 23;
 
 	//arrays
-	@Input() events: CalendarEvent[] = [];
-	filteredEvents: CalendarEvent[] = [];
+	@Input() events: EventModel[] = [];
+	filteredEvents: EventModel[] = [];
 
 	@Input() activities: ActivityModel[] = []
 	filteredActivities: ActivityModel[] = [];
+
+	constructor(private router: Router) {}
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['events'] || changes['day'] || changes['activities'])
@@ -61,7 +63,7 @@ export class DayComponent implements OnChanges {
 	getName(): string {
 		return this.day.toLocaleString("en-US", { weekday: "long" });
 	}
-	getCornerMask(event: CalendarEvent, hour?: number): string {
+	getCornerMask(event: EventModel, hour?: number): string {
 		const isStart = event.startDate.toDateString() === this.day.toDateString();
 		const isEnd = event.endDate.toDateString() === this.day.toDateString();
 
@@ -70,7 +72,7 @@ export class DayComponent implements OnChanges {
 			const eventEndHour = event.endDate.getHours();
 
 			const isTop = isStart && hour === eventStartHour;
-			const isBottom = isEnd && hour === eventEndHour - 1;
+			const isBottom = isEnd && hour === eventEndHour;
 
 			if (isTop && isBottom) return "all";
 			if (isTop) return "top";
@@ -106,7 +108,7 @@ export class DayComponent implements OnChanges {
 		}
 		return range;
 	}
-	private hasEventsAtHour(hour: number): CalendarEvent[] {
+	private hasEventsAtHour(hour: number): EventModel[] {
 		const dateHourStart = new Date(this.day);
 		dateHourStart.setHours(hour, 0, 0, 0);
 
@@ -119,36 +121,28 @@ export class DayComponent implements OnChanges {
 	}
 
 	//more filters
-	allDay(event: CalendarEvent): boolean {
+	allDay(event: EventModel): boolean {
 		return event.startDate.toDateString() !== event.endDate.toDateString();
 	}
-	upperEvents(): CalendarEvent[] {
+	upperEvents(): EventModel[] {
 		if (this.visualize === "month" || this.visualize === "year")
 			return this.filteredEvents;
 		//in week and day show upper only looong events (more than 24 hours)
 		return this.filteredEvents.filter(event => this.allDay(event));
 	}
-	getEventsForHour(hour: number): CalendarEvent[] {
+	getEventsForHour(hour: number): EventModel[] {
 		return this.hasEventsAtHour(hour).filter(event => !this.allDay(event));
 	}
 
 	//events
-	@Output() saveEvent = new EventEmitter<CalendarEvent>();
-	@Output() deleteEvent = new EventEmitter<CalendarEvent>();
-
 	createEvent(hour: number = 0) {
 		const dateHour = new Date(this.day);
 		dateHour.setHours(hour, 0, 0, 0);
-		const newEvent = new CalendarEvent(StringDate.fromDate(dateHour));
-		this.saveEvent.emit(newEvent);
-	}
-
-	onSaveEvent(updatedEvent: CalendarEvent) {
-		this.saveEvent.emit(updatedEvent);
-	}
-
-	onDeleteEvent(eventToDelete: CalendarEvent) {
-		this.deleteEvent.emit(eventToDelete);
+		const localDate = dateHour.toLocaleDateString('en-CA'); // format: YYYY-MM-DD
+		// Navigate without ID (to create new event)
+		this.router.navigate(['editor-event'], {
+			queryParams: { date: localDate, view: this.visualize }
+		});
 	}
 
 	//activities
@@ -162,4 +156,3 @@ export class DayComponent implements OnChanges {
 		this.deleteActivity.emit(activityToDelete);
 	}
 }
-

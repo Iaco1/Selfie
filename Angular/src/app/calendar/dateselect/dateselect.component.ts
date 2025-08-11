@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { toLocalDateString } from '../../utils/date';
 
 @Component({
 	selector: 'dateselect',standalone: true,
@@ -8,17 +10,57 @@ import { FormsModule } from '@angular/forms';
 	templateUrl: './dateselect.component.html',
 	styleUrl: './dateselect.component.css'
 })
-export class DateselectComponent {
+export class DateselectComponent implements OnInit {
 	//time
 	@Input() today!: Date;
 	@Input() offsetMs = 0; //difference between today and default_time
 	default_time = new Date();
-	dwmy: ' ' | 'd' | 'w' | 'm' | 'y' = "m";
+	dwmy: 'd' | 'w' | 'm' | 'y' = "m";
 	@Output() changedDayEvent = new EventEmitter<Date>();
 	@Output() changeDWMY = new EventEmitter<string>();
 
+	//route gestion
+	constructor( private router: Router, private route: ActivatedRoute) {}
+	updateRoute() {
+		this.router.navigate([], {
+			queryParams: {
+				view: this.dwmyToString(this.dwmy),
+				date: toLocalDateString(this.today)
+			},
+			queryParamsHandling: 'merge'
+		});
+	}
+	
+	dwmyToString(d: 'd' | 'w' | 'm' | 'y'): string {
+		return {
+			d: 'day',
+			w: 'week',
+			m: 'month',
+			y: 'year'
+		}[d] || 'month';
+	}
+	
+	ngOnInit() {
+		const viewParam = this.route.snapshot.queryParamMap.get('view');
+		const dateParam = this.route.snapshot.queryParamMap.get('date');
+	
+		if (viewParam) {
+			this.dwmy = viewParam.charAt(0) as 'd' | 'w' | 'm' | 'y';
+			this.changeDWMY.emit(this.dwmy);
+		}
+	
+		if (dateParam) {
+			this.today = new Date(dateParam);
+			this.default_time = new Date(dateParam);
+			this.offsetMs = this.today.getTime() - this.default_time.getTime();
+			this.changedDayEvent.emit(this.today);
+		}
+	}
+
 	onDwmyChange(newValue: string) {
 		this.changeDWMY.emit(newValue);
+		this.dwmy = newValue as any;
+		this.updateRoute();
 	}
 
 	//fai in modo che angular cambi il template...
@@ -34,11 +76,12 @@ export class DateselectComponent {
 		this.today = new Date(this.default_time);
 		this.offsetMs = 0;
 		this.cambiaRiferimento("default button pressed");
+		this.updateRoute();
 	}
 
 	aggiornaData(
 		direz: 'prev' | 'next',
-		dwmy: ' ' | 'd' | 'w' | 'm' | 'y'
+		dwmy: 'd' | 'w' | 'm' | 'y'
 	): void {
 		const newDate = new Date(this.default_time.getTime() + this.offsetMs);
 
@@ -46,8 +89,7 @@ export class DateselectComponent {
 			d: () => newDate.setDate(newDate.getDate() + (direz === 'next' ? 1 : -1)),
 			w: () => newDate.setDate(newDate.getDate() + (direz === 'next' ? 7 : -7)),
 			m: () => newDate.setMonth(newDate.getMonth() + (direz === 'next' ? 1 : -1)),
-			y: () => newDate.setFullYear(newDate.getFullYear() + (direz === 'next' ? 1 : -1)),
-			' ': () => console.log("Invalid dwmy"),
+			y: () => newDate.setFullYear(newDate.getFullYear() + (direz === 'next' ? 1 : -1))
 		};
 		operations[dwmy]();
 

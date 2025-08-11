@@ -1,39 +1,41 @@
 import { StringDate } from "./string-date";
 
-export class CalendarEvent {
+export class EventModel {
 	//setted by the program
 	_id : string = "";
 	user : string;
-	//required true
-	title : string;
-	start : StringDate; // e.g., {date: '2025-05-07', time: '09:00:00'}
-	end   : StringDate; // e.g., {date: '2025-05-08', time: '12:00:00'}
-	//often used but required false
+	//start - duration - end
+	start : StringDate; // e.g., {date: '2025-05-07', time: '09:00'}
+	end   : StringDate; // e.g., {date: '2025-05-08', time: '12:00'}
 	duration : {number: number, measure: string};
+	//fields
+	title : string;
 	colour : string;
-	//required false
 	description? : string;
-	//TODO
 	location? : string;
-	repeat? : {bool: boolean, frequency:string, interval: number};
+	//TODO
+	repeat : {bool: boolean, rrule?: string};
 	notification? : string[];
 	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
 
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
-		title: string = "New Event", description:string="", colour: string = "blue",
-		user: string = ""
+		title: string = "", colour: string = "blue", description:string="",
+		location: string = "", user: string = "",
+		repeat: {bool: boolean,	rrule: string | undefined } = {bool: false, rrule: undefined }
 	) {
+		this.start = start;
+		this.duration = duration;
+		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
 		this.title = title;
 		this.colour = colour;
 		this.description = description;
-		this.start = start;
-		this.duration = duration;
+		this.location = location;
+		this.repeat = repeat;
 		if (user) { this.user = user; } else {
 			this.user = localStorage.getItem("authToken") || "user";
 		}
-		if (end) { this.end = end; } else { this.end = this.calculateEnd(); }
 	}
 
 	get startDate() { return this.start.getDate() }
@@ -45,6 +47,7 @@ export class CalendarEvent {
 		switch(this.duration.measure) {
 			case "min":   duration = a_min;      break;
 			case "15min": duration = 15 * a_min; break;
+			case "30min": duration = 30 * a_min; break;
 			case "hours": duration = a_hour;     break;
 			case "days":  duration = a_day;      break;
 			case "weeks": duration = a_week;     break;
@@ -61,5 +64,28 @@ export class CalendarEvent {
 	setNotification (notification: string[]) { this.notification = notification; }
 	setPomodoro     (b: boolean, study:string, rest:string) {
 		this.pomodoro = { bool: b, studyFor: study, restFor: rest }
+	}
+
+	//in order to handle repeatable events
+	isRecurringInstance: any;
+	originalStartDate: any;
+	//repeats
+	static fromRecurringInstance( master: EventModel,
+		start: StringDate, end: StringDate): EventModel {
+		
+		const clone = new EventModel( start, end, master.duration,
+			master.title, master.colour,master.description ?? "", master.location, master.user);
+
+		// Optional fields
+		clone._id = master._id;
+		clone.repeat = master.repeat;
+		clone.notification = master.notification;
+		clone.pomodoro = master.pomodoro;
+
+		// Recurrence tracking
+		clone.originalStartDate = master.start.clone();
+		clone.isRecurringInstance = true;
+		
+		return clone;
 	}
 }

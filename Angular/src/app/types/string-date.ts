@@ -1,27 +1,38 @@
+import { fromLocalDateString, toLocalDateString } from "../utils/date";
+
 export class StringDate {
 	date: string; // e.g., '2025-05-07'
-	time: string; // e.g., '09:00:00'
+	time: string; // e.g., '09:00'
 
 	constructor(date: string, time: string) {
 		this.date = date;
 		this.time = time;
 	}
 
-	getDate() { return new Date(`${this.date}T${this.time}`); }
-	getTime() { return this.getDate().getTime() }
+	getDate(): Date {
+		const baseDate = fromLocalDateString(this.date); // uses your safe local parsing
+		const [hour, minute] = this.time.split(':').map(Number);
+		baseDate.setHours(hour, minute, 0, 0); // set time explicitly
+		return baseDate;
+	}
 
-	static fromDate(dateObj: Date): StringDate {
-		const pad = (n: number) => n.toString().padStart(2, '0');
-		//date
-		const year = dateObj.getFullYear();
-		const month = pad(dateObj.getMonth() + 1);
-		const day = pad(dateObj.getDate());
-		//time
-		const hours = pad(dateObj.getHours());
-		const minutes = pad(dateObj.getMinutes());
-		const seconds = pad(dateObj.getSeconds());
-	
-		return new StringDate(`${year}-${month}-${day}`, `${hours}:${minutes}:${seconds}`);
+	getTime(): number {
+		return this.getDate().getTime();
+	}
+
+	static fromDate(d: Date): StringDate {
+		return new StringDate(
+			toLocalDateString(d),          // ✅ local-safe date
+			d.toTimeString().slice(0, 5)   // ✅ local-safe time
+		);
+	}
+
+	static fromRRuleUtcDate(d: Date): StringDate {
+		const local = new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
+		return new StringDate(
+			local.toISOString().split('T')[0],
+			local.toTimeString().slice(0, 5)
+		);
 	}
 
 	clone(): StringDate {

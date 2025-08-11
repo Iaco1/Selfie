@@ -17,6 +17,7 @@ import {SearchNotesComponent} from './notes/search-notes/search-notes.component'
 import {EditorNotesComponent} from './notes/editor-notes/editor-notes.component';
 import { ListActivitiesComponent } from './list-activities/list-activities.component';
 import { provideServiceWorker } from '@angular/service-worker';
+import { EditorEventComponent } from './events/editor-event/editor-event.component';
 
 export const routes: Routes = [
 	{path: 'HomepageComponent', component: HomepageComponent, outlet: 'primary'},
@@ -33,8 +34,13 @@ export const routes: Routes = [
 	{path: 'ListActivitiesComponent', component: ListActivitiesComponent, outlet: 'primary'},
 	//routers for notes
 	{path: 'SearchNotesComponent', component: SearchNotesComponent, outlet: 'primary'},
-	{ path: 'editor', component: EditorNotesComponent },		// For creating a new note
-	{ path: 'editor/:id', component: EditorNotesComponent },	// For editing an existing note
+	{ path: 'editor-note', component: EditorNotesComponent },		// For creating a new note
+	{ path: 'editor-note/:id', component: EditorNotesComponent },	// For editing an existing note
+	//routes for events
+	{ path: 'calendar', component: CalendarComponent},	// For going back to the right place
+	{ path: 'editor-event', component: EditorEventComponent },		// For creating a new event
+	{ path: 'editor-event/:id', component: EditorEventComponent },	// For editing an existing event
+	// ???
 	{ path: '', component: HeaderComponent, outlet: 'header' },
 ];
 

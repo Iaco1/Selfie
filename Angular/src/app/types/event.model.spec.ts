@@ -1,4 +1,4 @@
-import { CalendarEvent } from './calendar-event.model';
+import { EventModel } from './event.model';
 
 describe('CalendarEvent', () => {
   it('should create an instance', () => {

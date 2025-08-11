@@ -1,0 +1,181 @@
+<p> editing event with id: {{eventId}} </p>
+<div *ngIf="me" class="card">
+	<header class="card-head">
+		<p class="card-title">Modify Event</p>
+		<button class="delete" aria-label="close" (click)="goBackToCalendar()"></button>
+	</header>
+	<section class="card-body">
+		<div class="columns">
+			<!-- title -->
+			<div class="field column is-10">
+				<label class="label" for="title">Title</label>
+				<input #title class="input control" type="text"
+					[(ngModel)]="me.title" placeholder="Titolo evento">
+			</div>
+			<!-- colour -->
+			<div class="field column is-2">
+				<label class="label" for="colour">Colour</label>
+				<input #colour class="input control" type="color"
+					[(ngModel)]="me.colour">
+			</div>
+		</div>
+		<!-- when? -->
+		<div class="columns">
+			<!-- start -->
+			<div class="field column">
+				<label class="label" for="dateStart">Start Date</label>
+				<input #dateStart class="input control" type="date"
+					[(ngModel)]="me.start.date"  (ngModelChange)="me.calculateEnd()">
+			</div>
+			<div class="field column">
+				<label class="label" for="timeStart">Start Hour</label>
+				<input #timeStart class="input control" type="time"
+					[(ngModel)]="me.start.time" (ngModelChange)="me.calculateEnd()">
+			</div>
+			<!-- duration -->
+			<div class="field column">
+				<label class="label" for="durationNumber">Duration</label>
+				<input #durationNumber class="input control" type="number" min="1" step="1"
+					[(ngModel)]="me.duration.number" (ngModelChange)="me.calculateEnd()">
+			</div>
+			<div class="field column">
+				<label class="label" for="durationMeasure">Interval</label>
+				<span class="select is-normal">
+					<select	#durationMeasure name="durationMeasure"
+						[(ngModel)]="me.duration.measure" (ngModelChange)="me.calculateEnd()">
+						<option value="min">  minutes</option>
+						<option value="15min">15 mins</option>
+						<option value="30min">30 mins</option>
+						<option value="hours">  hours</option>
+						<option value="days">    days</option>
+						<option value="weeks">  weeks</option>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div> End Date: {{me.end.date}} {{me.end.time}} </div>
+		<!-- location ? -->
+		<div class="level">
+			<div class="field level-item">
+				<label class="label" for="location">Location&nbsp;?&nbsp;</label>
+				<input #location class="input control" type="text"
+					[(ngModel)]="me.location" placeholder="Location">
+			</div>
+		</div>
+		<!-- descrizione -->
+		<div class="field">
+			<label class="label" for="description">Description</label>
+			<textarea #description class="textarea control" [(ngModel)]="me.description"
+				placeholder="Description event"></textarea>
+		</div>
+
+		<!-- REPEAT? -->
+		<!-- Repeat toggle -->
+		<div class="field is-grouped is-align-items-center">
+			<label for="repeatEvent" class="label is-small mr-2">Repeat event?</label>
+			<input id="repeatEvent" type="checkbox" [(ngModel)]="me.repeat.bool" />
+		</div>
+		<!-- Show repeat details only if enabled -->
+		<div *ngIf="me.repeat.bool">
+			<!-- Every 1 week -->
+			<div class="field is-grouped is-align-items-center">
+				<label for="repeatInterval" class="label is-small mr-2">Every</label>
+				<input
+					id="repeatInterval"
+					class="input is-small mr-2"
+					type="number"
+					min="1"
+					[(ngModel)]="interval"
+					style="width: 5rem" />
+				<div class="select is-small">
+					<select id="repeatFrequency" [(ngModel)]="frequency">
+						<option value="daily">  day  </option>
+						<option value="weekly"> week </option>
+						<option value="monthly">month</option>
+						<option value="yearly"> year </option>
+					</select>
+				</div>
+			</div>
+			<!-- End label + Never -->
+			<div class="field is-grouped is-align-items-center">
+				<label class="label is-small mr-4" style="width: 4rem;">End</label>
+				<input id="endNever" type="radio" name="repeatEnd"
+					[(ngModel)]="repeatEndMode" [value]="'never'"/>
+				<label for="endNever" class="ml-1">Never</label>
+			</div>
+			<!-- After N occurrences -->
+			<div class="field is-grouped is-align-items-center">
+				<span style="width: 4rem;"></span>
+				<input id="endAfter" type="radio" name="repeatEnd"
+					[(ngModel)]="repeatEndMode" [value]="'after'" />
+				<label for="endAfter" class="ml-1 mr-1">After</label>
+				<input
+					class="input is-small"
+					type="number"
+					min="1"
+					[(ngModel)]="count"
+					[disabled]="repeatEndMode !== 'after'"
+					style="width: 5rem" />
+				<span class="ml-1">occurrences</span>
+			</div>
+			<!-- Until date -->
+			<div class="field is-grouped is-align-items-center">
+				<span style="width: 4rem;"></span>
+				<input id="endUntil" type="radio" name="repeatEnd"
+					[(ngModel)]="repeatEndMode" [value]="'until'" />
+				<label for="endUntil" class="ml-1 mr-2">Until</label>
+				<input
+					class="input is-small"
+					type="date"
+					[(ngModel)]="untilValue"
+					[disabled]="repeatEndMode !== 'until'"
+					[min]="me.start.date"
+					style="width: 11rem" />
+			</div>
+
+			<!-- Only show if frequency is monthly -->
+			<div *ngIf="frequency === 'monthly'">
+				<label class="label">Monthly Pattern</label>
+				<!-- WEEKDAYS -->
+				<div class="field is-grouped">
+					<label class="label is-small mr-2">Weekdays:</label>
+					<div class="control mr-2" *ngFor="let day of ['MO','TU','WE','TH','FR','SA','SU']; let i = index">
+						<label class="checkbox">
+							<input
+							type="checkbox"
+							name="weekday{{i}}"
+							[ngModel]="byweekday.includes(day)"
+							(ngModelChange)="onWeekdayChange(day, $event)"
+							[ngModelOptions]="{standalone: true}"
+							/>
+							{{ day }}
+						</label>
+					</div>
+				</div>
+				<!-- POSITIONS -->
+				<div class="field is-grouped">
+					<label class="label is-small mr-2">Positions:</label>
+					<label *ngFor="let pos of [1,2,3,4,-1]">
+						<input
+							type="checkbox"
+							[checked]="bysetpos.includes(pos)"
+							(change)="onPosChange(pos, $event.target.checked)" />
+						{{ pos === -1 ? 'last' : pos + '°' }}
+					</label>
+				</div>
+			</div>
+			<!-- Readable repeat -->
+			<p *ngIf="me.repeat?.rrule"> Repeat: {{ getReadableRepeat() }} </p>
+		</div>
+	</section>
+	<footer class="card-foot level">
+		<!-- buttons -->
+		<div class="level-left">
+			<button class="level-item button is-success" (click)="saveEvent()">Save</button>
+			<button class="level-item button" (click)="goBackToCalendar()">Cancel</button>
+		</div>
+		<div class="level-right">
+			<button class="level-item button is-danger" (click)="deleteEvent()">Delete</button>
+		</div>
+	</footer>
+</div>
