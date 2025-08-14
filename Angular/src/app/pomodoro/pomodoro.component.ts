@@ -3,10 +3,14 @@ import {CyclePhase} from './cyclephase.enum';
 import {Router} from "@angular/router";
 import {FormsModule} from '@angular/forms';
 import {TimeMachineService} from '../services/time-machine.service';
-import {finalize, take, takeWhile} from 'rxjs';
+import {concatMap, finalize, take, takeWhile} from 'rxjs';
 import {PomodoroService} from '../services/pomodoro.service';
 import {DecimalPipe} from '@angular/common';
 import {NotificationService} from '../services/notification.service';
+import {EventService} from '../services/event.service';
+import {EventModel} from '../types/event.model';
+import {UserService} from '../services/user.service';
+import {StringDate} from '../types/string-date';
 
 @Component({
   selector: 'app-pomodoro',
@@ -18,8 +22,10 @@ import {NotificationService} from '../services/notification.service';
   styleUrl: './pomodoro.component.css'
 })
 export class PomodoroComponent {
+  eventCreationModalActive = false;
   cyclephase = CyclePhase.IDLE;
   cycleButton = "start cycle";
+  event: EventModel;
 
 
   //countdowns
@@ -40,8 +46,15 @@ export class PomodoroComponent {
   pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
   pomodoroLog: any;
 
-  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService, private notificationService: NotificationService) {
+  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService, private notificationService: NotificationService, private eventService: EventService, private userService: UserService) {
     this.setPomodoroLog();
+    const startDate = new StringDate("2025-08-30", "10:00:00");
+    const duration = { number: this.sessionTime.h+ this.sessionTime.m/60, measure: "hours"};
+    const title = "Pomodoro";
+    const description = "scheduled pomodoro";
+    const colour = "red";
+    this.event = new EventModel(startDate,null,duration,title,colour, description,"fictitiousMail@mail.com")
+
   }
 
   resetPomodoroObject(){
@@ -212,6 +225,10 @@ export class PomodoroComponent {
     return this.cyclephase !== CyclePhase.STUDYING && this.cyclephase !== CyclePhase.RESTING;
   }
 
+  hideSchedule(){
+    return this.cyclephase !== CyclePhase.SET;
+  }
+
   logStartTime(){
     this.timemachine.day$.pipe(take(1)).subscribe(
       (day) => {
@@ -306,5 +323,42 @@ export class PomodoroComponent {
         console.log("deletion error: ", error);
       }
     })
+  }
+
+  schedule(){
+    // get user to choose date on calendar
+    const startDate = new StringDate("2025-08-30", "10:00:00");
+    const duration = { number: this.sessionTime.h+ this.sessionTime.m/60, measure: "hours"};
+    const title = "Pomodoro";
+    const description = "scheduled pomodoro";
+    const colour = "red";
+    this.userService.getAccountDetails(localStorage.getItem("authToken")).pipe(
+      concatMap( res => this.eventService.create(new EventModel(startDate,null,duration,title,description,colour,res.user.email))
+      )
+    ).subscribe({
+      next: (result) =>{
+        console.log("calendar event creation result: ", result);
+      },
+      error: (error) => {
+        console.log("error fetching user to add calendar event: ", error);
+      }
+    })
+  }
+
+  showEventCreationModal(){
+    this.eventCreationModalActive = true;
+  }
+
+  getToday(): Date{
+    this.timemachine.day$.subscribe(
+      (day) => {
+        return day;
+      }
+    )
+    return new Date(Date.UTC(2000))
+  }
+
+  closeEventCreationModal(){
+    this.eventCreationModalActive = false;
   }
 }

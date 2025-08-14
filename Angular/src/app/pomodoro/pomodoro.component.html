@@ -39,6 +39,7 @@
         <button [class.is-hidden]="hideSetIntervals()" (click)="readyCycle()" class="button"> set study and break times</button>
         <button [class.is-hidden]="hideMainInterface()" class="button mt-2 has-background-primary has-text-primary-invert" (click)="toggleCycle()">{{cycleButton}}</button>
         <button [class.is-hidden]="hideMainInterface()" class="button is-dark mt-2" (click)="endSession()">end session</button>
+        <button [class.is-hidden]="hideSchedule()" class="button is-dark mt-2" (click)="showEventCreationModal()" >schedule</button>
         <button [class.is-hidden]="hideSkip()" class="button mt-2" (click)="skipToNextCycle()">skip to next cycle</button>
         <button [class.is-hidden]="hideRestart()" class="button mt-2" (click)="restartPomodoro()">restart pomodoro</button>
       </div>
@@ -91,4 +92,18 @@
       </div>
     }
     </div>
+</div>
+
+<div class="modal" [class.is-active]="eventCreationModalActive">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    Select date:
+    <input class="input" type="date" [min]="getToday()" [(ngModel)]="event.start.date"/>
+    Insert title:
+    <input class="input" type="text" [(ngModel)]="event.title"/>
+    Insert description:
+    <textarea class="textarea" [(ngModel)]="event.description"></textarea>
+    <button class="button is-dark mt-2 is-fullwidth" (click)="schedule()">Schedule pomodoro</button>
+  </div>
+  <button class="modal-close is-large" aria-label="close" (click)="closeEventCreationModal()"></button>
 </div>

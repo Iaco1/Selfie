@@ -7,11 +7,12 @@ import {HostListener} from '@angular/core';
 import {PomodoroService} from './services/pomodoro.service';
 import {NotificationContainerComponent} from './notification-container/notification-container.component';
 import {NotificationService} from './services/notification.service';
+import {EventService} from './services/event.service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, HttpClientModule, NotificationContainerComponent],
-  providers: [AuthService, UserService, PomodoroService, NotificationService],
+  providers: [AuthService, UserService, PomodoroService, NotificationService, EventService],
   template: `
     <router-outlet name="header"></router-outlet>
     <div class="is-flex">
