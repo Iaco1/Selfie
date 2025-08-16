@@ -8,7 +8,8 @@
 		<dateselect
 			class="level-right"
 			[today]="day"
-			[offsetMs]="offsetMs"
+			[defaultDwmy]="'d'"
+			[updateRouteOnChange]="false"
 			(changedDayEvent)="changedDay($event)"
 			(changeDWMY)="changedDwmy($event)">
 		</dateselect>

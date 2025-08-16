@@ -13,15 +13,17 @@ import { toLocalDateString } from '../../utils/date';
 export class DateselectComponent implements OnInit {
 	//time
 	@Input() today!: Date;
-	@Input() offsetMs = 0; //difference between today and default_time
+	@Input() updateRouteOnChange: boolean = true;
 	default_time = new Date();
-	dwmy: 'd' | 'w' | 'm' | 'y' = "m";
+	@Input() defaultDwmy: 'd' | 'w' | 'm' | 'y' = 'm';
+	dwmy: 'd' | 'w' | 'm' | 'y' = this.defaultDwmy;
 	@Output() changedDayEvent = new EventEmitter<Date>();
 	@Output() changeDWMY = new EventEmitter<string>();
 
 	//route gestion
 	constructor( private router: Router, private route: ActivatedRoute) {}
 	updateRoute() {
+		if (!this.updateRouteOnChange) return;
 		this.router.navigate([], {
 			queryParams: {
 				view: this.dwmyToString(this.dwmy),
@@ -47,12 +49,16 @@ export class DateselectComponent implements OnInit {
 		if (viewParam) {
 			this.dwmy = viewParam.charAt(0) as 'd' | 'w' | 'm' | 'y';
 			this.changeDWMY.emit(this.dwmy);
+		} else {
+			// Use input-provided default
+			this.dwmy = this.defaultDwmy;
+			this.changeDWMY.emit(this.dwmy);
+			this.updateRoute();
 		}
 	
 		if (dateParam) {
 			this.today = new Date(dateParam);
 			this.default_time = new Date(dateParam);
-			this.offsetMs = this.today.getTime() - this.default_time.getTime();
 			this.changedDayEvent.emit(this.today);
 		}
 	}
@@ -74,7 +80,6 @@ export class DateselectComponent implements OnInit {
 	default(): void {
 		this.default_time = new Date();
 		this.today = new Date(this.default_time);
-		this.offsetMs = 0;
 		this.cambiaRiferimento("default button pressed");
 		this.updateRoute();
 	}
@@ -83,7 +88,7 @@ export class DateselectComponent implements OnInit {
 		direz: 'prev' | 'next',
 		dwmy: 'd' | 'w' | 'm' | 'y'
 	): void {
-		const newDate = new Date(this.default_time.getTime() + this.offsetMs);
+		const newDate = new Date(this.today);
 
 		const operations = {
 			d: () => newDate.setDate(newDate.getDate() + (direz === 'next' ? 1 : -1)),
@@ -93,7 +98,6 @@ export class DateselectComponent implements OnInit {
 		};
 		operations[dwmy]();
 
-		this.offsetMs = newDate.getTime() - this.default_time.getTime();
 		this.today = new Date(newDate); // update display
 		this.changedDayEvent.emit(this.today);
 	}
