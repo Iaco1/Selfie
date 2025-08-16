@@ -15,6 +15,7 @@ import { ActivityService } from '../services/activity.service';
 import { CrudHelper } from '../utils/crud-helper';
 import { getStartOfWeek } from '../utils/date';
 import { StringDate } from '../types/string-date';
+import { NotificationHandlerService } from '../services/notification-handler.service';
 
 @Component({
 	selector: 'calendar',
@@ -47,8 +48,10 @@ export class CalendarComponent implements OnInit {
 	}
 
 	//events and activities uses crudHelper :D
-	constructor(private eventService: EventService,
-		private activityService: ActivityService) {}
+	constructor(
+		private eventService: EventService,
+		private activityService: ActivityService,
+		private handler: NotificationHandlerService) {}
 
 	events: EventModel[] = [];
 	activities: ActivityModel[] = [];
@@ -115,6 +118,7 @@ export class CalendarComponent implements OnInit {
 						? this.generateRecurringInstances(event, viewStart, viewEnd)
 						: [event]
 				);
+				this.handler.loadNotificationsFromEvents(events);
 			},
 			error: err => console.error('Error loading events:', err)
 		});

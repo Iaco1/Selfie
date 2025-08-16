@@ -9,6 +9,7 @@ import { EventModel } from "../../types/event.model";
 import { EventService } from "../../services/event.service";
 import { StringDate } from "../../types/string-date";
 import { fromLocalDateString, toLocalDateString } from "../../utils/date";
+import { NotificationModel } from "../../types/notification.interface";
 
 const WEEKDAY_MAP: { [key: string]: Weekday } = {
 	MO: RRule.MO,
@@ -26,6 +27,14 @@ const FREQ_MAP = {
 	monthly: RRule.MONTHLY,
 	yearly: RRule.YEARLY
 } as const;
+
+const NOTIFICATION_PRESETS: { label: string; minutesBefore: number }[] = [
+	{ label: 'at time of event', minutesBefore: 0 },
+	{ label: '10 mins before', minutesBefore: 10 },
+	{ label: '1 hour before', minutesBefore: 60 },
+	{ label: '2 hours before', minutesBefore: 120 },
+	{ label: '1 day before', minutesBefore: 1440 }
+];
 
 @Component({
 	selector: "editor-event",
@@ -63,6 +72,7 @@ export class EditorEventComponent implements OnInit {
 				//console.log('event id: ', this.eventId , ' event:', date);
 				this.me = date;
 				this.parseRRule();
+				this.syncNotifCheckFromModel(); // 👈 Set checkbox state from model
 			},
 			error: (err) => {
 				console.error('Failed to load event:', err);
@@ -83,14 +93,18 @@ export class EditorEventComponent implements OnInit {
 
 	//events
 	saveEvent() {
+		//HANDLE REPEAT
 		// 🛡️ Restore the master start/end if this was a generated instance
 		if (this.me.isRecurringInstance && this.me.originalStartDate) {
 			this.me.start = this.me.originalStartDate.clone();
 			this.me.calculateEnd();
 		}
-
 		this.generateRRule();
 
+		//HANDLE NOTIFICATIONS
+		this.prepareNotifications();
+
+		//SAVE OR UPDATE EVENT
 		//console.log("Event to be saved:", JSON.stringify(this.me, null, 2));
 		if (!this.me._id) {
 			// Create new event
@@ -270,7 +284,7 @@ export class EditorEventComponent implements OnInit {
 		}
 	}
 
-	//helpers for the UI
+	//helpers for the UI for repetitions
 	onWeekdayChange(day: string, checked: boolean) {
 		if (checked && !this.byweekday.includes(day)) {
 			this.byweekday.push(day);
@@ -295,6 +309,52 @@ export class EditorEventComponent implements OnInit {
 		} catch (e) {
 			console.error("Failed to parse rule:", e);
 			return "Invalid repeat rule";
+		}
+	}
+
+	//NOTIFICATIONS
+	notif_check: string[] = [];
+	notificationPresets = NOTIFICATION_PRESETS; //for the html
+
+	onNotificationChange(notify: string, checked: boolean) {
+		if (checked && !this.notif_check.includes(notify)) {
+			this.notif_check.push(notify);
+		} else if (!checked) {
+			this.notif_check = this.notif_check.filter(n => n != notify)
+		}
+	}
+
+	prepareNotifications() {
+		// Generate NotificationModel[] from notif_check
+		if (!this.notif_check.length) {
+			// ✅ Unselected all checkboxes — remove all notifications
+			console.log("remove notification from backend")
+			this.me.notification = [];
+			return;
+		}
+		// 🧱 Build new notification list
+		this.me.notification = this.notif_check.map((label): NotificationModel => {
+			const preset = NOTIFICATION_PRESETS.find(p => p.label === label);
+			const minutesBefore = preset?.minutesBefore ?? 0;
+			const notifyDate = new Date(this.me.start.getTime() - minutesBefore * 60000);
+			return {
+				id: '', // you can let the backend assign this
+				label: label, // ✔️ tells when relative to event
+				title: this.me.title,
+				message: `Reminder: (${label})`,
+				date: notifyDate,
+				priority: 1 // Choose appropriate priority
+			};
+		});
+	}
+	syncNotifCheckFromModel(): void {
+		this.notif_check = [];		
+		if (!this.me.notification || !Array.isArray(this.me.notification)) return;
+		const validLabels = NOTIFICATION_PRESETS.map(p => p.label);
+		for (const notif of this.me.notification) {
+			if (validLabels.includes(notif.label) && !this.notif_check.includes(notif.label)) {
+				this.notif_check.push(notif.label);
+			}
 		}
 	}
 }
