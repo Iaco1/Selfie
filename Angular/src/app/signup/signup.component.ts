@@ -5,6 +5,7 @@ import {VisualeffectsService} from '../services/visualeffects.service';
 import {UserService} from '../services/user.service';
 import {environment} from '../../environments/environment';
 
+
 @Component({
   selector: 'app-signup',
   imports: [FormsModule, ReactiveFormsModule],
@@ -14,6 +15,7 @@ import {environment} from '../../environments/environment';
 export class SignupComponent {
   constructor(private router: Router, protected visualeffectsService: VisualeffectsService, private userService: UserService) {
   }
+
   protected timeout: number = environment.timeout;
   emailInputControl = new FormControl('');
   passwordInputControl = new FormControl('');
@@ -23,6 +25,13 @@ export class SignupComponent {
     emailInputControl: this.emailInputControl, passwordInputControl: this.passwordInputControl, usernameInputControl: this.usernameInputControl
   })
 
+  /**
+   * calls the UserService to request the insertion of a new user in the database
+   * in any case it displays a success/failure message.
+   * If successful, it redirects to the login component
+   * else it redirects back to the signup
+   *
+   */
   insertNewUserInDB(email: string, password: string, username: string){
     let message: string = "<p>signup failed</p>\n";
     this.userService.signup(email, username, password).subscribe({
@@ -46,7 +55,9 @@ export class SignupComponent {
     })
   }
 
-
+  /**
+   * checks that the inputs are not null and if so runs the insertion method
+   */
   onSubmit(){
     if(this.usernameInputControl == null || this.emailInputControl == null || this.passwordInputControl == null){
       console.log("invalid form, null username or password");

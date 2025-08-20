@@ -9,7 +9,9 @@ declare type NotificationAction = {
   icon?: string;
 };
 
-
+/**
+ * emits notification via the OS notification system
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -17,15 +19,21 @@ export class NotificationService {
 	private swPush = inject(SwPush);
 	readonly VAPID_PUBLIC_KEY = keys.VAPID_PUBLIC_KEY;
 
+  /**
+   *
+   */
   constructor() {
     this.requestPermission()
       .then(result => { console.log("request permission result: ", result)})
       .catch(err => {console.log("request permission error: ", err)});
   }
 
+  /**
+   * gets permission from the browser to display notifications
+   */
   async requestPermission() {
   try {
-    // First, request notification permission
+    // requests notification permission
     const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {
@@ -41,11 +49,16 @@ export class NotificationService {
   }
   }
 
+  /**
+   * event that one can subscribe to to perform an action upon clicking the snooze button
+   */
   onSnooze(): Observable<any>{
-    // call when action is performed
     return this.swPush.notificationClicks;
   }
 
+  /**
+   * test method for the onSnooze feature
+   */
   runOnSnooze(){
     this.onSnooze().subscribe(({action, notification}) => {
       if (action === 'snooze') {
@@ -56,7 +69,15 @@ export class NotificationService {
     })
   }
 
+  /**
+   * displays the notification
+   * @param title title of the notification
+   * @param body main text of the notification
+   * @param snoozeButton whether to add a snooze button or not
+   * @param urgency a number from 0 to 2, determines which icon is displayed to indicate urgency
+   */
   showNotification(title: string, body = "", snoozeButton = true, urgency: number = 0) {
+    // picking the right icon based on the urgency
     let icon: string;
     switch (urgency) {
       case 1:
@@ -70,6 +91,7 @@ export class NotificationService {
 
     }
 
+    // if the user of the method required a snooze button, it adds it
     let actions: NotificationAction[];
     if(snoozeButton){
       actions = [{
@@ -79,6 +101,7 @@ export class NotificationService {
 
     }
 
+    // displays the notification
     if (this.swPush.isEnabled) {
       navigator.serviceWorker.ready.then(registration => {
         registration.showNotification(title, {

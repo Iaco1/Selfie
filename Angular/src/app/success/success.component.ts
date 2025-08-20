@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
+/**
+ * displays a success/failure message.
+ */
 @Component({
   selector: 'app-success',
   imports: [],
@@ -14,6 +17,9 @@ export class SuccessComponent {
 
   successMessage: string = "";
 
+  /**
+   * sets the text of the component
+   */
   ngOnInit() {
     this.successMessage = "<br>\n" +
     "<p>you'll be automatically redirected in " + this.timeout/1000 +  "s </p>";

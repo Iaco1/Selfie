@@ -3,7 +3,9 @@ import {DatumType} from "./datumtype.enum";
 import {NgOptimizedImage} from "@angular/common";
 import {UserService} from '../services/user.service';
 
-
+/**
+ * generic component to display a piece of data and post an update to the backend
+ */
 @Component({
   selector: 'app-datumupdater',
   imports: [
@@ -15,19 +17,30 @@ import {UserService} from '../services/user.service';
 })
 
 export class DatumupdaterComponent {
+  //data needed by this component from the template using this component
   @Input() datumDbName: string = "datumDbName";
   @Input() datum: string = "password345";
   @Input() datumName: string = "Password:::";
-  datumEditorHidden = true;
   @Input() datumType: DatumType = DatumType.STRING;
   @Input() placeholderText: string = "somekindofpassword";
+
+  // variable to hide/show the editor form to update the data
+  datumEditorHidden = true;
 
   constructor(private userService: UserService) {
   }
 
+  /**
+   * triggers hiding/showing the form to update the data
+   */
   toggleDatumEdit(){
     this.datumEditorHidden = !this.datumEditorHidden;
   }
+
+  /**
+   * posts the updated data to the backend and hides the editor form
+   * @param newDatum
+   */
   editDatum(newDatum: HTMLInputElement){
     this.userService.editField(newDatum, this.datumDbName);
     this.toggleDatumEdit();

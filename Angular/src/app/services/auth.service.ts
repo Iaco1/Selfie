@@ -3,6 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+/**
+ * service to authenticate users given one of the following:
+ * - credentials: usr, pwd
+ * - authToken: mongodb id of the user
+ */
 @Injectable({
   providedIn: 'root', // Makes the service available throughout the application
 })
@@ -14,7 +19,11 @@ export class AuthService {
   authenticate(username: string, password: string): Observable<any>;
   authenticate(authToken: string): Observable<any>;
 
-  // sends authentication credentials
+  /**
+   * posts authentication credentials to the backend
+   * @param arg1 username (with two args) or authToken (one arg)
+   * @param arg2 password
+   */
   authenticate(arg1: string, arg2?: string): Observable<any> {
     let body;
 

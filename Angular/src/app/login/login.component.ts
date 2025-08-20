@@ -5,6 +5,9 @@ import { AuthService } from '../services/auth.service';
 import { VisualeffectsService } from '../services/visualeffects.service';
 import { environment } from '../../environments/environment';
 
+/**
+ * component to allow the user to authenticate themselves
+ */
 @Component({
   selector: 'app-login',
   imports: [
@@ -16,6 +19,7 @@ import { environment } from '../../environments/environment';
   styleUrl: 'login.component.css'
 })
 export class LoginComponent {
+
   usernameInput =  new FormControl('');
   passwordInputControl = new FormControl('');
   loginGroup = new FormGroup({
@@ -26,6 +30,9 @@ export class LoginComponent {
   constructor(private router: Router, private authService: AuthService, protected visualeffectsService: VisualeffectsService) {
   }
 
+  /**
+   * authenticates the user if the input forms are not null
+   */
   onSubmit(){
     if(this.usernameInput == null || this.passwordInputControl == null){
       console.log("invalid form, null username or password");
@@ -34,6 +41,12 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * calls the AuthService to authenticate the user.
+   * If it receives a positive response it saves a token to authenticate the user and redirects the user to the homepage
+   * otherwise it redirects them back to the login page.
+   * In both cases it displays a timed success/failure message on screen.
+   */
   authenticate(username: string, password: string){
     let message: string = "<p>log in failed</p>\n";
 

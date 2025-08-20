@@ -1,6 +1,9 @@
 import {Component, ViewChild, ViewContainerRef} from '@angular/core';
 import {NotificationComponent} from '../notification/notification.component';
 
+/**
+ * overlay plane to display notifications into using only angular.
+ */
 @Component({
   selector: 'app-notification-container',
   imports: [],
@@ -14,6 +17,10 @@ export class NotificationContainerComponent {
   constructor() {
   }
 
+  /**
+   * adds a notification to the this container
+   * @param message message to be displayed
+   */
   addNotification(message: string){
     const componentRef = this.container.createComponent(NotificationComponent);
     componentRef.instance.text = message;
@@ -24,6 +31,9 @@ export class NotificationContainerComponent {
     }, 25000); // 25 seconds
   }
 
+  /**
+   * test notification
+   */
   ngAfterContentInit() {
     //this.addNotification("LA GARRA CHARRUAAA");
   }

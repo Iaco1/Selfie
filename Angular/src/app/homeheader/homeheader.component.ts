@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 
+/**
+ * header to be displayed when the user logged in
+ */
 @Component({
   selector: 'app-homeheader',
   imports: [
@@ -16,16 +19,21 @@ export class HomeheaderComponent {
 
   constructor(private router: Router ) {}
 
+  // navigation methods
   openSidebar(){
     this.router.navigate([{outlets: { header: "HomeheaderComponent", asideLeft: 'SidebarComponent'}}]);
     console.log("openSideBar ran");
   }
-
   closeSidebar(){
     this.router.navigate([{outlets: {asideLeft: null}}]);
     console.log("closeSideBar ran");
   }
+  navigateToHomepage(){
+    console.log("navigateToHomepage ran");
+    this.router.navigate([{outlets: {header: "HomeheaderComponent", primary: "HomepageComponent"}}]);
+  }
 
+  // button interactivity logic
   onToggleSidebar(){
     //console.log("onToggleSidebar");
     this.sidebarIsToggled = !this.sidebarIsToggled;
@@ -35,12 +43,6 @@ export class HomeheaderComponent {
       this.openSidebar();
     }
   }
-
-  navigateToHomepage(){
-    console.log("navigateToHomepage ran");
-    this.router.navigate([{outlets: {header: "HomeheaderComponent", primary: "HomepageComponent"}}]);
-  }
-
   toggleNavbarBurger(navbarBurger: HTMLAnchorElement){
     if (navbarBurger.classList.contains('is-active')) {
       navbarBurger.classList.remove('is-active');

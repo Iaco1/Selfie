@@ -11,11 +11,13 @@ import {DecimalPipe} from '@angular/common';
   styleUrl: './homepage.component.css'
 })
 export class HomepageComponent {
+  // last pomodoro recorded data
   lastPomodoro: any;
   startTime = "last pomodoro fetch failed or is yet to happen";
   duration = 0;
 
   constructor(private pomodoroService: PomodoroService) {
+    //displaying the last pomodoro recorded
     this.pomodoroService.get(localStorage.getItem('authToken')!).subscribe({
       next: (response) => {
         console.log("get pomodoros result: ", response);
@@ -27,9 +29,5 @@ export class HomepageComponent {
         console.log("get pomodoros failed: ", error);
       }
     });
-  }
-
-  getLastPomodoro(){
-
   }
 }
