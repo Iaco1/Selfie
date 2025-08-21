@@ -98,7 +98,9 @@
   <div class="modal-background"></div>
   <div class="modal-content">
     Select date:
-    <input class="input" type="date" [min]="getToday()" [(ngModel)]="event.start.date"/>
+    <input class="input" type="date" [min]="getToday()" [(ngModel)]="scheduledPomodoroDate" required/>
+    Select time:
+    <input class="input" type="time" [(ngModel)]="scheduledPomodoroTime" required/>
     Insert title:
     <input class="input" type="text" [(ngModel)]="event.title"/>
     Insert description:

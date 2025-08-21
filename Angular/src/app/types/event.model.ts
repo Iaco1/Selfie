@@ -1,5 +1,7 @@
 import { StringDate } from "./string-date";
 
+const a_min = 60 * 1000, a_hour = 60 * a_min, a_day = 24 * a_hour, a_week = 7 * a_day;
+
 export class EventModel {
 	//setted by the program
 	_id : string = "";

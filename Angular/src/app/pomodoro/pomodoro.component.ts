@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {TimeMachineService} from '../services/time-machine.service';
 import {concatMap, finalize, take, takeWhile} from 'rxjs';
 import {PomodoroService} from '../services/pomodoro.service';
-import {DecimalPipe} from '@angular/common';
+import {DecimalPipe, Time} from '@angular/common';
 import {NotificationService} from '../services/notification.service';
 import {EventService} from '../services/event.service';
 import {EventModel} from '../types/event.model';
@@ -24,6 +24,8 @@ import {StringDate} from '../types/string-date';
 export class PomodoroComponent {
 
   eventCreationModalActive = false;
+  scheduledPomodoroDate :string;
+  scheduledPomodoroTime :string;
   event: EventModel;
 
 
@@ -57,12 +59,14 @@ export class PomodoroComponent {
     this.setPomodoroLog();
 
     //setting default pomodoro event
-    const startDate = new StringDate("2025-08-30", "10:00:00");
-    const duration = { number: this.sessionTime.h+ this.sessionTime.m/60, measure: "hours"};
+    this.scheduledPomodoroDate = "2025-08-30";
+    this.scheduledPomodoroTime = "10:00";
+    const startDate = new StringDate("2025-08-30", "10:00");
+    const duration = { number: this.sessionTime.h*60+ this.sessionTime.m, measure: "min"};
     const title = "Pomodoro";
     const description = "scheduled pomodoro";
     const colour = "red";
-    this.event = new EventModel(startDate,null,duration,title,colour, description,"fictitiousMail@mail.com")
+    this.event = new EventModel(startDate,null,duration,title, colour, description);
 
   }
 
@@ -425,13 +429,19 @@ export class PomodoroComponent {
 
   schedule(){
     // get user to choose date on calendar
-    const startDate = new StringDate("2025-08-30", "10:00:00");
-    const duration = { number: this.sessionTime.h+ this.sessionTime.m/60, measure: "hours"};
-    const title = "Pomodoro";
-    const description = "scheduled pomodoro";
-    const colour = "red";
+    this.event.duration = { number: this.sessionTime.h*60 + this.sessionTime.m, measure: "min"};
+    this.event.colour = "red";
+
+
+    // creates event on calendar
     this.userService.getAccountDetails(localStorage.getItem("authToken")).pipe(
-      concatMap( res => this.eventService.create(new EventModel(startDate,null,duration,title,description,colour,res.user.email))
+      concatMap( res => {
+        console.log("user selected date: ", this.scheduledPomodoroDate);
+        this.event.start = new StringDate(this.scheduledPomodoroDate, this.scheduledPomodoroTime);
+        this.event.user = localStorage.getItem("authToken")!;
+        this.event.calculateEnd();
+        return this.eventService.create(this.event);
+        }
       )
     ).subscribe({
       next: (result) =>{
