@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DateselectComponent } from '../dateselect/dateselect.component';
 import { TimeMachineService } from '../../services/time-machine.service';
@@ -10,7 +10,7 @@ import { TimeMachineService } from '../../services/time-machine.service';
 	templateUrl: './timemachine.component.html',
 	styleUrls: ['./timemachine.component.css']
 })
-export class TimemachineComponent {
+export class TimemachineComponent implements OnInit, OnDestroy {
 	day!: Date; // ticking "virtual" time
 	time : string = "";
 	dwmy = "m";
@@ -36,7 +36,7 @@ export class TimemachineComponent {
 		// Start ticking virtual clock
 		this.timer = setInterval(() => {
 			this.day = new Date(Date.now() + this.offsetMs);
-      this.timeMachine.setDay(this.day);
+			this.timeMachine.setDay(this.day);
 		}, 1000);
 		this.time = this.formatTime(referenceDate); // 👈 init time
 	}

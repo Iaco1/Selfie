@@ -1,3 +1,4 @@
+import { NotificationModel } from "./notification.interface";
 import { StringDate } from "./string-date";
 
 const a_min = 60 * 1000, a_hour = 60 * a_min, a_day = 24 * a_hour, a_week = 7 * a_day;
@@ -17,7 +18,7 @@ export class EventModel {
 	location? : string;
 	//TODO
 	repeat : {bool: boolean, rrule?: string};
-	notification? : string[];
+	notification? : NotificationModel[];
 	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
 
 	constructor(
@@ -62,7 +63,7 @@ export class EventModel {
 
 	//facoltativi anche su mongoDB
 	setLocation     (location: string)       { this.location = location; }
-	setNotification (notification: string[]) { this.notification = notification; }
+	setNotifications(n: NotificationModel[]) { this.notification = n; }
 	setPomodoro     (b: boolean, study:string, rest:string) {
 		this.pomodoro = { bool: b, studyFor: study, restFor: rest }
 	}

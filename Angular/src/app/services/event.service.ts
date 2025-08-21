@@ -21,6 +21,7 @@ export class EventService extends BaseService<EventModel> {
 		let evento = new EventModel(start, end, json.duration,
 			json.title, json.colour, json.description, json.location, json.user, json.repeat);
 		evento.setId(json._id);
+		evento.setNotifications(json.notification);
 		return evento;
 	}
 

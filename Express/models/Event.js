@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const DateType = require('../event-note/DateType');
+const NotificationType = require ('../event-note/NotificationType');
 
 const EventSchema = new mongoose.Schema({
 	//setted by the program
@@ -21,7 +22,10 @@ const EventSchema = new mongoose.Schema({
 		bool: {type: Boolean, required: false},
 		rrule: {type: String, required: false}
 	},
-	notification: [{type: String, required: false}],
+	notification: {
+		type: [NotificationType],
+		required: false
+	},
 	pomodoro: {
 		bool: {type: Boolean, required: false},
 		studyFor: {type: String, required: false},

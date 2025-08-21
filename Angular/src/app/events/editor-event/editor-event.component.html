@@ -72,7 +72,7 @@
 		<!-- REPEAT? -->
 		<!-- Repeat toggle -->
 		<div class="field is-grouped is-align-items-center">
-			<label for="repeatEvent" class="label is-small mr-2">Repeat event?</label>
+			<label for="repeatEvent" class="label">Repeat event?</label>
 			<input id="repeatEvent" type="checkbox" [(ngModel)]="me.repeat.bool" />
 		</div>
 		<!-- Show repeat details only if enabled -->
@@ -166,6 +166,26 @@
 			</div>
 			<!-- Readable repeat -->
 			<p *ngIf="me.repeat?.rrule"> Repeat: {{ getReadableRepeat() }} </p>
+		</div>
+
+		<!-- NOTIFICATION? -->
+		<div class="field is-grouped is-grouped-multiline">
+			<div class="control">
+				<label class="label">Notifications?</label>
+			</div>
+			<div class="control"
+					*ngFor="let n of notificationPresets; let i = index">
+				<label class="checkbox">
+					<input
+					type="checkbox"
+					name="notification{{i}}"
+					[ngModel]="notif_check.includes(n.label)"
+					(ngModelChange)="onNotificationChange(n.label, $event)"
+					[ngModelOptions]="{standalone: true}"
+					/>
+					{{ n.label }}
+				</label>
+			</div>
 		</div>
 	</section>
 	<footer class="card-foot level">
