@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { toLocal, fromLocal } from '../utils/date';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,11 +18,11 @@ export class TimeMachineService {
 
 	setDay(date: Date): void {
 		this.daySubject.next(date);
-		localStorage.setItem(this.STORAGE_KEY, date.toISOString());
+		localStorage.setItem(this.STORAGE_KEY, toLocal(date));
 	}
 
 	loadStoredDate(): Date {
 		const saved = localStorage.getItem(this.STORAGE_KEY);
-		return saved ? new Date(saved) : new Date(); // fallback = now
+		return saved ? fromLocal(saved) : new Date(); // fallback = now
 	}
 }

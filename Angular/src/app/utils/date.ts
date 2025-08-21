@@ -14,4 +14,22 @@ function getStartOfWeek(day: Date): Date {
 	d.setDate(d.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek));
 	return d;
 }
-export {toLocalDateString, fromLocalDateString, getStartOfWeek};
+// Converts Date → 'YYYY-MM-DDTHH:mm'
+function toLocal(date: Date): string {
+	const y = date.getFullYear();
+	const m = (date.getMonth() + 1).toString().padStart(2, '0');
+	const d = date.getDate().toString().padStart(2, '0');
+	const hh = date.getHours().toString().padStart(2, '0');
+	const mm = date.getMinutes().toString().padStart(2, '0');
+	return `${y}-${m}-${d}T${hh}:${mm}`;
+}
+
+// Parses 'YYYY-MM-DDTHH:mm' as local time
+function fromLocal(str: string): Date {
+	const [datePart, timePart] = str.split('T');
+	const [y, m, d] = datePart.split('-').map(Number);
+	const [hh, mm] = timePart.split(':').map(Number);
+	return new Date(y, m - 1, d, hh, mm);
+}
+
+export {toLocalDateString, fromLocalDateString, getStartOfWeek, toLocal, fromLocal};
