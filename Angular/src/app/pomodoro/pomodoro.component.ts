@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CyclePhase} from './cyclephase.enum';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from '@angular/forms';
 import {TimeMachineService} from '../services/time-machine.service';
 import {concatMap, finalize, take, takeWhile} from 'rxjs';
@@ -11,6 +11,7 @@ import {EventService} from '../services/event.service';
 import {EventModel} from '../types/event.model';
 import {UserService} from '../services/user.service';
 import {StringDate} from '../types/string-date';
+import {Pomodoro} from '../types/pomodoro';
 
 @Component({
   selector: 'app-pomodoro',
@@ -49,13 +50,13 @@ export class PomodoroComponent {
   breakDuration = {h: 0, m: 5, s: 0};
 
   // data of current pomodoro being recorded and of past pomodoros being displayed
-  pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken')};
+  pomodoro = {startTime: new Date(Date.UTC(2000)), endTime: new Date(Date.UTC(2001)), duration: 1, completionStatus: true, authorId: localStorage.getItem('authToken'), eventId: null};
   pomodoroLog: any;
 
   /**
    * shows past pomodoros and set default values for the pomodoro event (that can be scheduled)
    */
-  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService, private notificationService: NotificationService, private eventService: EventService, private userService: UserService) {
+  constructor(private router: Router, private timemachine: TimeMachineService, protected pomodoroService: PomodoroService, private notificationService: NotificationService, private eventService: EventService, private userService: UserService, private route: ActivatedRoute) {
     this.setPomodoroLog();
 
     //setting default pomodoro event
@@ -254,6 +255,7 @@ export class PomodoroComponent {
       this.readyCycle();
     }else{
       this.endSession();
+      this.signalPomodoroCompleted();
     }
   }
 
@@ -362,7 +364,10 @@ export class PomodoroComponent {
         if(this.cyclephase == CyclePhase.STUDYING || this.cyclephase == CyclePhase.IDLE || this.cyclephase == CyclePhase.READY || this.cyclephase == CyclePhase.SET) return;
         else if(this.pomodoroSecondsLeft > 0) this.startCycle();
         else if(this.repetitions > 0) this.skipToNextCycle();
-        else this.endSession()
+        else {
+          this.endSession();
+          this.signalPomodoroCompleted();
+        }
       })
       ).subscribe(
       (day) => {
@@ -427,6 +432,9 @@ export class PomodoroComponent {
     })
   }
 
+  /**
+   * inserts a pomodoro event on the calendar
+   */
   schedule(){
     // get user to choose date on calendar
     this.event.duration = { number: this.sessionTime.h*60 + this.sessionTime.m, measure: "min"};
@@ -478,4 +486,51 @@ export class PomodoroComponent {
     )
     return new Date(Date.UTC(2000))
   }
+
+  /**
+   * reads the query params of a scheduled pomodoro to set up a session to study
+   */
+  setupScheduledPomodoro(){
+    // simulating pomodoro coming in from query
+    // const studyFor = 50*60;
+    // const restFor = 10*60;
+    // const sessionTime = (studyFor + restFor)*3;
+    // const pomodoro = new Pomodoro(studyFor, restFor, sessionTime);
+
+    /**
+     * Query params structure:
+     *
+     * ID is the _id of the event (saved in EventModel and used to do GET in eventService)
+     * S, R, N number of seconds
+     * (session = (S+R)*repetitions
+     * ?id=ID&study=S&rest=R&session=N
+     */
+    this.route.queryParams.subscribe(params => {
+      //reading query params
+      this.pomodoro.eventId = params["id"];
+      const studyFor = params["study"];
+      const restFor = params["rest"];
+      const sessionTime = params["session"];
+      const pomodoro = new Pomodoro(studyFor, restFor, sessionTime);
+
+      // setting up timers (study, break, session)
+      this.pomodoroSecondsLeft = pomodoro.studyFor;
+      this.pomodoroTime = this.formatTimeInHMS(pomodoro.studyFor);
+      this.pomodoroDuration = this.pomodoroTime;
+      this.breakSecondsLeft = pomodoro.restFor;
+      this.breakTime = this.formatTimeInHMS(pomodoro.restFor);
+      this.breakDuration = this.breakTime;
+      this.sessionTime = this.formatTimeInHMS(pomodoro.sessionTime);
+      this.setRepetitions(true, false);
+
+      this.readyCycle();
+    })
+  }
+
+  signalPomodoroCompleted(){
+    //call some function in the calendar to say that the pomodoro has completed
+    console.log("pomodoro completed signaled to calendar");
+  }
+
+
 }
