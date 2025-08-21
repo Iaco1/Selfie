@@ -20,12 +20,18 @@
 			</span>
 		</div>
 	</div>
-	<footer class="card-footer">
-		<a class="card-footer-item">
-			<button class="button is-success" (click)="EditNote(me._id)">Edit</button>
-		</a>
-		<a class="card-footer-item">
-			<button class="button is-danger" (click)="Delete()">Delete</button>
-		</a>
+	<footer class="card-footer buttons-footer">
+		<button class="button is-success" (click)="EditNote(me._id)">
+			<span class="icon is-small"><i class="fas fa-edit"></i></span>
+			<span class="is-hidden-mobile is-hidden-when-narrow">Edit</span>
+		</button>
+		<button class="button is-warning" (click)="DupeNote(me._id)">
+			<span class="icon is-small"><i class="fas fa-copy"></i></span>
+			<span class="is-hidden-mobile is-hidden-when-narrow">Dupe</span>
+		</button>
+		<button class="button is-danger" (click)="Delete()">
+			<span class="icon is-small"><i class="fas fa-trash"></i></span>
+			<span class="is-hidden-mobile is-hidden-when-narrow">Delete</span>
+		</button>
 	</footer>
 </div>
