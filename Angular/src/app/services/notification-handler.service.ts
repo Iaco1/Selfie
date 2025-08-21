@@ -3,6 +3,7 @@ import { NotificationModel } from '../types/notification.interface';
 import { NotificationService } from './notification.service';
 import { TimeMachineService } from './time-machine.service';
 import { EventModel } from '../types/event.model';
+import { ActivityModel } from '../types/activity.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -21,7 +22,32 @@ export class NotificationHandlerService {
 		});
 	}
 
-	loadNotificationsFromEvents(events: EventModel[]) {
+	loadNotifications(events: EventModel[], activities: ActivityModel[]) {
+		this.loadNotificationsFromEvents(events);
+		this.loadNotificationsFromActivities(activities);		
+		if (this.currentDate) {
+			this.scheduleNotifications(this.currentDate);
+		}
+	}
+	private loadNotificationsFromActivities(activities: ActivityModel[]) {
+		this.notifications.push(
+			...activities
+				.filter(activity => !activity.completed && activity.expirationDay)
+				.map(activity => {
+					const date = activity.expirationDay.getDate(); // Date object
+					return {
+						id: `activity_${activity._id}_${date.toISOString()}`,
+						label: 'On expiration',
+						title: activity.title,
+						message: `Activity expires at ${activity.expirationDay.time}`,
+						date: date,
+						priority: 2 // medium (1 = low, 2 = medium, 3 = high)
+					} satisfies NotificationModel; // optional, for safety
+				})
+		);
+	}	
+
+	private loadNotificationsFromEvents(events: EventModel[]) {
 		this.notifications = events.flatMap(event =>
 			(event.notification ?? []).map(notification => ({
 				...notification,
@@ -31,9 +57,6 @@ export class NotificationHandlerService {
 				id: `${event._id}_${new Date(notification.date).toISOString()}`
 			}))
 		);
-		if (this.currentDate) {
-			this.scheduleNotifications(this.currentDate);
-		}
 	}
 
 	private timeouts = new Map<string, any>();

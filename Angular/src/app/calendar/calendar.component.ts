@@ -16,6 +16,7 @@ import { CrudHelper } from '../utils/crud-helper';
 import { getStartOfWeek } from '../utils/date';
 import { StringDate } from '../types/string-date';
 import { NotificationHandlerService } from '../services/notification-handler.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
 	selector: 'calendar',
@@ -57,16 +58,26 @@ export class CalendarComponent implements OnInit {
 	activities: ActivityModel[] = [];
 
 	private activityCrud!: CrudHelper<ActivityModel>;
-	
+
 	ngOnInit(): void {
-		//console.log('CalendarComponent initialized');
 		this.activityCrud = new CrudHelper(() => this.activities, (l) => this.activities = l);
-		this.refreshEvents(); // 👈 Already here, and it runs every time calendar is loaded
-		this.activityService.getOnlyMyActivities().subscribe({
-			next: activities => {
+		this.refreshEvents();
+
+		forkJoin({
+			events: this.eventService.getOnlyMyEvents(),
+			activities: this.activityService.getOnlyMyActivities()
+		}).subscribe({
+			next: ({ events, activities }) => {
 				this.activities = activities;
+				this.events = events.flatMap(event =>
+					event.repeat?.bool
+						? this.generateRecurringInstances(event, this.day, this.day) // or use proper range
+						: [event]
+				);
+
+				this.handler.loadNotifications(this.events, this.activities);
 			},
-			error: err => console.error('Error loading activities:', err)
+			error: err => console.error('Error loading events or activities:', err)
 		});
 	}
 
@@ -118,7 +129,6 @@ export class CalendarComponent implements OnInit {
 						? this.generateRecurringInstances(event, viewStart, viewEnd)
 						: [event]
 				);
-				this.handler.loadNotificationsFromEvents(events);
 			},
 			error: err => console.error('Error loading events:', err)
 		});
