@@ -45,7 +45,6 @@ export class EventModel {
 
 	calculateEnd() : StringDate {
 		let duration = 0;
-		const a_min = 60 * 1000, a_hour = 60 * a_min, a_day = 24 * a_hour, a_week = 7 * a_day;
 		switch(this.duration.measure) {
 			case "min":   duration = a_min;      break;
 			case "15min": duration = 15 * a_min; break;
@@ -74,7 +73,7 @@ export class EventModel {
 	//repeats
 	static fromRecurringInstance( master: EventModel,
 		start: StringDate, end: StringDate): EventModel {
-		
+
 		const clone = new EventModel( start, end, master.duration,
 			master.title, master.colour,master.description ?? "", master.location, master.user);
 
@@ -87,7 +86,7 @@ export class EventModel {
 		// Recurrence tracking
 		clone.originalStartDate = master.start.clone();
 		clone.isRecurringInstance = true;
-		
+
 		return clone;
 	}
 }
