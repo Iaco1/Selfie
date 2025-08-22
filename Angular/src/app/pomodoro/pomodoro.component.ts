@@ -38,15 +38,15 @@ export class PomodoroComponent {
   //countdowns
   pomodoroSecondsLeft = 0;
   breakSecondsLeft = 0;
-  pomodoroTime = {h: 0, m: 25, s: 0};
+  pomodoroTime = {h: 0, m: 30, s: 0};
   breakTime = {h: 0, m: 5, s: 0};
 
   //session durations
-  repetitions = 3;
+  repetitions = 5;
   sessionTime = {h: 1, m: 30, s: 0};
 
   //cycle durations
-  pomodoroDuration = {h: 0, m: 25, s: 0};
+  pomodoroDuration = {h: 0, m: 30, s: 0};
   breakDuration = {h: 0, m: 5, s: 0};
 
   // data of current pomodoro being recorded and of past pomodoros being displayed

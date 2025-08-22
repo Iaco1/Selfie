@@ -11,7 +11,7 @@ import { NoteModel } from '../../types/note.model';
 
 @Component({
 	selector: 'search-notes',
-	imports: [CommonModule, FormsModule, NoteComponent, HttpClientModule], 
+	imports: [CommonModule, FormsModule, NoteComponent, HttpClientModule],
 	providers: [NoteService],
 	templateUrl: './search-notes.component.html',
 	styleUrl: './search-notes.component.css',
@@ -73,4 +73,6 @@ export class SearchNotesComponent {
 				break;
 		}
 	}
+
+  protected readonly Array = Array;
 }

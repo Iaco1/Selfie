@@ -19,10 +19,11 @@ import {EventService} from './services/event.service';
       <router-outlet name="asideLeft"></router-outlet>
       <div class="container">
         <router-outlet name="primary"></router-outlet>
+        <router-outlet name="footer"></router-outlet>
       </div>
       <router-outlet name="asideRight"></router-outlet>
     </div>
-    <router-outlet name="footer"></router-outlet>
+
 
     <app-notification-container></app-notification-container>
 
