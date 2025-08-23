@@ -1,4 +1,6 @@
 import { RRule, rrulestr, RRuleSet, Options, Weekday } from 'rrule';
+import { EventModel } from '../types/event.model';
+import { StringDate } from '../types/string-date';
 
 const WEEKDAY_MAP: { [key: string]: Weekday } = {
 	MO: RRule.MO,
@@ -152,7 +154,7 @@ export function parseRRule(rruleString: string): ParsedRRule | null {
 	}
 }
 
-/*
+/* EXAMPLE
 import { generateRRuleFromInput, parseRRule } from '@/utils/rrule-utils';
 
 // Example usage:
@@ -174,3 +176,66 @@ if (rrule) {
 	alert("Invalid recurrence rule");
 }
 */
+function toLocalFromUTC(d: Date): Date {
+	return new Date(d.getTime() + d.getTimezoneOffset() * 60000);
+}
+export function getEventDurationMs(event: EventModel): number {
+	return new Date(`${event.end.date}T${event.end.time}`).getTime() -
+	       new Date(`${event.start.date}T${event.start.time}`).getTime();
+}
+export function generateInstancesInRange(
+	event: EventModel,
+	from: Date,
+	to: Date,
+	durationMs: number
+): EventModel[] {
+	if (!event.repeat?.rrule) return [event];
+
+	const rule = rrulestr(event.repeat.rrule);
+	const between = rule.between(from, to, true);
+
+	const originalStartDate = event.start.getDate();
+
+	return between.map(startUtc => {
+		const localStart = toLocalFromUTC(startUtc);
+		const localEnd = new Date(localStart.getTime() + durationMs);
+
+		// ⏰ Shift each notification relative to the instance's new start
+		const shiftedNotifications = (event.notification ?? []).map(n => {
+			const originalNotificationDate = new Date(n.date);
+			const offset = originalNotificationDate.getTime() - originalStartDate.getTime();
+
+			return {
+				...n,
+				date: new Date(localStart.getTime() + offset)
+			};
+		});
+
+		// ✅ Create a temporary clone of the master event
+		const temp = new EventModel(
+			event.start,
+			event.end,
+			event.duration,
+			event.title,
+			event.colour,
+			event.description ?? "",
+			event.location ?? "",
+			event.user,
+			{
+				bool: event.repeat.bool,
+				rrule: event.repeat.rrule ?? undefined
+			}
+		);
+		temp._id = event._id;
+		temp.notification = shiftedNotifications;
+		temp.pomodoro = event.pomodoro;
+
+		// ✅ Use it in the recurrence
+		return EventModel.fromRecurringInstance(
+			temp,
+			StringDate.fromDate(localStart),
+			StringDate.fromDate(localEnd)
+		);
+	});
+}
+

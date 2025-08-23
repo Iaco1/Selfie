@@ -9,10 +9,10 @@
 		&gt; </button>
 	<span class="select is-normal">
 		<select [(ngModel)]="dwmy" (ngModelChange)="onDwmyChange($event)" name="dwmy">
-			<option value="d"         >day   D</option>
-			<option value="w"         >week  W</option>
-			<option value="m" selected>month M</option>
-			<option value="y"         >year  Y</option>
+			<option value="d">day   D</option>
+			<option value="w">week  W</option>
+			<option value="m">month M</option>
+			<option value="y">year  Y</option>
 		</select>
 	</span>
 	<span class="is-size-4"> {{ today | date: 'fullDate' }} </span>

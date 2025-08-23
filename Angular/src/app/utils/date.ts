@@ -32,4 +32,12 @@ function fromLocal(str: string): Date {
 	return new Date(y, m - 1, d, hh, mm);
 }
 
-export {toLocalDateString, fromLocalDateString, getStartOfWeek, toLocal, fromLocal};
+function isSameDay(d1: Date, d2: Date): boolean {
+	return (
+		d1.getFullYear() === d2.getFullYear() &&
+		d1.getMonth() === d2.getMonth() &&
+		d1.getDate() === d2.getDate()
+	);
+}
+
+export {toLocalDateString, fromLocalDateString, getStartOfWeek, toLocal, fromLocal, isSameDay};

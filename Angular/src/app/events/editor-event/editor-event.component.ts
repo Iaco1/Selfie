@@ -11,6 +11,7 @@ import { fromLocalDateString, toLocalDateString } from "../../utils/date";
 import { NotificationModel } from "../../types/notification.interface";
 import { generateRRuleFromInput, parseRRule } from "../../utils/rrule-utils";
 import { RRule, rrulestr } from "rrule";
+import { NotificationHandlerService } from "../../services/notification-handler.service";
 
 const NOTIFICATION_PRESETS: { label: string; minutesBefore: number }[] = [
 	{ label: 'at time of event', minutesBefore: 0 },
@@ -35,7 +36,8 @@ export class EditorEventComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private eventService: EventService,
-		private router: Router
+		private router: Router,
+		private handler: NotificationHandlerService
 	) {}
 
 	ngOnInit() {
@@ -95,6 +97,7 @@ export class EditorEventComponent implements OnInit {
 			this.eventService.create(this.me).subscribe({
 				next: (createdEvent) => {
 					this.me = createdEvent;
+					this.handler.triggerRefresh(); // 👈 After create
 					this.goBackToCalendar();
 				},
 				error: (err) => {
@@ -106,6 +109,7 @@ export class EditorEventComponent implements OnInit {
 			this.eventService.update(this.me._id, this.me).subscribe({
 				next: (updatedEvent) => {
 					this.me = updatedEvent;
+					this.handler.triggerRefresh(); // 👈 After update
 					this.goBackToCalendar();
 				},
 				error: (err) => {
