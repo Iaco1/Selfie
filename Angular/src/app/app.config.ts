@@ -1,17 +1,17 @@
 import { ApplicationConfig, NgModule, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { RouterModule, Routes } from '@angular/router';
-import {LoginComponent} from './login/login.component';
+import {LoginComponent} from './auth/login/login.component';
 import {HomepageComponent} from './homepage/homepage.component';
-import {SignupComponent} from './signup/signup.component';
-import {SuccessComponent} from './success/success.component';
-import {HeaderComponent} from './header/header.component';
-import {HomeheaderComponent} from './homeheader/homeheader.component';
-import {SidebarComponent} from './sidebar/sidebar.component';
+import {SignupComponent} from './auth/signup/signup.component';
+import {SuccessComponent} from './navigation/success/success.component';
+import {HeaderComponent} from './navigation/header/header.component';
+import {HomeheaderComponent} from './navigation/homeheader/homeheader.component';
+import {SidebarComponent} from './navigation/sidebar/sidebar.component';
 
 import {TimemachineComponent} from './calendar/timemachine/timemachine.component';
 import {CalendarComponent} from './calendar/calendar.component';
-import {AccountsettingsComponent} from './accountsettings/accountsettings.component';
+import {AccountsettingsComponent} from './settings/accountsettings/accountsettings.component';
 import {PomodoroComponent} from './pomodoro/pomodoro.component';
 import {SearchNotesComponent} from './notes/search-notes/search-notes.component';
 import {EditorNotesComponent} from './notes/editor-notes/editor-notes.component';

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {DatumType} from "./datumtype.enum";
 import {NgOptimizedImage} from "@angular/common";
-import {UserService} from '../services/user.service';
+import {UserService} from '../../services/user.service';
 
 /**
  * generic component to display a piece of data and post an update to the backend
