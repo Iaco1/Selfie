@@ -9,13 +9,13 @@
 			<!-- title -->
 			<div class="field column is-10">
 				<label class="label" for="title">Title</label>
-				<input #title class="input control" type="text"
+				<input id="title" name="title" class="input control" type="text"
 					[(ngModel)]="me.title" placeholder="Titolo evento">
 			</div>
 			<!-- colour -->
 			<div class="field column is-2">
 				<label class="label" for="colour">Colour</label>
-				<input #colour class="input control" type="color"
+				<input id="colour" name="colour" class="input control" type="color"
 					[(ngModel)]="me.colour">
 			</div>
 		</div>
@@ -24,24 +24,24 @@
 			<!-- start -->
 			<div class="field column">
 				<label class="label" for="dateStart">Start Date</label>
-				<input #dateStart class="input control" type="date"
+				<input id="dateStart" name="dateStart" class="input control" type="date"
 					[(ngModel)]="me.start.date"  (ngModelChange)="me.calculateEnd()">
 			</div>
 			<div class="field column">
 				<label class="label" for="timeStart">Start Hour</label>
-				<input #timeStart class="input control" type="time"
+				<input id="timeStart" name="timeStart" class="input control" type="time"
 					[(ngModel)]="me.start.time" (ngModelChange)="me.calculateEnd()">
 			</div>
 			<!-- duration -->
 			<div class="field column">
 				<label class="label" for="durationNumber">Duration</label>
-				<input #durationNumber class="input control" type="number" min="1" step="1"
+				<input id="durationNumber" name="durationNumber" class="input control" type="number" min="1" step="1"
 					[(ngModel)]="me.duration.number" (ngModelChange)="me.calculateEnd()">
 			</div>
 			<div class="field column">
 				<label class="label" for="durationMeasure">Interval</label>
 				<span class="select is-normal">
-					<select	#durationMeasure name="durationMeasure"
+					<select	id="durationMeasure" name="durationMeasure" name="durationMeasure"
 						[(ngModel)]="me.duration.measure" (ngModelChange)="me.calculateEnd()">
 						<option value="min">  minutes</option>
 						<option value="15min">15 mins</option>
@@ -58,14 +58,14 @@
 		<div class="level">
 			<div class="field level-item">
 				<label class="label" for="location">Location&nbsp;?&nbsp;</label>
-				<input #location class="input control" type="text"
+				<input id="location" name="location" class="input control" type="text"
 					[(ngModel)]="me.location" placeholder="Location">
 			</div>
 		</div>
 		<!-- descrizione -->
 		<div class="field">
 			<label class="label" for="description">Description</label>
-			<textarea #description class="textarea control" [(ngModel)]="me.description"
+			<textarea id="description" name="description" class="textarea control" [(ngModel)]="me.description"
 				placeholder="Description event"></textarea>
 		</div>
 
@@ -110,6 +110,7 @@
 					[(ngModel)]="repeatEndMode" [value]="'after'" />
 				<label for="endAfter" class="ml-1 mr-1">After</label>
 				<input
+					id="afterCount"
 					class="input is-small"
 					type="number"
 					min="1"
@@ -117,6 +118,7 @@
 					[disabled]="repeatEndMode !== 'after'"
 					style="width: 5rem" />
 				<span class="ml-1">occurrences</span>
+				<label for="afterCount" class="sr-only">Number of occurrences</label> <!-- screen reader only label -->
 			</div>
 			<!-- Until date -->
 			<div class="field is-grouped is-align-items-center">
@@ -125,12 +127,14 @@
 					[(ngModel)]="repeatEndMode" [value]="'until'" />
 				<label for="endUntil" class="ml-1 mr-2">Until</label>
 				<input
+					id="untilDate"
 					class="input is-small"
 					type="date"
 					[(ngModel)]="untilValue"
 					[disabled]="repeatEndMode !== 'until'"
 					[min]="me.start.date"
 					style="width: 11rem" />
+				<label for="untilDate" class="sr-only">Until date</label> <!-- screen reader only label -->
 			</div>
 
 			<!-- Only show if frequency is monthly -->
@@ -143,6 +147,7 @@
 						<label class="checkbox">
 							<input
 							type="checkbox"
+							id="weekday{{i}}"
 							name="weekday{{i}}"
 							[ngModel]="byweekday.includes(day)"
 							(ngModelChange)="onWeekdayChange(day, $event)"
@@ -157,6 +162,8 @@
 					<label class="label is-small mr-2">Positions:</label>
 					<label *ngFor="let pos of [1,2,3,4,-1]">
 						<input
+							id="pos{{pos}}"
+							name="pos{{pos}}"
 							type="checkbox"
 							[checked]="bysetpos.includes(pos)"
 							(change)="onPosChange(pos, $event.target.checked)" />
@@ -178,6 +185,7 @@
 				<label class="checkbox">
 					<input
 					type="checkbox"
+					id="notification{{i}}"
 					name="notification{{i}}"
 					[ngModel]="notif_check.includes(n.label)"
 					(ngModelChange)="onNotificationChange(n.label, $event)"
@@ -187,6 +195,52 @@
 				</label>
 			</div>
 		</div>
+
+		<!-- POMODORO + STUDY FOR + REST FOR (One Line) -->
+		<div class="field is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 0.75rem;">
+			<!-- Pomodoro toggle -->
+			<div class="is-flex is-align-items-center">
+				<label for="pomodoro" class="label mr-2">Pomodoro?</label>
+				<input id="pomodoro" type="checkbox" [(ngModel)]="me.pomodoro.bool" />
+			</div>
+
+			<!-- Show when Pomodoro is ON -->
+			<div *ngIf="me.pomodoro.bool" class="is-flex is-align-items-center is-flex-wrap-nowrap" style="gap: 0.75rem;">
+				<!-- STUDY FOR -->
+				<label class="label is-small" for="studyFor">Study For:</label>
+				<div class="buttons has-addons is-small">
+					<button class="button is-info" (click)="setStudyFor(1500)">25m</button>
+					<button class="button is-info" (click)="setStudyFor(1800)">30m</button>
+					<button class="button is-info" (click)="setStudyFor(2700)">45m</button>
+				</div>
+				<input id="studyFor" name="studyFor"
+					class="input"
+					type="number"
+					min="0"
+					step="60"
+					style="width: 80px"
+					[(ngModel)]="StudyFor" />
+
+				<!-- REST FOR -->
+				<label class="label is-small" for="restFor">Rest For:</label>
+				<div class="buttons has-addons is-small">
+					<button class="button is-info" (click)="setRestFor(300)">5m</button>
+					<button class="button is-info" (click)="setRestFor(600)">10m</button>
+					<button class="button is-info" (click)="setRestFor(900)">15m</button>
+				</div>
+				<input id="restFor" name="restFor"
+					class="input"
+					type="number"
+					min="0"
+					step="60"
+					style="width: 80px"
+					[(ngModel)]="RestFor" />
+
+				<!-- START POMODORO -->
+				<button class="button is-success" (click)="StartPomodoro()">START POMODORO</button>
+			</div>
+		</div>
+
 	</section>
 	<footer class="card-foot level">
 		<!-- buttons -->

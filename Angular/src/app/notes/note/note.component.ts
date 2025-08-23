@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { marked } from 'marked';
 import { NoteModel } from '../../types/note.model';
 import { NoteService } from '../../services/note.service';
+import { TimeMachineService } from '../../services/time-machine.service';
+import { StringDate } from '../../types/string-date';
 
 @Component({
 	selector: 'note',
@@ -17,13 +19,18 @@ export class NoteComponent implements OnChanges {
 	@Input() me!: NoteModel;
 	convertedMarkdown: string = '';
 	@Output() deleted = new EventEmitter<string>();
+	currentDate!: Date;
 
 	constructor(
 		private router: Router,
-		private noteService: NoteService
+		private noteService: NoteService,
+		private timeMachine: TimeMachineService
 	) {}
 
 	ngOnInit() {
+		this.timeMachine.day$.subscribe(date => {
+			this.currentDate = date;
+		});
 		this.convertMarkdown();
 	}
 
@@ -42,6 +49,38 @@ export class NoteComponent implements OnChanges {
 
 	EditNote(id: string) {
 		this.router.navigate(['/editor-note', id]);
+	}
+
+	DupeNote(id: string) {
+		if (!this.me) return;
+
+		const createdAt = this.me.creation.getDate();
+		const modifiedAt = this.me.lastModification?.getDate?.() ?? createdAt;
+		const current = this.currentDate;
+
+		const latest = StringDate.fromDate(
+			new Date(Math.max(
+				createdAt.getTime(),
+				modifiedAt.getTime(),
+				current.getTime()
+			))
+		);
+
+		const dupe: NoteModel = {
+			...structuredClone(this.me), // deep copy
+			_id: '', // let backend assign a new ID
+			title: this.me.title + ' (Copy)',
+			creation: latest,
+			lastModification: latest
+		};
+
+		this.noteService.create(dupe).subscribe({
+			next: (newNote) => {
+				// maybe navigate to the new note
+				this.router.navigate(['/editor-note', newNote._id]);
+			},
+			error: (err) => console.error('Duplication failed:', err)
+		});
 	}
 
 	Delete() {

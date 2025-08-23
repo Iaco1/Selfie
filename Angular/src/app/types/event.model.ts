@@ -1,5 +1,6 @@
 import { NotificationModel } from "./notification.interface";
 import { StringDate } from "./string-date";
+import { Pomodoro } from "./pomodoro";
 
 const a_min = 60 * 1000, a_hour = 60 * a_min, a_day = 24 * a_hour, a_week = 7 * a_day;
 
@@ -16,17 +17,18 @@ export class EventModel {
 	colour : string;
 	description? : string;
 	location? : string;
-	//TODO
+	//optionals
 	repeat : {bool: boolean, rrule?: string};
 	notification? : NotificationModel[];
-	pomodoro? : {bool: boolean, studyFor: string, restFor: string};
+	pomodoro : {bool: boolean, value?: Pomodoro};
 
 	constructor(
 		start: StringDate, end: StringDate | null = null,
 		duration: {number:number, measure: string} = {number: 1, measure: "hours"},
 		title: string = "", colour: string = "blue", description:string="",
 		location: string = "", user: string = "",
-		repeat: {bool: boolean,	rrule: string | undefined } = {bool: false, rrule: undefined }
+		repeat: {bool: boolean,	rrule: string | undefined } = { bool: false, rrule: undefined },
+		pomodoro: {bool: boolean, value: Pomodoro | undefined } = { bool: false, value: undefined }
 	) {
 		this.start = start;
 		this.duration = duration;
@@ -36,6 +38,7 @@ export class EventModel {
 		this.description = description;
 		this.location = location;
 		this.repeat = repeat;
+		this.pomodoro = pomodoro;
 		if (user) { this.user = user; } else {
 			this.user = localStorage.getItem("authToken") || "user";
 		}
@@ -64,9 +67,6 @@ export class EventModel {
 	//facoltativi anche su mongoDB
 	setLocation     (location: string)       { this.location = location; }
 	setNotifications(n: NotificationModel[]) { this.notification = n; }
-	setPomodoro     (b: boolean, study:string, rest:string) {
-		this.pomodoro = { bool: b, studyFor: study, restFor: rest }
-	}
 
 	//in order to handle repeatable events
 	isRecurringInstance: any;

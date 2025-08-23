@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { EventModel } from '../types/event.model';
 import { BaseService } from '../utils/base.service';
 import { StringDate } from '../types/string-date';
+import { Pomodoro } from '../types/pomodoro';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,7 +20,7 @@ export class EventService extends BaseService<EventModel> {
 		let start = new StringDate(json.start.date, json.start.time);
 		let end   = new StringDate(json.end.date,   json.end.time);
 		let evento = new EventModel(start, end, json.duration,
-			json.title, json.colour, json.description, json.location, json.user, json.repeat);
+			json.title, json.colour, json.description, json.location, json.user, json.repeat, json.pomodoro);
 		evento.setId(json._id);
 		evento.setNotifications(json.notification);
 		return evento;
@@ -28,5 +29,22 @@ export class EventService extends BaseService<EventModel> {
 	getOnlyMyEvents(): Observable<EventModel[]> {
 		let user = localStorage.getItem("authToken");
 		return this.getAll(`/?user=${user}`);
+	}
+
+	setPomodoroEventAsCompleted(event: EventModel): Observable<EventModel> {
+		// Clone the event to avoid mutating original object
+		const updatedPomodoro = {
+			...event.pomodoro,
+			value: {
+				...event.pomodoro.value,
+				completed: true
+			} as Pomodoro
+		};
+		// Partial update object containing only the updated pomodoro field
+		const updatedEvent: Partial<EventModel> = {
+			pomodoro: updatedPomodoro
+		};
+		//Update it in backend
+		return this.update(event._id, updatedEvent);
 	}
 }

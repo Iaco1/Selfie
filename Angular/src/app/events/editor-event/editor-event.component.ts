@@ -3,30 +3,16 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClientModule } from '@angular/common/http';
-import { RRule, Weekday, Options, rrulestr, RRuleSet } from 'rrule';
 
 import { EventModel } from "../../types/event.model";
 import { EventService } from "../../services/event.service";
 import { StringDate } from "../../types/string-date";
 import { fromLocalDateString, toLocalDateString } from "../../utils/date";
 import { NotificationModel } from "../../types/notification.interface";
-
-const WEEKDAY_MAP: { [key: string]: Weekday } = {
-	MO: RRule.MO,
-	TU: RRule.TU,
-	WE: RRule.WE,
-	TH: RRule.TH,
-	FR: RRule.FR,
-	SA: RRule.SA,
-	SU: RRule.SU
-};
-
-const FREQ_MAP = {
-	daily: RRule.DAILY,
-	weekly: RRule.WEEKLY,
-	monthly: RRule.MONTHLY,
-	yearly: RRule.YEARLY
-} as const;
+import { generateRRuleFromInput, getEventDurationMs, parseRRule } from "../../utils/rrule-utils";
+import { RRule, rrulestr } from "rrule";
+import { NotificationHandlerService } from "../../services/notification-handler.service";
+import { Pomodoro } from "../../types/pomodoro";
 
 const NOTIFICATION_PRESETS: { label: string; minutesBefore: number }[] = [
 	{ label: 'at time of event', minutesBefore: 0 },
@@ -51,7 +37,8 @@ export class EditorEventComponent implements OnInit {
 	constructor(
 		private route: ActivatedRoute,
 		private eventService: EventService,
-		private router: Router
+		private router: Router,
+		private handler: NotificationHandlerService
 	) {}
 
 	ngOnInit() {
@@ -73,6 +60,7 @@ export class EditorEventComponent implements OnInit {
 				this.me = date;
 				this.parseRRule();
 				this.syncNotifCheckFromModel(); // 👈 Set checkbox state from model
+				this.syncPomodoro();
 			},
 			error: (err) => {
 				console.error('Failed to load event:', err);
@@ -104,6 +92,9 @@ export class EditorEventComponent implements OnInit {
 		//HANDLE NOTIFICATIONS
 		this.prepareNotifications();
 
+		//HANDLE POMODORO
+		this.preparePomodoro();
+
 		//SAVE OR UPDATE EVENT
 		//console.log("Event to be saved:", JSON.stringify(this.me, null, 2));
 		if (!this.me._id) {
@@ -111,6 +102,7 @@ export class EditorEventComponent implements OnInit {
 			this.eventService.create(this.me).subscribe({
 				next: (createdEvent) => {
 					this.me = createdEvent;
+					this.handler.triggerRefresh(); // 👈 After create
 					this.goBackToCalendar();
 				},
 				error: (err) => {
@@ -122,6 +114,7 @@ export class EditorEventComponent implements OnInit {
 			this.eventService.update(this.me._id, this.me).subscribe({
 				next: (updatedEvent) => {
 					this.me = updatedEvent;
+					this.handler.triggerRefresh(); // 👈 After update
 					this.goBackToCalendar();
 				},
 				error: (err) => {
@@ -165,122 +158,39 @@ export class EditorEventComponent implements OnInit {
 		this.until = val;
 	}
 
-	private setMode(): void {
-		if (typeof this.count === 'number' && this.count > 0) {
-			this.repeatEndMode = 'after';
-			this.until = undefined;
-		} else if (this.until && /^\d{4}-\d{2}-\d{2}$/.test(this.until)) {
-			this.repeatEndMode = 'until';
-			this.count = undefined;
-		} else {
-			this.repeatEndMode = 'never';
-			this.count = undefined;
-			this.until = undefined;
-		}
-		// console.log(this.repeatEndMode + " end mode");
-	}
-
 	private generateRRule() {
 		if (this.me.repeat?.bool) {
-			const dateTimeString = `${this.me.start.date}T${this.me.start.time}`;
-			const dtstart = new Date(dateTimeString); // 👈 treat as local time, no UTC
-
-			const options: Partial<Options> = {
-				dtstart: dtstart,
-				freq: FREQ_MAP[this.frequency],
-				interval: this.interval || 1,
-			};
-
-			if (this.repeatEndMode === 'after') {
-				options.count = this.count;
-			} else if (this.repeatEndMode === 'until') {
-				const untilDate = new Date(this.until + 'T23:59:59'); // still local
-				options.until = untilDate;
-			}
-
-			if (this.frequency === 'monthly' && this.byweekday.length && this.bysetpos.length) {
-				options.byweekday = this.byweekday.flatMap((day: string) =>
-					this.bysetpos.map(pos => WEEKDAY_MAP[day].nth(pos))
-				);
-			}
-
-			const rrule = new RRule(options);
-
-			const pad = (n: number) => n.toString().padStart(2, '0');
-			const dtDate = `${dtstart.getFullYear()}${pad(dtstart.getMonth() + 1)}${pad(dtstart.getDate())}`;
-			const dtTime = `${pad(dtstart.getHours())}${pad(dtstart.getMinutes())}${pad(dtstart.getSeconds())}`;
-			const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-			const dtstartStr = `DTSTART;TZID=${userTimeZone}:${dtDate}T${dtTime}`;
-
-			const fullRRule = `${dtstartStr}\n${rrule.toString().split('\n').filter(l => !l.startsWith('DTSTART')).join('\n')}`;
-			//console.log("RRULE string:", fullRRule);
-			try {
-				rrulestr(fullRRule); // Validate it
-				this.me.repeat.rrule = fullRRule;
-			} catch (e) {
-				console.error("Invalid RRule:", fullRRule, e);
-				alert("Error: invalid recurrence rule");
+			let rrule = generateRRuleFromInput({
+				startDate: this.me.start.date,
+				startTime: this.me.start.time,
+				frequency: this.frequency,
+				interval: this.interval,
+				repeatEndMode: this.repeatEndMode,
+				count: this.count,
+				until: this.until,
+				byweekday: this.byweekday,
+				bysetpos: this.bysetpos
+			})
+			if(rrule) {
+				//console.log(rrule);
+				this.me.repeat.rrule = rrule;
 				return;
-			}
-		} else {
-			this.me.repeat = { bool: false };
+			} else { console.error("generated RRule is null or undefined");}
 		}
+		this.me.repeat = { bool: false };
 	}
 	private parseRRule() {
 		if (this.me.repeat?.rrule) {
-			try {
-				const rule = rrulestr(this.me.repeat.rrule, { forceset: true }) as RRuleSet;
-				const r = rule.rrules()[0];
-				const options = r.origOptions;
-
-				this.frequency = Object.entries(FREQ_MAP).find(([_, val]) => val === options.freq)?.[0] as any;
-				this.interval = options.interval ?? 1;
-
-				this.count = typeof options.count === 'number' ? options.count : undefined;
-
-				if (options.until instanceof Date) {
-					const pad = (n: number) => n.toString().padStart(2, '0');
-					this.until = `${options.until.getFullYear()}-${pad(options.until.getMonth() + 1)}-${pad(options.until.getDate())}`;
-				} else {
-					this.until = undefined;
-				}
-
-				const rruleLines = this.me.repeat.rrule.split('\n');
-				const dtstartLine = rruleLines.find(l => l.startsWith('DTSTART'));
-				if (dtstartLine) {
-					let match = dtstartLine.match(/DTSTART(?:;TZID=[^:]+)?:([0-9T]+)/);
-					if (match) {
-						const raw = match[1]; // e.g. '20250812T180000'
-						const date = `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}`;
-						const time = `${raw.slice(9,11)}:${raw.slice(11,13)}`;
-						this.me.start = new StringDate(date, time);
-						this.me.calculateEnd();
-						//console.log("Parsed from raw DTSTART:", date, time);
-					}
-				}
-
-				this.setMode();
-
-				this.byweekday = [];
-				this.bysetpos = [];
-
-				if (Array.isArray(options.byweekday)) {
-					for (const wd of options.byweekday) {
-						if (typeof wd === 'object' && wd.weekday !== undefined) {
-							const dayKey = Object.keys(WEEKDAY_MAP).find(key => WEEKDAY_MAP[key].weekday === wd.weekday);
-							if (dayKey) {
-								if (!this.byweekday.includes(dayKey)) this.byweekday.push(dayKey);
-								if (typeof wd.n === 'number' && !this.bysetpos.includes(wd.n)) this.bysetpos.push(wd.n);
-							}
-						} else if (typeof wd === 'number') {
-							const dayKey = Object.keys(WEEKDAY_MAP).find(key => WEEKDAY_MAP[key].weekday === wd);
-							if (dayKey && !this.byweekday.includes(dayKey)) this.byweekday.push(dayKey);
-						}
-					}
-				}
-			} catch (e) {
-				console.error("Failed to parse saved rrule:", e);
-			}
+			let pr = parseRRule(this.me.repeat.rrule);
+			if(pr) {
+				this.me.start = new StringDate(pr.startDate, pr.startTime);
+				this.frequency = pr.frequency as "daily" | "weekly" | "monthly" | "yearly";
+				this.interval = pr.interval;
+				this.count = pr.count;
+				this.until = pr.until;
+				this.byweekday = pr.byweekday;
+				this.bysetpos = pr.bysetpos;
+			} else console.error("error parsing string");
 		}
 	}
 
@@ -356,5 +266,46 @@ export class EditorEventComponent implements OnInit {
 				this.notif_check.push(notif.label);
 			}
 		}
+	}
+
+	//POMODORO
+	StudyFor: number = 1500; //25 min
+	RestFor: number = 300;
+	setStudyFor(seconds: number) {
+		this.StudyFor = seconds;
+	}
+	setRestFor(seconds: number) {
+		this.RestFor = seconds;
+	}
+	private getDuration(): number {
+		const duration = getEventDurationMs(this.me) / 1000;
+		return duration + 60;
+	}
+	StartPomodoro() {
+		if(this.me.pomodoro.bool && this.me.pomodoro.value) {
+			//trust event
+			this.router.navigate(['pomodoro'], {
+				queryParams: {
+					id: this.me._id,
+					study: this.me.pomodoro.value.studyFor,
+					rest: this.me.pomodoro.value.restFor,
+					session: this.me.pomodoro.value.sessionTime
+				}
+			});
+		} else {
+			//trust inputs
+			this.router.navigate(['pomodoro'], {
+				queryParams: { id: this.eventId, study: this.StudyFor, rest: this.RestFor, session: this.getDuration() }
+			});
+		}
+	}
+	preparePomodoro() {
+		// Generate Pomodoro from event duration, StudyFor, RestFor
+		if(!this.me.pomodoro.bool) return;
+			this.me.pomodoro.value = new Pomodoro(this.StudyFor, this.RestFor, this.getDuration());
+	}
+	syncPomodoro() {
+		this.StudyFor = this.me.pomodoro.value?.studyFor || 1500;
+		this.RestFor = this.me.pomodoro.value?.restFor || 300;
 	}
 }

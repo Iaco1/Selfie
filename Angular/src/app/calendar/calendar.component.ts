@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { rrulestr } from 'rrule';
 
 import { DateselectComponent } from './dateselect/dateselect.component';
 import { MonthComponent } from './month/month.component';
@@ -14,8 +13,8 @@ import { ActivityModel } from '../types/activity.model';
 import { ActivityService } from '../services/activity.service';
 import { CrudHelper } from '../utils/crud-helper';
 import { getStartOfWeek } from '../utils/date';
-import { StringDate } from '../types/string-date';
-import { NotificationHandlerService } from '../services/notification-handler.service';
+
+import { generateInstancesInRange, getEventDurationMs } from '../utils/rrule-utils';
 
 @Component({
 	selector: 'calendar',
@@ -50,18 +49,16 @@ export class CalendarComponent implements OnInit {
 	//events and activities uses crudHelper :D
 	constructor(
 		private eventService: EventService,
-		private activityService: ActivityService,
-		private handler: NotificationHandlerService) {}
+		private activityService: ActivityService) {}
 
 	events: EventModel[] = [];
 	activities: ActivityModel[] = [];
 
 	private activityCrud!: CrudHelper<ActivityModel>;
-	
+
 	ngOnInit(): void {
-		//console.log('CalendarComponent initialized');
 		this.activityCrud = new CrudHelper(() => this.activities, (l) => this.activities = l);
-		this.refreshEvents(); // 👈 Already here, and it runs every time calendar is loaded
+		this.refreshEvents();
 		this.activityService.getOnlyMyActivities().subscribe({
 			next: activities => {
 				this.activities = activities;
@@ -115,32 +112,11 @@ export class CalendarComponent implements OnInit {
 			next: events => {
 				this.events = events.flatMap(event =>
 					event.repeat?.bool
-						? this.generateRecurringInstances(event, viewStart, viewEnd)
+						? generateInstancesInRange(event, viewStart, viewEnd, getEventDurationMs(event))
 						: [event]
 				);
-				this.handler.loadNotificationsFromEvents(events);
 			},
 			error: err => console.error('Error loading events:', err)
-		});
-	}
-
-	private generateRecurringInstances(event: EventModel, viewFrom?: Date, viewTo?: Date): EventModel[] {
-		//console.log("generate Recurring Instances")
-		if (!event.repeat.rrule) return [event];
-
-		const rule = rrulestr(event.repeat.rrule);
-
-		const between = rule.between(viewFrom ?? new Date(0), viewTo ?? new Date(8640000000000000));
-		const duration = new Date(`${event.end.date}T${event.end.time}`).getTime() -
-						new Date(`${event.start.date}T${event.start.time}`).getTime();
-
-		return between.map(occurrenceStart => {
-			const occurrenceEnd = new Date(occurrenceStart.getTime() + duration);
-			return EventModel.fromRecurringInstance(
-				event,
-				StringDate.fromRRuleUtcDate(occurrenceStart),
-				StringDate.fromRRuleUtcDate(occurrenceEnd)
-			);
 		});
 	}
 }

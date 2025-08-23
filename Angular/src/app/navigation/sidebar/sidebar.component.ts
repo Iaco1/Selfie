@@ -15,7 +15,10 @@ export class SidebarComponent {
 	constructor(private router: Router, protected userService: UserService) {
 	}
 
-  // navigation methods
+	// navigation methods
+	navigateToHomePage(){
+		this.router.navigate(['/HomepageComponent']);
+	}
 	navigateToTimemachine(){
 		this.router.navigate(['/TimemachineComponent']);
 	}

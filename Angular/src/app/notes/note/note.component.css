@@ -2,3 +2,22 @@
 	overflow-x: auto;
 	white-space: nowrap;
 }
+.buttons-footer {
+	display: flex;
+	justify-content: flex-start; /* or center, or space-between */
+	gap: 0.5rem; /* space between buttons */
+	padding: 0.5rem; /* reduce default padding */
+}
+
+.card-footer {
+	container-type: inline-size; /* make each card its own container */
+}
+
+/* When the card is narrower than 250px, hide button text */
+@container (max-width: 350px) {
+	.card-footer .button span.is-hidden-when-narrow {
+		display: none;
+	}
+}
+
+  
