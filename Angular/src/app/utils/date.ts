@@ -8,12 +8,15 @@ function fromLocalDateString(dateStr: string): Date {
 	const [y, m, d] = dateStr.split('-').map(Number);
 	return new Date(y, m - 1, d); // local midnight
 }
-function getStartOfWeek(day: Date): Date {
-	const d = new Date(day);
-	const dayOfWeek = d.getDay();
-	d.setDate(d.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek));
+function getStartOfWeek(date: Date): Date {
+	const d = new Date(date);
+	const day = d.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+	const diff = (day === 0 ? -6 : 1 - day); // Adjust so Monday is start
+	d.setDate(d.getDate() + diff);
+	d.setHours(0, 0, 0, 0);
 	return d;
 }
+
 // Converts Date → 'YYYY-MM-DDTHH:mm'
 function toLocal(date: Date): string {
 	const y = date.getFullYear();
