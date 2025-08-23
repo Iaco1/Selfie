@@ -9,9 +9,10 @@ import { EventService } from "../../services/event.service";
 import { StringDate } from "../../types/string-date";
 import { fromLocalDateString, toLocalDateString } from "../../utils/date";
 import { NotificationModel } from "../../types/notification.interface";
-import { generateRRuleFromInput, parseRRule } from "../../utils/rrule-utils";
+import { generateRRuleFromInput, getEventDurationMs, parseRRule } from "../../utils/rrule-utils";
 import { RRule, rrulestr } from "rrule";
 import { NotificationHandlerService } from "../../services/notification-handler.service";
+import { Pomodoro } from "../../types/pomodoro";
 
 const NOTIFICATION_PRESETS: { label: string; minutesBefore: number }[] = [
 	{ label: 'at time of event', minutesBefore: 0 },
@@ -59,6 +60,7 @@ export class EditorEventComponent implements OnInit {
 				this.me = date;
 				this.parseRRule();
 				this.syncNotifCheckFromModel(); // 👈 Set checkbox state from model
+				this.syncPomodoro();
 			},
 			error: (err) => {
 				console.error('Failed to load event:', err);
@@ -89,6 +91,9 @@ export class EditorEventComponent implements OnInit {
 
 		//HANDLE NOTIFICATIONS
 		this.prepareNotifications();
+
+		//HANDLE POMODORO
+		this.preparePomodoro();
 
 		//SAVE OR UPDATE EVENT
 		//console.log("Event to be saved:", JSON.stringify(this.me, null, 2));
@@ -151,21 +156,6 @@ export class EditorEventComponent implements OnInit {
 
 	set untilValue(val: string) {
 		this.until = val;
-	}
-
-	private setMode(): void {
-		if (typeof this.count === 'number' && this.count > 0) {
-			this.repeatEndMode = 'after';
-			this.until = undefined;
-		} else if (this.until && /^\d{4}-\d{2}-\d{2}$/.test(this.until)) {
-			this.repeatEndMode = 'until';
-			this.count = undefined;
-		} else {
-			this.repeatEndMode = 'never';
-			this.count = undefined;
-			this.until = undefined;
-		}
-		// console.log(this.repeatEndMode + " end mode");
 	}
 
 	private generateRRule() {
@@ -276,5 +266,46 @@ export class EditorEventComponent implements OnInit {
 				this.notif_check.push(notif.label);
 			}
 		}
+	}
+
+	//POMODORO
+	StudyFor: number = 1500; //25 min
+	RestFor: number = 300;
+	setStudyFor(seconds: number) {
+		this.StudyFor = seconds;
+	}
+	setRestFor(seconds: number) {
+		this.RestFor = seconds;
+	}
+	private getDuration(): number {
+		const duration = getEventDurationMs(this.me) / 1000;
+		return duration + 60;
+	}
+	StartPomodoro() {
+		if(this.me.pomodoro.bool && this.me.pomodoro.value) {
+			//trust event
+			this.router.navigate(['pomodoro'], {
+				queryParams: {
+					id: this.me._id,
+					study: this.me.pomodoro.value.studyFor,
+					rest: this.me.pomodoro.value.restFor,
+					session: this.me.pomodoro.value.sessionTime
+				}
+			});
+		} else {
+			//trust inputs
+			this.router.navigate(['pomodoro'], {
+				queryParams: { id: this.eventId, study: this.StudyFor, rest: this.RestFor, session: this.getDuration() }
+			});
+		}
+	}
+	preparePomodoro() {
+		// Generate Pomodoro from event duration, StudyFor, RestFor
+		if(!this.me.pomodoro.bool) return;
+			this.me.pomodoro.value = new Pomodoro(this.StudyFor, this.RestFor, this.getDuration());
+	}
+	syncPomodoro() {
+		this.StudyFor = this.me.pomodoro.value?.studyFor || 1500;
+		this.RestFor = this.me.pomodoro.value?.restFor || 300;
 	}
 }

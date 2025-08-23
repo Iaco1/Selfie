@@ -40,6 +40,7 @@ export const routes: Routes = [
 	{ path: 'calendar', component: CalendarComponent},	// For going back to the right place
 	{ path: 'editor-event', component: EditorEventComponent },		// For creating a new event
 	{ path: 'editor-event/:id', component: EditorEventComponent },	// For editing an existing event
+	{ path: 'pomodoro', component: PomodoroComponent}, // let me start a pomodoro
 	// ???
 	{ path: '', component: HeaderComponent, outlet: 'header' },
 ];
