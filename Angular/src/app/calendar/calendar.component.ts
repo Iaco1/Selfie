@@ -134,6 +134,10 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 
+	private toLocalFromUTC(d: Date): Date {
+		return new Date(d.getTime() + d.getTimezoneOffset() * 60000);
+	}
+
 	private generateRecurringInstances(event: EventModel, viewFrom?: Date, viewTo?: Date): EventModel[] {
 		//console.log("generate Recurring Instances")
 		if (!event.repeat.rrule) return [event];
@@ -145,12 +149,15 @@ export class CalendarComponent implements OnInit {
 						new Date(`${event.start.date}T${event.start.time}`).getTime();
 
 		return between.map(occurrenceStart => {
-			const occurrenceEnd = new Date(occurrenceStart.getTime() + duration);
+			const localStart = this.toLocalFromUTC(occurrenceStart);
+			const occurrenceEnd = new Date(localStart.getTime() + duration);
+		
 			return EventModel.fromRecurringInstance(
 				event,
-				StringDate.fromRRuleUtcDate(occurrenceStart),
-				StringDate.fromRRuleUtcDate(occurrenceEnd)
+				StringDate.fromDate(localStart),
+				StringDate.fromDate(occurrenceEnd)
 			);
 		});
+		
 	}
 }

@@ -27,14 +27,6 @@ export class StringDate {
 		);
 	}
 
-	static fromRRuleUtcDate(d: Date): StringDate {
-		const local = new Date(d.getTime() + d.getTimezoneOffset() * 60 * 1000);
-		return new StringDate(
-			local.toISOString().split('T')[0],
-			local.toTimeString().slice(0, 5)
-		);
-	}
-
 	clone(): StringDate {
 		return new StringDate(this.date, this.time);
 	}
