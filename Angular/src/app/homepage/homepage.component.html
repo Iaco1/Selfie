@@ -1,38 +1,73 @@
 <!DOCTYPE html>
 
 <head>
-  <title>Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<title>Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <div>
-    <!--- TODO libera Add events summary -->
-    <section class="hero is-link">
-      <div class="hero-body">
-        <p class="title">This week's events</p>
-        <p class="subtitle">July 21 - July 27</p>
-      </div>
-    </section>
-    <section class="hero is-danger">
-      <div class="hero-body">
-        <p class="title">Last Pomodoro</p>
-        <p class="subtitle">
-          Started: {{this.startTime}}
-          -
-          Lasted:
-          @if(this.duration < 60){
-            {{ this.duration | number: "1.0-0" }}s
-          }
-          @else{
-            {{ this.duration / 60 | number: "1.0-0"}}m
-            {{this.duration % 60 | number: "1.0-0"}}s
-          }
-
-        </p>
-      </div>
-    </section>
-  </div>
+	<div>
+		<!-- Events -->
+		<section class="hero is-success">
+			<div class="hero-body">
+				<p class="title">This week's events</p>
+				<p class="subtitle">{{this.weekStart | date: 'fullDate'}} - {{this.weekEnd | date: 'fullDate'}}</p>
+				<ul>
+					<li *ngFor="let event of weekEvents" [style.color]="event.colour">
+						<strong [style.color]="event.colour">{{ event.title }}</strong> – 
+						<span>
+							{{ event.start.getDate() | date: 'yyyy-MM-dd HH:mm'  }}
+						</span>
+					</li>
+				</ul>
+			</div>
+		</section>
+		<!-- Activities -->
+		<section class="hero is-link">
+			<div class="hero-body">
+				<p class="title">This week's activities</p>
+				<p class="subtitle">{{this.weekStart | date: 'fullDate'}} - {{this.weekEnd | date: 'fullDate'}}</p>
+				<ul>
+					<li *ngFor="let activity of weekActivities" [style.color]="activity.colour">
+						<strong [style.color]="activity.colour">{{ activity.title }}</strong>
+						– {{ activity.expirationDAyte | date: 'yyyy-MM-dd HH:mm' }}
+					</li>
+				</ul>
+			</div>
+		</section>
+		<!-- Last Pomodoro -->
+		<section class="hero is-danger">
+			<div class="hero-body">
+				<p class="title">Last Pomodoro</p>
+				<p class="subtitle">
+					Started: {{this.startTime}}
+					-
+					Lasted:
+					@if(this.duration < 60){
+						{{ this.duration | number: "1.0-0" }}s
+					}
+					@else{
+						{{ this.duration / 60 | number: "1.0-0"}}m
+						{{this.duration % 60 | number: "1.0-0"}}s
+					}
+				</p>
+			</div>
+		</section>
+		<!-- Last Note -->
+		<section class="hero has-background-purple">
+			<div class="hero-body">
+				<p class="title">Last Note</p>
+				<p class="subtitle">
+					@if( creation && title) {
+						Created: {{ creation | date: 'medium'}}<br>
+						Title: <strong>{{ this.title }}</strong><br>
+						Content:
+					}
+					{{ this.textNote }}
+				</p>
+			</div>
+		</section>
+	</div>
 </body>
