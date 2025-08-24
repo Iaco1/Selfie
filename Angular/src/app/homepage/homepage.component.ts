@@ -10,15 +10,15 @@ import { EventService } from '../services/event.service';
 import { ActivityService } from '../services/activity.service';
 import { EventModel } from '../types/event.model';
 import { ActivityModel } from '../types/activity.model';
+import { NoteService } from '../services/note.service';
 
 import { getStartOfWeek, isSameDay } from '../utils/date';
 import { generateInstancesInRange, getEventDurationMs } from '../utils/rrule-utils';
 
-
 @Component({
 	selector: 'app-homepage',
 	imports: [ DecimalPipe, DatePipe, NgFor, HttpClientModule],
-	providers: [EventService, ActivityService],
+	providers: [EventService, ActivityService, NoteService],
 	templateUrl: './homepage.component.html',
 	styleUrl: './homepage.component.css'
 })
@@ -36,12 +36,18 @@ export class HomepageComponent {
 	weekEvents: EventModel[] = [];
 	//activities datas
 	weekActivities: ActivityModel[] = [];
+	//last note recorded data
+	lastNote: any;
+	textNote = "you don't created any note yet or fetch note failed";
+	title = "";
+	creation!: Date;
 
 	constructor(
-		private pomodoroService: PomodoroService,
 		private timeMachine: TimeMachineService,
 		private eventService: EventService,
-		private activityService: ActivityService
+		private activityService: ActivityService,
+		private pomodoroService: PomodoroService,
+		private noteService: NoteService
 	) {
 		//displaying the last pomodoro recorded
 		this.pomodoroService.get(localStorage.getItem('authToken')!).subscribe({
@@ -55,19 +61,35 @@ export class HomepageComponent {
 				console.log("get pomodoros failed: ", error);
 			}
 		});
+		//displaying last note created
+		this.noteService.getOnlyMyNotes().subscribe({
+			next: (response) => {
+				console.log("get notes result: ", response);
+				this.lastNote = response.at(-1);
+				this.title = this.lastNote.title;
+				this.textNote = this.lastNote.text.substring(0, 500);
+				this.creation = this.lastNote.creation.getDate()
+			},
+			error: (error) => {
+				console.log("get notes failed: ", error);
+			}
+		})
 	}
+
 	ngOnInit() {
 		this.timeMachine.day$.subscribe(date => {
 			this.currentDate = date;
 			this.refresh(date);
 		});
 	}
+
 	private refresh(updated: Date): void {
 		if (!this.lastLoadedDay || !isSameDay(updated, this.lastLoadedDay)) {
 			this.lastLoadedDay = updated;
 			this.weekEventsActivities();
 		}
 	}
+
 	private weekEventsActivities() {
 		this.weekStart = getStartOfWeek(this.currentDate);
 		this.weekEnd = new Date(this.weekStart);
