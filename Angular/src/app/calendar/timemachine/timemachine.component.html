@@ -4,18 +4,18 @@
 		Time Machine
 		<i class="fa-solid fa-copyright fa-xs"></i>
 	</div>
-	<div class="level">
-		<dateselect
-			class="level-right"
-			[today]="day"
-			[defaultDwmy]="'d'"
-			[updateRouteOnChange]="false"
-			(changedDayEvent)="changedDay($event)"
-			(changeDWMY)="changedDwmy($event)">
-		</dateselect>
-		<div class="control level-left">
-			<label for="time" class="label"> Time </label>			
-			<input id="time" name="time"
+	<div class="box has-background-grey-dark">
+    <dateselect
+      [today]="day"
+      [defaultDwmy]="'d'"
+      [updateRouteOnChange]="false"
+      (changedDayEvent)="changedDay($event)"
+      (changeDWMY)="changedDwmy($event)">
+    </dateselect>
+	</div>
+  <div class="control box has-background-grey-dark">
+			<label for="time" class="label"> Time </label>
+			<input  id="time" name="time"
 				type="time"
 				class="input"
 				step="1"
@@ -23,6 +23,5 @@
 				(ngModelChange)="onTimeChange(time)" />
   			<!-- step="1" 👈 this enables seconds -->
 		</div>
-	</div>
-	<p>Day: {{day}}, selected: {{dwmy}}</p>
+	<p>Day: {{day}}</p>
 </div>

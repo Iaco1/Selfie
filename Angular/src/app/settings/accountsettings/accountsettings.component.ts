@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {DatumupdaterComponent} from '../datumupdater/datumupdater.component';
 import {DatumType} from "../datumupdater/datumtype.enum";
-import {UserService} from '../services/user.service';
+import {UserService} from '../../services/user.service';
 
 /**
  * Component that displays a user's account settings and lets them modify: Person's name, birthday, username, email and password. And also lets them delete their account.

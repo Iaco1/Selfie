@@ -2,15 +2,13 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 
-<p>signup works!</p>
-
 <form [formGroup]="signupGroup" (ngSubmit)="onSubmit()">
   <div class="columns is-centered">
     <div class="column is-two-fifths-desktop is-two-thirds-tablet">
       <div class="field">
-        <label class="label">Name</label>
+        <label class="label">Username</label>
         <div class="control">
-          <input class="input" type="text" placeholder="username" [formControl]="usernameInputControl" required>
+          <input class="input" type="text" placeholder="some username" [formControl]="usernameInputControl" required>
         </div>
       </div>
 

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterOutlet, Router} from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { VisualeffectsService } from '../services/visualeffects.service';
-import { environment } from '../../environments/environment';
+import { AuthService } from '../../services/auth.service';
+import { VisualeffectsService } from '../../services/visualeffects.service';
+import { environment } from '../../../environments/environment';
 
 /**
  * component to allow the user to authenticate themselves

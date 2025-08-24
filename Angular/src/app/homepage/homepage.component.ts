@@ -15,7 +15,6 @@ import { NoteService } from '../services/note.service';
 import { getStartOfWeek, isSameDay } from '../utils/date';
 import { generateInstancesInRange, getEventDurationMs } from '../utils/rrule-utils';
 
-
 @Component({
 	selector: 'app-homepage',
 	imports: [ DecimalPipe, DatePipe, NgFor, HttpClientModule],

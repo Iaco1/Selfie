@@ -1,7 +1,6 @@
 <div #primary>
   <div class="content has-text-centered">
     <h1>Pomodoro</h1>
-    <button class="button is-dark mt-2" (click)="setupScheduledPomodoro()">pretend calendar sent this </button>
     <h2>Study Time</h2>
     <div [class.is-hidden]="hideTimeInputs()" class="field columns is-centered">
       <div class="control column is-2">
@@ -42,7 +41,7 @@
         <button [class.is-hidden]="hideMainInterface()" class="button is-dark mt-2" (click)="endSession()">end session</button>
         <button [class.is-hidden]="hideSchedule()" class="button is-dark mt-2" (click)="showEventCreationModal()" >schedule</button>
         <button [class.is-hidden]="hideSkip()" class="button mt-2" (click)="skipToNextCycle()">skip to next cycle</button>
-        <button [class.is-hidden]="hideRestart()" class="button mt-2" (click)="restartPomodoro()">restart pomodoro</button>
+        <button [class.is-hidden]="hideRestart()" class="button mt-2" (click)="restartPomodoro()">restart cycle</button>
       </div>
     </div>
 

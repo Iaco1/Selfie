@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {NotificationService} from '../services/notification.service';
+import {NotificationService} from '../../services/notification.service';
 
 /**
  * header displayed when not logged in yet
