@@ -111,11 +111,30 @@ export class TimemachineComponent implements OnInit, OnDestroy {
 			activities: this.activityService.getOnlyMyActivities()
 		}).subscribe({
 			next: ({ events, activities }) => {
-				this.handler.checkAndScheduleForVirtualDay(
-					events,
-					activities,
-					this.day
+				const rescheduledActivities = [];
+				// ✅ Reschedule overdue activities to the virtual day
+				for (const activity of activities) {
+					activity.rescheduleIfOverdue(this.day);
+					const originalDate = activity.expirationDAyte;
+					if (activity.expirationDAyte !== originalDate) {
+						rescheduledActivities.push(activity);
+					}
+				}
+				// 🔁 Persist rescheduled activities
+				const updateRequests = rescheduledActivities.map(activity =>
+					this.activityService.update(activity._id, activity)
 				);
+				// Wait for all updates, then notify calendar
+				if (updateRequests.length) {
+					forkJoin(updateRequests).subscribe({
+						next: () => {
+							this.activityService.notifyActivityChanged(); // 👈 Notify calendar
+						},
+						error: err => console.error('Failed to batch update activities', err)
+					});
+				}
+				// 🔔 Pass updated activities to the notification handler
+				this.handler.checkAndScheduleForVirtualDay(events, activities, this.day);
 			},
 			error: err => console.error("Failed to load data for virtual day", err)
 		});

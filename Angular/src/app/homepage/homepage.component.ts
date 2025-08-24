@@ -54,8 +54,10 @@ export class HomepageComponent {
 			next: (response) => {
 				console.log("get pomodoros result: ", response);
 				this.lastPomodoro = response.pomodoro.at(-1);
-				this.startTime = this.lastPomodoro.startTime;
-				this.duration = this.lastPomodoro.duration;
+				if(this.lastPomodoro) {
+					this.startTime = this.lastPomodoro.startTime;
+					this.duration = this.lastPomodoro.duration;
+				}
 			},
 			error: (error) => {
 				console.log("get pomodoros failed: ", error);
@@ -66,9 +68,11 @@ export class HomepageComponent {
 			next: (response) => {
 				console.log("get notes result: ", response);
 				this.lastNote = response.at(-1);
-				this.title = this.lastNote.title;
-				this.textNote = this.lastNote.text.substring(0, 500);
-				this.creation = this.lastNote.creation.getDate()
+				if(this.lastNote) {
+					this.title = this.lastNote.title;
+					this.textNote = this.lastNote.text.substring(0, 500);
+					this.creation = this.lastNote.creation.getDate()
+				}
 			},
 			error: (error) => {
 				console.log("get notes failed: ", error);

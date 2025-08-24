@@ -1,4 +1,4 @@
-export type NotificationPriority = 1 | 2 | 3;
+export type NotificationPriority = number;
 
 export interface NotificationModel {
 	//ids

@@ -80,15 +80,14 @@ export class NotificationService {
     // picking the right icon based on the urgency
     let icon: string;
     switch (urgency) {
+      case 0:
+        icon = '/icons/hourglass.png';
+        break;
       case 1:
         icon = "/icons/danger.png";
         break;
-      case 2:
-        icon = "/icons/death.png"
-        break;
       default:
-        icon = '/icons/hourglass.png';
-
+        icon = "/icons/death.png"
     }
 
     // if the user of the method required a snooze button, it adds it

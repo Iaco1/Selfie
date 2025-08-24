@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { ActivityModel } from '../types/activity.model';
@@ -11,6 +11,23 @@ import { StringDate } from '../types/string-date';
 	providedIn: 'root'
 })
 export class ActivityService extends BaseService<ActivityModel> {
+	private activityChangedSource = new Subject<void>();
+	activityChanged$ = this.activityChangedSource.asObservable();
+
+	// 🟢 Call this whenever activities change
+	notifyActivityChanged() {
+		this.activityChangedSource.next();
+	}
+
+	// Example update method
+	updateActivity(activity: ActivityModel) {
+		return this.http.put(`/api/activities/${activity._id}`, activity).pipe(
+			tap(() => {
+				this.notifyActivityChanged(); // 👈 Notify subscribers
+			})
+		);
+	}
+	
 	constructor(http: HttpClient) {
 		super(http, environment.baseURL + '/activity', ActivityService.transform);
 	}

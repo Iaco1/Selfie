@@ -9,6 +9,9 @@
 		@if( visualize === "list") {
 			{{ me.expirationDay.date }} {{ me.expirationDay.time }}
 		} - {{ me.title }} : {{ me.description }}
+		@if( me.secondsOverdue(currentDate) > 0) {
+			{{ this.getOverdueMessage(me)}}
+		}
 		</span>
 	</p>
 </div>

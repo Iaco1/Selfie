@@ -371,7 +371,7 @@ export class PomodoroComponent {
       })
       ).subscribe(
       (day) => {
-        console.log("time elapsed since pomodoro end: ", Math.abs(day.getTime() - this.pomodoro.endTime.getTime())/1000);
+        //console.log("time elapsed since pomodoro end: ", Math.abs(day.getTime() - this.pomodoro.endTime.getTime())/1000);
         this.breakSecondsLeft = Math.round(this.formatTimeInSeconds(this.breakDuration) - (Math.abs(day.getTime() - this.pomodoro.endTime.getTime())/1000));
         this.breakTime = this.formatTimeInHMS(this.breakSecondsLeft);
       }
@@ -529,6 +529,8 @@ export class PomodoroComponent {
 
   signalPomodoroCompleted(){
     //call some function in the calendar to say that the pomodoro has completed
+    if(!this.pomodoro.eventId) { console.error("pomodoro event id is null"); return; }
+    this.eventService.setPomodoroEventAsCompleted(this.pomodoro.eventId!);
     console.log("pomodoro completed signaled to calendar");
   }
 

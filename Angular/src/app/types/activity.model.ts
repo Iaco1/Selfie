@@ -13,7 +13,8 @@ export class ActivityModel {
 	colour : string;
 	//required false
 	description? : string;
-	//TODO
+	//notification
+	priority = 1;
 
 	constructor(
 		expirationDay: StringDate, title: string = "New Activity",
@@ -34,5 +35,29 @@ export class ActivityModel {
 
 	setId(id: string) {
 		this._id = id;
+	}
+
+	// ✅ calculate how many seconds it's overdue
+	secondsOverdue(now: Date): number {
+		if (this.completed) return 0;
+
+		const activityDate = new Date(this.expirationDay.date + 'T' + this.expirationDay.time);
+		const diff = now.getTime() - activityDate.getTime();
+
+		return diff > 0 ? Math.floor(diff / 1000) : 0;
+	}
+
+	// ✅ move to current day if overdue
+	rescheduleIfOverdue(now: Date): void {
+		if (this.completed) return;
+
+		const activityDate = new Date(this.expirationDay.date + 'T' + this.expirationDay.time);
+		if (activityDate < now) {
+			const time = this.expirationDay.time;
+			const today = now.toISOString().slice(0, 10);
+			this.expirationDay = new StringDate(today, time);
+			//add 1 to notification priority
+			this.priority = this.priority;
+		}
 	}
 }

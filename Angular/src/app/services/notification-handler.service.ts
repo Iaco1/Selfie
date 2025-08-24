@@ -55,7 +55,7 @@ export class NotificationHandlerService {
 						title: activity.title,
 						message: `Activity expires at ${activity.expirationDay.time}`,
 						date: date,
-						priority: 2 // medium (1 = low, 2 = medium, 3 = high)
+						priority: activity.priority
 					} satisfies NotificationModel; // optional, for safety
 				})
 		);
