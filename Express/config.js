@@ -8,7 +8,7 @@ module.exports = function(remote){
   if(remote) {
     return {
       mongoURI: `mongodb://${mongoCredentials.user}:${mongoCredentials.pwd}@${mongoCredentials.site}:${27017}/admin`,
-      port: 27017,
+      port: 8000,
       options: {}
     };
   }else{
