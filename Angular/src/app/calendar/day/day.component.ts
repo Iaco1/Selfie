@@ -137,11 +137,11 @@ export class DayComponent implements OnChanges {
 	//events
 	createEvent(hour: number = 0) {
 		const dateHour = new Date(this.day);
-		dateHour.setHours(hour, 0, 0, 0);
+		// dateHour.setHours(hour, 0, 0, 0);
 		const localDate = dateHour.toLocaleDateString('en-CA'); // format: YYYY-MM-DD
 		// Navigate without ID (to create new event)
 		this.router.navigate(['editor-event'], {
-			queryParams: { date: localDate, view: this.visualize }
+			queryParams: { date: localDate, view: this.visualize, hour: hour }
 		});
 	}
 

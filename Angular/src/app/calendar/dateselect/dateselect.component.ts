@@ -44,7 +44,13 @@ export class DateselectComponent implements OnInit {
 	
 	ngOnInit() {
 		if (this.updateRouteOnChange) {
+			const dateParam = this.route.snapshot.queryParamMap.get('date');
 			const viewParam = this.route.snapshot.queryParamMap.get('view');
+			if (dateParam) {
+				this.today = new Date(dateParam);
+				this.default_time = new Date(dateParam);
+				this.changedDayEvent.emit(this.today);
+			}
 			if (viewParam) {
 				this.dwmy = viewParam.charAt(0) as 'd' | 'w' | 'm' | 'y';
 				this.changeDWMY.emit(this.dwmy);

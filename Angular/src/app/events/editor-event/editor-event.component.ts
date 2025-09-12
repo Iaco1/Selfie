@@ -49,7 +49,8 @@ export class EditorEventComponent implements OnInit {
 			// Creation mode
 			const dateParam = this.route.snapshot.queryParamMap.get('date');
 			const startDate = dateParam ? fromLocalDateString(dateParam) : new Date();
-			startDate.setHours(0, 0, 0, 0);
+			const hour = parseInt( this.route.snapshot.queryParamMap.get('hour') || "0" );
+			startDate.setHours(hour, 0, 0, 0);
 			this.me = new EventModel(StringDate.fromDate(startDate));
 			return;
 		}
@@ -81,6 +82,14 @@ export class EditorEventComponent implements OnInit {
 
 	//events
 	saveEvent() {
+		if (!this.me.title) {
+			const userTitle = prompt("Title is required!\nPlease enter a title for the event:");
+			if (!userTitle) {
+				alert("Event not saved. Title is required.");
+				return;
+			}
+			this.me.title = userTitle;
+		}
 		//HANDLE REPEAT
 		// 🛡️ Restore the master start/end if this was a generated instance
 		if (this.me.isRecurringInstance && this.me.originalStartDate) {
